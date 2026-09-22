@@ -1,0 +1,389 @@
+---
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
+import CookieConsent from '../components/CookieConsent.astro';
+
+// Página institucional de Termos de Uso.
+// Modelo do negócio (confirmado): o TicketHubh apenas DIVULGA eventos e
+// redireciona o usuário para canais de venda de terceiros. Não vende
+// ingressos, não recebe pagamento e não entrega ingressos. Por isso o
+// texto NÃO traz cláusulas de venda (reembolso, arrependimento, entrega de
+// QR code, taxa de serviço), pois elas assumiriam uma responsabilidade que o
+// negócio não tem. Se o modelo mudar (venda no site/WhatsApp), rever tudo.
+
+const atualizadoEm = '21 de setembro de 2026';
+
+// Responsável pelo TicketHubh (operado como pessoa física).
+const responsavel = 'Rhuan Matavelli';
+
+const secoes = [
+  { id: 'objeto', titulo: '1. Objeto e aceitação' },
+  { id: 'o-que-e', titulo: '2. O que o TicketHubh é (e o que não é)' },
+  { id: 'como-funciona', titulo: '3. Como funciona a divulgação' },
+  { id: 'terceiros', titulo: '4. Eventos e ingressos de terceiros' },
+  { id: 'links', titulo: '5. Links e serviços de terceiros' },
+  { id: 'uso', titulo: '6. Uso permitido do site' },
+  { id: 'propriedade', titulo: '7. Propriedade intelectual' },
+  { id: 'informacoes', titulo: '8. Precisão e disponibilidade' },
+  { id: 'privacidade', titulo: '9. Privacidade e cookies' },
+  { id: 'alteracoes', titulo: '10. Alterações destes Termos' },
+  { id: 'lei', titulo: '11. Lei aplicável e foro' },
+  { id: 'contato', titulo: '12. Contato' },
+];
+---
+
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Termos de Uso do TicketHubh</title>
+    <meta
+      name="description"
+      content="Termos de Uso do TicketHubh: como funciona a divulgação de eventos, a relação com produtores e plataformas de terceiros e as regras de uso do site."
+    />
+  </head>
+
+  <body style="margin:0">
+    <Nav />
+
+    <main class="tm">
+      <header class="tm__head">
+        <p class="tm__eyebrow">Legal</p>
+        <h1 class="tm__title">Termos de Uso</h1>
+        <p class="tm__meta">Última atualização: {atualizadoEm}</p>
+        <p class="tm__lead">
+          Estes Termos regulam o uso do site TicketHubh. Ao navegar e usar o
+          site, você concorda com as regras abaixo. Leia com atenção,
+          especialmente os itens sobre eventos de terceiros e sobre a compra
+          de ingressos, que acontece fora do TicketHubh.
+        </p>
+      </header>
+
+      <nav class="tm__toc" aria-label="Índice dos Termos">
+        <h2 class="tm__toc-h">Nesta página</h2>
+        <ol>
+          {secoes.map((s) => <li><a href={`#${s.id}`}>{s.titulo}</a></li>)}
+        </ol>
+      </nav>
+
+      <article class="tm__body">
+        <section id="objeto">
+          <h2>1. Objeto e aceitação</h2>
+          <p>
+            O TicketHubh é uma plataforma online de <strong>divulgação de
+            eventos</strong>: festas em Belo Horizonte e shows em diversas
+            cidades. Estes Termos de Uso descrevem as condições para o uso do
+            site.
+          </p>
+          <p>
+            Ao acessar ou usar o TicketHubh, você declara que leu, entendeu e
+            concorda com estes Termos. Se você não concordar com qualquer
+            parte, não use o site.
+          </p>
+        </section>
+
+        <section id="o-que-e">
+          <h2>2. O que o TicketHubh é (e o que não é)</h2>
+          <p>
+            O TicketHubh <strong>reúne e divulga informações sobre eventos</strong>
+            e, quando disponível, indica onde comprar o ingresso. O nosso papel
+            termina na divulgação e no direcionamento.
+          </p>
+          <p>Para deixar claro, o TicketHubh <strong>não</strong>:</p>
+          <ul>
+            <li>vende ingressos nem processa pagamentos;</li>
+            <li>recebe valores de ingressos em nome de produtores ou plataformas;</li>
+            <li>emite, entrega ou valida ingressos;</li>
+            <li>organiza, produz ou realiza os eventos divulgados.</li>
+          </ul>
+          <p>
+            A compra do ingresso é feita <strong>diretamente com o produtor do
+            evento ou com a plataforma de venda de terceiros</strong> para a
+            qual você é redirecionado. A relação de compra é entre você e esse
+            terceiro. O TicketHubh não é parte dela.
+          </p>
+        </section>
+
+        <section id="como-funciona">
+          <h2>3. Como funciona a divulgação</h2>
+          <p>
+            Cada evento exibido no site pode conter data, local, atrações,
+            faixa de preço e um botão ou link que <strong>redireciona</strong>
+            você para o canal oficial de venda do produtor ou de uma plataforma
+            de ingressos de terceiros.
+          </p>
+          <p>
+            Também podemos oferecer canais de atendimento e de comunicação,
+            como WhatsApp e grupos de divulgação, usados apenas para tirar
+            dúvidas e avisar sobre eventos, e <strong>não</strong> para
+            concretizar a venda ou receber pagamentos.
+          </p>
+        </section>
+
+        <section id="terceiros">
+          <h2>4. Eventos e ingressos de terceiros</h2>
+          <p>
+            Os eventos divulgados são de responsabilidade exclusiva de seus
+            produtores e organizadores. Como o TicketHubh apenas divulga, ele
+            <strong>não se responsabiliza</strong>, entre outros, por:
+          </p>
+          <ul>
+            <li>realização, adiamento, alteração ou cancelamento do evento;</li>
+            <li>preço, disponibilidade, meia-entrada e condições de venda;</li>
+            <li>emissão, autenticidade, entrega ou validade do ingresso;</li>
+            <li>pagamentos, cobranças, estornos e reembolsos;</li>
+            <li>o que ocorre durante o evento, incluindo segurança e estrutura.</li>
+          </ul>
+          <p>
+            Dúvidas, pedidos de reembolso, cancelamentos e reclamações sobre a
+            compra devem ser tratados diretamente com o produtor do evento ou
+            com a plataforma de venda onde a compra foi feita, conforme as
+            regras deles e a legislação aplicável.
+          </p>
+          <p class="tm__nota">
+            Esta isenção não afasta responsabilidades que a lei atribua ao
+            TicketHubh por sua própria atuação de divulgação.
+          </p>
+        </section>
+
+        <section id="links">
+          <h2>5. Links e serviços de terceiros</h2>
+          <p>
+            O site contém links que levam a sites, aplicativos e plataformas de
+            terceiros. Não controlamos e não somos responsáveis pelo conteúdo,
+            pelas políticas, pela segurança ou pelo funcionamento desses
+            destinos. Ao seguir um link externo, você passa a se sujeitar aos
+            termos e às políticas de privacidade do terceiro.
+          </p>
+        </section>
+
+        <section id="uso">
+          <h2>6. Uso permitido do site</h2>
+          <p>Ao usar o TicketHubh, você concorda em não:</p>
+          <ul>
+            <li>
+              copiar, raspar (<em>scraping</em>) ou reproduzir em massa a base
+              de eventos e o conteúdo do site sem autorização;
+            </li>
+            <li>
+              usar o site para fins ilícitos ou que violem direitos de
+              terceiros;
+            </li>
+            <li>
+              tentar burlar, sobrecarregar ou comprometer a segurança e o
+              funcionamento do site.
+            </li>
+          </ul>
+          <p>
+            Podemos restringir ou encerrar o acesso de quem descumprir estes
+            Termos.
+          </p>
+        </section>
+
+        <section id="propriedade">
+          <h2>7. Propriedade intelectual</h2>
+          <p>
+            A marca “TicketHubh”, o logotipo, o layout, os textos e os demais
+            elementos de identidade do site são protegidos e pertencem ao
+            TicketHubh ou a quem lhe licenciou o uso. Você não adquire nenhum
+            direito sobre eles pelo simples uso do site.
+          </p>
+          <p>
+            Imagens, nomes e marcas de eventos, artistas e produtores pertencem
+            aos seus respectivos titulares e são usados apenas para fins de
+            divulgação.
+          </p>
+        </section>
+
+        <section id="informacoes">
+          <h2>8. Precisão e disponibilidade das informações</h2>
+          <p>
+            Nos esforçamos para manter as informações dos eventos corretas e
+            atualizadas, mas parte delas vem de produtores e de terceiros e
+            pode conter erros ou ficar desatualizada. Confirme sempre data,
+            local, horário e preço no canal oficial de venda antes de comprar.
+          </p>
+          <p>
+            O site é oferecido “no estado em que se encontra”. Podemos alterar,
+            suspender ou descontinuar o site, no todo ou em parte, a qualquer
+            momento.
+          </p>
+        </section>
+
+        <section id="privacidade">
+          <h2>9. Privacidade e cookies</h2>
+          <p>
+            O tratamento de dados pessoais e o uso de cookies são descritos na
+            nossa <a href="/privacidade">Política de Privacidade</a>, que
+            complementa estes Termos.
+          </p>
+        </section>
+
+        <section id="alteracoes">
+          <h2>10. Alterações destes Termos</h2>
+          <p>
+            Podemos atualizar estes Termos a qualquer momento. A versão vigente
+            é sempre a publicada nesta página, com a data de “última
+            atualização” no topo. O uso do site após uma mudança significa que
+            você concorda com a versão atualizada.
+          </p>
+        </section>
+
+        <section id="lei">
+          <h2>11. Lei aplicável e foro</h2>
+          <p>
+            Estes Termos são regidos pela legislação brasileira. Fica eleito o
+            foro da comarca de <strong>Belo Horizonte/MG</strong> para resolver
+            questões decorrentes destes Termos, sem prejuízo do foro de domicílio
+            do consumidor, quando aplicável por lei.
+          </p>
+        </section>
+
+        <section id="contato">
+          <h2>12. Contato</h2>
+          <p>
+            Dúvidas sobre estes Termos? Fale com a gente pelo WhatsApp
+            <a href="https://wa.me/5531983158818" target="_blank" rel="noopener">
+              +55 (31) 98315-8818</a>.
+          </p>
+          <p class="tm__resp">
+            Responsável pelo site: {responsavel}.
+          </p>
+        </section>
+      </article>
+    </main>
+
+    <Footer />
+    <WhatsAppButton />
+    <CookieConsent />
+
+    <style>
+      .tm {
+        max-width: 760px;
+        margin-inline: auto;
+        padding: clamp(2.5rem, 5vw, 4rem) 1.5rem 3rem;
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        color: #3a3f46;
+        line-height: 1.65;
+      }
+
+      /* Cabeçalho */
+      .tm__eyebrow {
+        margin: 0 0 0.5rem;
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #2b5cff;
+      }
+      .tm__title {
+        margin: 0;
+        font-size: clamp(2rem, 5vw, 2.6rem);
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        color: #101114;
+      }
+      .tm__meta {
+        margin: 0.6rem 0 0;
+        font-size: 0.88rem;
+        color: #9a9aa3;
+      }
+      .tm__lead {
+        margin: 1.5rem 0 0;
+        font-size: 1.05rem;
+        color: #3a3f46;
+      }
+
+      /* Índice */
+      .tm__toc {
+        margin: 2.5rem 0;
+        padding: 1.25rem 1.5rem;
+        background: #f6f6f7;
+        border: 2px solid #101114;
+        border-radius: 14px;
+      }
+      .tm__toc-h {
+        margin: 0 0 0.75rem;
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: #9a9aa3;
+      }
+      .tm__toc ol {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        gap: 0.4rem 1.5rem;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      }
+      .tm__toc a {
+        color: #3a3f46;
+        text-decoration: none;
+        font-size: 0.92rem;
+      }
+      .tm__toc a:hover {
+        color: #2b5cff;
+      }
+
+      /* Corpo */
+      .tm__body section {
+        margin-top: 2.5rem;
+        scroll-margin-top: 1.5rem;
+      }
+      .tm__body h2 {
+        margin: 0 0 0.75rem;
+        font-size: 1.25rem;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        color: #101114;
+      }
+      .tm__body p {
+        margin: 0 0 0.9rem;
+      }
+      .tm__body ul {
+        margin: 0 0 0.9rem;
+        padding-left: 1.25rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+      }
+      .tm__body strong {
+        color: #101114;
+      }
+      .tm__body a {
+        color: #2b5cff;
+        font-weight: 600;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+      }
+
+      .tm__nota,
+      .tm__resp {
+        font-size: 0.9rem;
+        color: #6a6f76;
+      }
+      .tm__nota {
+        border-left: 3px solid #e6e6e9;
+        padding-left: 1rem;
+      }
+
+      *:focus-visible {
+        outline: 2px solid #2b5cff;
+        outline-offset: 3px;
+        border-radius: 6px;
+      }
+
+      @media (max-width: 560px) {
+        .tm__toc ol {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </body>
+</html>

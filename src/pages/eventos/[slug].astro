@@ -1,0 +1,795 @@
+---
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import CookieConsent from '../../components/CookieConsent.astro';
+// NOTA: esta página NÃO usa <WhatsAppButton /> (o FAB "Entrar no grupo").
+// Regra do projeto: páginas com o botão "Grupo de ofertas" no card dispensam
+// o botão flutuante de grupo, para não duplicar a mesma ação.
+import {
+  eventos,
+  diasFalta,
+  menorPrecoAVenda,
+  mapaQuery,
+  iniciais,
+  linkCondicoes,
+  linkGrupo,
+  type Evento,
+} from '../../data/eventos';
+
+export function getStaticPaths() {
+  return eventos.map((evento) => ({
+    params: { slug: evento.slug },
+    props: { evento },
+  }));
+}
+
+interface Props {
+  evento: Evento;
+}
+const { evento: e } = Astro.props;
+
+const menor = menorPrecoAVenda(e);
+const diasLabel = diasFalta(e.dataISO);
+const q = mapaQuery(e);
+
+// JSON-LD (schema.org/Event) — reforça SEO e leitura por IA.
+// Mantém as ofertas nos dados estruturados mesmo sem listar os tipos na UI.
+const ofertas = e.ingressos
+  .map((t) => {
+    const aVenda = t.lotes.filter((l) => l.estado === 'a-venda').map((l) => l.preco);
+    return aVenda.length ? { tipo: t.tipo, preco: Math.min(...aVenda) } : null;
+  })
+  .filter((o): o is { tipo: string; preco: number } => o !== null)
+  .map((o) => ({
+    '@type': 'Offer',
+    name: o.tipo,
+    price: o.preco,
+    priceCurrency: 'BRL',
+    availability: 'https://schema.org/InStock',
+    url: e.linkCompra,
+  }));
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Event',
+  name: e.nome,
+  startDate: `${e.dataISO}T${e.horaAbertura}:00-03:00`,
+  eventStatus: 'https://schema.org/EventScheduled',
+  eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+  location: {
+    '@type': 'Place',
+    name: e.local,
+    address: `${e.endereco}, ${e.cidade}`,
+  },
+  image: [`https://tickethub.com.br${e.imagem}`],
+  description: e.descricao,
+  offers: ofertas,
+};
+
+const titulo = `${e.nome} — ${e.cidade} | TicketHubh`;
+const desc = `${e.dataLabel} · ${e.local}, ${e.cidade}. ${e.descricao.slice(0, 120)}`;
+---
+
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{titulo}</title>
+    <meta name="description" content={desc} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={e.nome} />
+    <meta property="og:description" content={desc} />
+    <meta property="og:image" content={e.imagem} />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+
+  <body>
+    <Nav />
+
+    <main class="ev-pag" data-link-compra={e.linkCompra}>
+      <!-- HERO -->
+      <header class="hero" style={`--cor:${e.cor}`}>
+        <div class="hero__media">
+          <div class="hero__poster" aria-hidden="true">
+            <span class="hero__poster-cat">{e.categoria}</span>
+          </div>
+          <img
+            class="hero__img"
+            src={e.imagem}
+            alt={`Imagem do evento ${e.nome}`}
+            width="1600"
+            height="900"
+            onerror="this.closest('.hero__media').classList.add('sem-foto')"
+          />
+          <div class="hero__scrim"></div>
+        </div>
+
+        <div class="hero__inner">
+          <nav class="mig" aria-label="Você está em">
+            <a href="/eventos">Eventos</a>
+            <span aria-hidden="true">›</span>
+            <span>{e.nome}</span>
+          </nav>
+
+          <div class="hero__tags">
+            <span class="tag tag--dias" data-date={e.dataISO}>
+              <span data-dias-text>{diasLabel}</span>
+            </span>
+            {e.exclusiva && <span class="tag tag--excl">Exclusiva</span>}
+          </div>
+
+          <h1 class="hero__titulo">{e.nome}</h1>
+
+          <p class="hero__meta">
+            <span>{e.diaSemana}, {e.dataLabel}</span>
+            <span class="dot" aria-hidden="true">·</span>
+            <span>Abertura {e.horaAbertura}</span>
+            <span class="dot" aria-hidden="true">·</span>
+            <span>{e.local}, {e.cidade}</span>
+          </p>
+        </div>
+      </header>
+
+      <!-- CORPO: conteúdo + compra -->
+      <div class="grade">
+        <!-- Coluna de conteúdo -->
+        <div class="conteudo">
+          <section class="bloco">
+            <h2 class="bloco__titulo">Sobre o evento</h2>
+            <p class="texto">{e.descricao}</p>
+          </section>
+
+          {e.lineup.length > 0 && (
+            <section class="bloco">
+              <h2 class="bloco__titulo">Line-up</h2>
+              <ul class="lineup">
+                {e.lineup.map((a) => (
+                  <li class="art">
+                    <div class="art__foto" style={`--cor:${e.cor}`}>
+                      <span class="art__ini" aria-hidden="true">{iniciais(a.nome)}</span>
+                      <img
+                        class="art__img"
+                        src={a.foto}
+                        alt={`Foto de ${a.nome}`}
+                        loading="lazy"
+                        decoding="async"
+                        width="200"
+                        height="200"
+                        onerror="this.closest('.art__foto').classList.add('sem-foto')"
+                      />
+                    </div>
+                    <span class="art__nome">{a.nome}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          <section class="bloco">
+            <h2 class="bloco__titulo">Local</h2>
+            <p class="local">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true">
+                <path d="M12 21s-6.5-5.3-6.5-10A6.5 6.5 0 0 1 18.5 11c0 4.7-6.5 10-6.5 10z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+                <circle cx="12" cy="11" r="2.3" stroke="currentColor" stroke-width="1.6" />
+              </svg>
+              <span><strong>{e.local}</strong> — {e.endereco}, {e.cidade}</span>
+            </p>
+            <div class="mapa">
+              <iframe
+                class="mapa__frame"
+                title={`Mapa — ${e.local}`}
+                src={`https://maps.google.com/maps?q=${q}&z=15&output=embed`}
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+              ></iframe>
+            </div>
+            <a class="link-seta" href={`https://www.google.com/maps/search/?api=1&query=${q}`} target="_blank" rel="noopener">
+              Ver no Google Maps
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" aria-hidden="true">
+                <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </a>
+          </section>
+
+        </div>
+
+        <!-- Coluna de compra (sticky no desktop) -->
+        <aside class="compra" aria-label="Ingressos">
+          <div class="card">
+            {menor !== null ? (
+              <>
+                <div class="card__head">
+                  <span class="card__label">Ingressos</span>
+                </div>
+
+                <a class="cta" href={e.linkCompra} target="_blank" rel="noopener">
+                  <span class="cta__txt">Comprar ingresso</span>
+                </a>
+
+                <a class="cta cta--sec" href={linkCondicoes(e)} target="_blank" rel="noopener">
+                  <span class="cta__txt">Condições especiais</span>
+                </a>
+
+                <a class="cta cta--terc" href={linkGrupo(e)} target="_blank" rel="noopener">
+                  <span class="cta__txt">Grupo de ofertas</span>
+                </a>
+
+                <ul class="trust">
+                  <li class="trust__item">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true">
+                      <path d="M12 3l7 2.5v5c0 4.3-2.9 7.6-7 8.5-4.1-.9-7-4.2-7-8.5v-5L12 3z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+                      <path d="M9 12l2 2 4-4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    <span>Pagamento feito no site do parceiro oficial de vendas.</span>
+                  </li>
+                  <li class="trust__item">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true">
+                      <path d="M9 12l2 2 4-4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                      <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6" />
+                    </svg>
+                    <span>Ingressos apenas de produtoras e eventos parceiros.</span>
+                  </li>
+                </ul>
+              </>
+            ) : (
+              <div class="card__head">
+                <span class="card__label">Ingressos</span>
+                <p class="card__esgotado">Ingressos esgotados</p>
+              </div>
+            )}
+          </div>
+        </aside>
+      </div>
+    </main>
+
+    <!-- Barra fixa (mobile) -->
+    {menor !== null && (
+      <div class="barra" data-barra hidden>
+        <a class="barra__cta" href={e.linkCompra} target="_blank" rel="noopener">
+          Comprar ingresso
+        </a>
+      </div>
+    )}
+
+    <Footer />
+    <CookieConsent />
+
+    <style is:global>
+      ::selection {
+        background: #2b5cff;
+        color: #fff;
+      }
+      html {
+        scrollbar-color: #c7c7cf #f2f2f4;
+      }
+    </style>
+
+    <style>
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        color: #101114;
+        background: #fff;
+      }
+      *:focus-visible {
+        outline: 2px solid #2b5cff;
+        outline-offset: 3px;
+        border-radius: 4px;
+      }
+
+      /* ---------- HERO ---------- */
+      .hero {
+        position: relative;
+        display: flex;
+        align-items: flex-end;
+        min-height: clamp(340px, 52vh, 540px);
+        color: #fff;
+        overflow: hidden;
+        background: #12141a;
+      }
+      .hero__media {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+      }
+      .hero__poster {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(150deg,
+          color-mix(in srgb, var(--cor, #2b5cff) 88%, #fff) 0%,
+          color-mix(in srgb, var(--cor, #2b5cff) 74%, #000) 100%);
+      }
+      .hero__poster::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(rgba(255, 255, 255, 0.16) 1px, transparent 1.4px);
+        background-size: 15px 15px;
+        mask-image: linear-gradient(160deg, #000, transparent 78%);
+      }
+      .hero__poster-cat {
+        position: absolute;
+        left: 1.5rem;
+        bottom: 1.5rem;
+        font-size: 2rem;
+        font-weight: 800;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.28);
+      }
+      .hero__img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 1;
+      }
+      .hero__media.sem-foto .hero__img {
+        display: none;
+      }
+      .hero__scrim {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        background: linear-gradient(
+          180deg,
+          rgba(8, 8, 12, 0.15) 0%,
+          rgba(8, 8, 12, 0.35) 45%,
+          rgba(8, 8, 12, 0.85) 100%
+        );
+      }
+      .hero__inner {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        max-width: 1140px;
+        margin-inline: auto;
+        padding: 2.5rem 1.5rem 2.75rem;
+      }
+      .mig {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.85rem;
+        margin-bottom: 1.1rem;
+        color: rgba(255, 255, 255, 0.8);
+      }
+      .mig a {
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+      }
+      .mig a:hover {
+        color: #fff;
+      }
+      .hero__tags {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 0.9rem;
+      }
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        font-size: 0.75rem;
+        font-weight: 700;
+        line-height: 1;
+        padding: 0.42rem 0.62rem;
+        border-radius: 9px;
+      }
+      .tag--dias {
+        background: #fff;
+        color: #101114;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+      }
+      .tag--excl {
+        background: #2b5cff;
+        color: #fff;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        box-shadow: 0 2px 10px rgba(43, 92, 255, 0.45);
+      }
+      .hero__titulo {
+        margin: 0;
+        font-size: clamp(2.2rem, 6vw, 4rem);
+        line-height: 1.02;
+        font-weight: 800;
+        letter-spacing: -0.035em;
+        text-shadow: 0 2px 30px rgba(0, 0, 0, 0.45);
+        max-width: 18ch;
+      }
+      .hero__meta {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.4rem 0.6rem;
+        margin: 0.9rem 0 0;
+        font-size: 1.02rem;
+        color: rgba(255, 255, 255, 0.92);
+      }
+      .hero__meta .dot {
+        color: rgba(255, 255, 255, 0.55);
+      }
+
+      /* ---------- GRADE ---------- */
+      .grade {
+        max-width: 1140px;
+        margin-inline: auto;
+        padding: 3rem 1.5rem 4.5rem;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 360px;
+        gap: 3rem;
+        align-items: start;
+      }
+      @media (max-width: 900px) {
+        .grade {
+          grid-template-columns: 1fr;
+          gap: 2.25rem;
+          padding-bottom: 6.5rem; /* espaço para a barra fixa */
+        }
+      }
+
+      /* ---------- CONTEÚDO ---------- */
+      .bloco + .bloco {
+        margin-top: 2.5rem;
+      }
+      .bloco__titulo {
+        margin: 0 0 1rem;
+        font-size: 1.3rem;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        color: #101114;
+      }
+      .texto {
+        margin: 0;
+        font-size: 1.05rem;
+        line-height: 1.65;
+        color: #3a3f46;
+        max-width: 68ch;
+      }
+      .lineup {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(78px, 1fr));
+        gap: 1.2rem 0.85rem;
+      }
+      .art {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 0.5rem;
+      }
+      .art__foto {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        border-radius: 12px;
+        overflow: hidden;
+        background: var(--cor, #2b5cff);
+        box-shadow: 0 8px 18px -14px rgba(16, 17, 20, 0.5);
+      }
+      .art__ini {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: clamp(1.1rem, 3.5vw, 1.5rem);
+        font-weight: 800;
+        letter-spacing: 0.02em;
+        color: rgba(255, 255, 255, 0.92);
+        background: linear-gradient(150deg,
+          color-mix(in srgb, var(--cor, #2b5cff) 88%, #fff) 0%,
+          color-mix(in srgb, var(--cor, #2b5cff) 74%, #000) 100%);
+      }
+      .art__img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 1;
+      }
+      .art__foto.sem-foto .art__img {
+        display: none;
+      }
+      .art__nome {
+        font-size: 0.85rem;
+        font-weight: 700;
+        line-height: 1.25;
+        color: #101114;
+      }
+      .local {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.55rem;
+        margin: 0 0 1rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        color: #3a3f46;
+      }
+      .local svg {
+        flex: none;
+        margin-top: 0.15rem;
+        color: #2b5cff;
+      }
+      .mapa {
+        border-radius: 14px;
+        overflow: hidden;
+        border: 1px solid #ececed;
+        background: #f4f5f7;
+        aspect-ratio: 16 / 9;
+      }
+      .mapa__frame {
+        width: 100%;
+        height: 100%;
+        border: 0;
+        display: block;
+      }
+      .link-seta {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        margin-top: 0.9rem;
+        color: #2b5cff;
+        font-weight: 600;
+        font-size: 0.95rem;
+        text-decoration: none;
+      }
+      .link-seta svg {
+        transition: transform 0.2s ease;
+      }
+      .link-seta:hover svg {
+        transform: translateX(3px);
+      }
+
+      /* ---------- COMPRA (sticky) ---------- */
+      .compra {
+        position: sticky;
+        top: 1.25rem;
+      }
+      @media (max-width: 900px) {
+        .compra {
+          position: static;
+        }
+      }
+      .card {
+        background: #fff;
+        border: 1px solid #e6e6ea;
+        border-radius: 18px;
+        padding: 1.35rem 1.35rem 1.5rem;
+        box-shadow: 0 18px 40px -26px rgba(16, 17, 20, 0.4);
+      }
+      .card__head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 0.75rem;
+        margin-bottom: 1.1rem;
+      }
+      .card__label {
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: #9aa0a6;
+      }
+      .card__apartir {
+        margin: 0;
+        font-size: 0.92rem;
+        color: #5a5f66;
+      }
+      .card__apartir strong {
+        font-size: 1.15rem;
+        font-weight: 800;
+        color: #101114;
+      }
+      .card__esgotado {
+        margin: 0;
+        font-weight: 700;
+        color: #b5462f;
+      }
+
+      /* CTA — efeito de preenchimento azul no hover/active */
+      .cta {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        width: 100%;
+        margin-top: 1.15rem;
+        padding: 1.05rem 1.25rem;
+        border-radius: 13px;
+        background: #2b5cff;
+        color: #fff;
+        text-decoration: none;
+        font-weight: 800;
+        font-size: 1.05rem;
+        overflow: hidden;
+        box-shadow: 0 12px 24px -12px rgba(43, 92, 255, 0.7);
+        transition: transform 0.16s ease, box-shadow 0.2s ease;
+      }
+      .cta::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: #1642d8;
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.32s cubic-bezier(0.2, 0.8, 0.2, 1);
+        z-index: 0;
+      }
+      .cta:hover::before {
+        transform: scaleX(1);
+      }
+      .cta:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 16px 30px -12px rgba(43, 92, 255, 0.75);
+      }
+      .cta:active {
+        transform: translateY(0);
+      }
+      .cta__txt {
+        position: relative;
+        z-index: 1;
+      }
+
+      /* Botão secundário — WhatsApp / condições especiais (outline) */
+      .cta--sec {
+        margin-top: 0.65rem;
+        background: #fff;
+        color: #101114;
+        border: 1.5px solid #dcdce1;
+        box-shadow: none;
+        font-size: 1rem;
+      }
+      .cta--sec::before {
+        display: none;
+      }
+      .cta--sec:hover {
+        border-color: #12805a;
+        color: #0e6a4b;
+        transform: translateY(-1px);
+        box-shadow: 0 8px 18px -12px rgba(16, 17, 20, 0.4);
+      }
+
+      /* Botão terciário — grupo de ofertas (mais leve) */
+      .cta--terc {
+        margin-top: 0.55rem;
+        background: #f4f5f7;
+        color: #3a3f46;
+        border: none;
+        box-shadow: none;
+        font-size: 0.98rem;
+        font-weight: 700;
+      }
+      .cta--terc::before {
+        display: none;
+      }
+      .cta--terc:hover {
+        background: #eaeaee;
+        color: #101114;
+        transform: none;
+        box-shadow: none;
+      }
+
+      .trust {
+        list-style: none;
+        margin: 1.1rem 0 0;
+        padding: 0.9rem 0 0;
+        border-top: 1px solid #f0f0f2;
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+      }
+      .trust__item {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.5rem;
+        font-size: 0.82rem;
+        line-height: 1.4;
+        color: #5a5f66;
+      }
+      .trust__item svg {
+        flex: none;
+        margin-top: 0.05rem;
+        color: #12805a;
+      }
+
+      /* ---------- BARRA FIXA (mobile) ---------- */
+      .barra {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 40;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 0.75rem 1.1rem;
+        padding-bottom: calc(0.75rem + env(safe-area-inset-bottom, 0));
+        background: rgba(255, 255, 255, 0.92);
+        backdrop-filter: saturate(180%) blur(12px);
+        border-top: 1px solid #e6e6ea;
+        box-shadow: 0 -8px 24px -14px rgba(16, 17, 20, 0.3);
+      }
+      @media (max-width: 900px) {
+        .barra:not([hidden]) {
+          display: flex;
+        }
+      }
+      @media (min-width: 901px) {
+        .barra {
+          display: none !important;
+        }
+      }
+      .barra__cta {
+        flex: 1;
+        text-align: center;
+        padding: 0.85rem 1.6rem;
+        border-radius: 12px;
+        background: #2b5cff;
+        color: #fff;
+        text-decoration: none;
+        font-weight: 800;
+        font-size: 1rem;
+        box-shadow: 0 10px 20px -10px rgba(43, 92, 255, 0.7);
+      }
+      .barra__cta:active {
+        transform: translateY(1px);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .cta,
+        .cta::before,
+        .link-seta svg {
+          transition: none;
+        }
+      }
+    </style>
+
+    <script>
+      // 1) Recalcular "faltam X dias" para hoje
+      (() => {
+        const hoje = new Date();
+        hoje.setHours(0, 0, 0, 0);
+        document.querySelectorAll<HTMLElement>('.tag--dias').forEach((tag) => {
+          const iso = tag.dataset.date;
+          const alvo = tag.querySelector<HTMLElement>('[data-dias-text]');
+          if (!iso || !alvo) return;
+          const d = new Date(iso + 'T00:00:00');
+          const diff = Math.ceil((d.getTime() - hoje.getTime()) / 86400000);
+          let txt = `Faltam ${diff} dias`;
+          if (diff < 0) txt = 'Já aconteceu';
+          else if (diff === 0) txt = 'É hoje';
+          else if (diff === 1) txt = 'Falta 1 dia';
+          alvo.textContent = txt;
+        });
+      })();
+
+      // 2) Barra fixa mobile: só aparece depois de rolar além do card de compra
+      (() => {
+        const barra = document.querySelector<HTMLElement>('[data-barra]');
+        const card = document.querySelector<HTMLElement>('.card');
+        if (!barra || !card) return;
+
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              // Some a barra enquanto o card de compra está visível
+              barra.hidden = entry.isIntersecting;
+            });
+          },
+          { rootMargin: '0px 0px -40% 0px' }
+        );
+        io.observe(card);
+      })();
+    </script>
+  </body>
+</html>

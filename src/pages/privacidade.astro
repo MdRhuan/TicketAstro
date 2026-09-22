@@ -1,0 +1,346 @@
+---
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
+import CookieConsent from '../components/CookieConsent.astro';
+
+// Política de Privacidade (LGPD, Lei 13.709/2018).
+// ATENÇÃO: este é um texto-base honesto ao modelo do site (agregador que só
+// divulga e redireciona). NÃO é parecer jurídico. Precisa de revisão por
+// advogado e do preenchimento dos dados reais marcados como [preencher].
+// Também confirmar QUAIS ferramentas de terceiros o site realmente usa
+// (ex.: analytics) antes de publicar; não afirmar uso do que não existe.
+
+const atualizadoEm = '21 de setembro de 2026';
+const responsavel = 'Rhuan Matavelli';
+const encarregado = 'Rhuan Matavelli';
+
+const secoes = [
+  { id: 'controlador', titulo: '1. Quem trata seus dados' },
+  { id: 'dados', titulo: '2. Quais dados coletamos' },
+  { id: 'cookies', titulo: '3. Cookies' },
+  { id: 'finalidades', titulo: '4. Para que usamos' },
+  { id: 'base-legal', titulo: '5. Base legal' },
+  { id: 'compartilhamento', titulo: '6. Compartilhamento' },
+  { id: 'retencao', titulo: '7. Por quanto tempo guardamos' },
+  { id: 'direitos', titulo: '8. Seus direitos' },
+  { id: 'seguranca', titulo: '9. Segurança' },
+  { id: 'alteracoes', titulo: '10. Alterações' },
+  { id: 'contato', titulo: '11. Como falar sobre privacidade' },
+];
+---
+
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Política de Privacidade do TicketHubh</title>
+    <meta
+      name="description"
+      content="Como o TicketHubh trata dados pessoais e usa cookies, conforme a LGPD, e como você exerce seus direitos."
+    />
+  </head>
+
+  <body style="margin:0">
+    <Nav />
+
+    <main class="tm">
+      <header class="tm__head">
+        <p class="tm__eyebrow">Legal</p>
+        <h1 class="tm__title">Política de Privacidade</h1>
+        <p class="tm__meta">Última atualização: {atualizadoEm}</p>
+        <p class="tm__lead">
+          Esta Política explica, de forma direta, quais dados o TicketHubh trata,
+          por que os trata e como você exerce seus direitos, conforme a Lei
+          Geral de Proteção de Dados (LGPD, Lei 13.709/2018).
+        </p>
+      </header>
+
+      <nav class="tm__toc" aria-label="Índice da Política">
+        <h2 class="tm__toc-h">Nesta página</h2>
+        <ol>
+          {secoes.map((s) => <li><a href={`#${s.id}`}>{s.titulo}</a></li>)}
+        </ol>
+      </nav>
+
+      <article class="tm__body">
+        <section id="controlador">
+          <h2>1. Quem trata seus dados</h2>
+          <p>
+            O responsável (controlador) pelo tratamento dos dados coletados
+            neste site é {responsavel}. Para assuntos de privacidade, use o
+            contato do item 11.
+          </p>
+        </section>
+
+        <section id="dados">
+          <h2>2. Quais dados coletamos</h2>
+          <p>
+            Como o TicketHubh apenas divulga eventos e não realiza vendas nem
+            cadastros de conta, a coleta é reduzida:
+          </p>
+          <ul>
+            <li>
+              <strong>Dados de navegação:</strong> informações técnicas geradas
+              ao usar o site, como endereço IP, tipo de dispositivo e navegador,
+              páginas visitadas e dados coletados por cookies (ver item 3).
+            </li>
+            <li>
+              <strong>Dados que você nos envia:</strong> se você fala com a gente
+              (por exemplo, por WhatsApp), tratamos as informações que você
+              decidir compartilhar, como nome e o conteúdo da mensagem.
+            </li>
+          </ul>
+          <p>
+            Não pedimos dados desnecessários e não coletamos, de forma
+            intencional, dados de menores de idade sem o consentimento dos
+            responsáveis.
+          </p>
+        </section>
+
+        <section id="cookies">
+          <h2>3. Cookies</h2>
+          <p>
+            Usamos cookies <strong>essenciais</strong>, necessários para o site
+            funcionar, e, mediante o seu consentimento, cookies de
+            <strong>medição e análise de uso</strong>. Você decide no aviso de
+            cookies exibido ao entrar no site e pode mudar a escolha limpando os
+            dados do navegador.
+          </p>
+          <p>Os cookies de análise que usamos são de:</p>
+          <ul>
+            <li>
+              <strong>Google Analytics</strong> (Google LLC): mede a audiência e
+              entende como o site é usado, de forma agregada.
+            </li>
+            <li>
+              <strong>Microsoft Clarity</strong> (Microsoft Corporation): analisa
+              o comportamento de navegação, por exemplo com mapas de calor e
+              gravações de sessão, para melhorar a experiência.
+            </li>
+          </ul>
+          <p>
+            Essas ferramentas são operadas por empresas sediadas nos Estados
+            Unidos, o que pode envolver a <strong>transferência internacional</strong>
+            dos dados coletados. Elas só são ativadas depois que você aceita os
+            cookies de análise.
+          </p>
+        </section>
+
+        <section id="finalidades">
+          <h2>4. Para que usamos os dados</h2>
+          <ul>
+            <li>operar, manter e proteger o site;</li>
+            <li>entender como o site é usado e melhorar a experiência;</li>
+            <li>responder ao seu contato e prestar atendimento;</li>
+            <li>cumprir obrigações legais e regulatórias.</li>
+          </ul>
+        </section>
+
+        <section id="base-legal">
+          <h2>5. Base legal</h2>
+          <p>
+            Tratamos dados com base no seu <strong>consentimento</strong> (por
+            exemplo, cookies não essenciais), no <strong>legítimo
+            interesse</strong> (operar e melhorar o site, com respeito aos seus
+            direitos) e no <strong>cumprimento de obrigação legal</strong>,
+            conforme o caso.
+          </p>
+        </section>
+
+        <section id="compartilhamento">
+          <h2>6. Compartilhamento</h2>
+          <p>
+            O TicketHubh <strong>não vende</strong> seus dados pessoais. Podemos
+            compartilhá-los com prestadores de serviço que operam o site (como
+            hospedagem e, se aplicável, medição de audiência) e com autoridades,
+            quando exigido por lei.
+          </p>
+          <p>
+            Ao clicar em links que levam a produtores ou a plataformas de venda
+            de terceiros, você passa a se relacionar com esses terceiros, que
+            têm suas próprias políticas de privacidade. Não controlamos o
+            tratamento de dados feito por eles.
+          </p>
+        </section>
+
+        <section id="retencao">
+          <h2>7. Por quanto tempo guardamos</h2>
+          <p>
+            Guardamos os dados apenas pelo tempo necessário às finalidades desta
+            Política ou ao cumprimento de obrigações legais. Depois disso, os
+            dados são eliminados ou anonimizados.
+          </p>
+        </section>
+
+        <section id="direitos">
+          <h2>8. Seus direitos</h2>
+          <p>
+            Nos termos da LGPD, você pode, entre outros, solicitar: confirmação
+            de que tratamos seus dados; acesso a eles; correção de dados
+            incompletos ou desatualizados; anonimização ou eliminação;
+            informação sobre com quem compartilhamos; e a revogação do
+            consentimento. Para exercer esses direitos, use o contato do item 11.
+          </p>
+        </section>
+
+        <section id="seguranca">
+          <h2>9. Segurança</h2>
+          <p>
+            Adotamos medidas técnicas e organizacionais razoáveis para proteger
+            os dados. Nenhum sistema é totalmente imune, mas trabalhamos para
+            reduzir riscos e tratar incidentes de forma adequada.
+          </p>
+        </section>
+
+        <section id="alteracoes">
+          <h2>10. Alterações desta Política</h2>
+          <p>
+            Podemos atualizar esta Política a qualquer momento. A versão vigente
+            é a publicada nesta página, com a data de “última atualização” no
+            topo.
+          </p>
+        </section>
+
+        <section id="contato">
+          <h2>11. Como falar sobre privacidade</h2>
+          <p>
+            Para dúvidas ou para exercer seus direitos, fale com a gente pelo
+            WhatsApp
+            <a href="https://wa.me/5531983158818" target="_blank" rel="noopener">
+              +55 (31) 98315-8818</a>.
+          </p>
+          <p class="tm__resp">Encarregado pelo tratamento de dados: {encarregado}.</p>
+        </section>
+      </article>
+    </main>
+
+    <Footer />
+    <WhatsAppButton />
+    <CookieConsent />
+
+    <style>
+      .tm {
+        max-width: 760px;
+        margin-inline: auto;
+        padding: clamp(2.5rem, 5vw, 4rem) 1.5rem 3rem;
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        color: #3a3f46;
+        line-height: 1.65;
+      }
+      .tm__eyebrow {
+        margin: 0 0 0.5rem;
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #2b5cff;
+      }
+      .tm__title {
+        margin: 0;
+        font-size: clamp(2rem, 5vw, 2.6rem);
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        color: #101114;
+      }
+      .tm__meta {
+        margin: 0.6rem 0 0;
+        font-size: 0.88rem;
+        color: #9a9aa3;
+      }
+      .tm__lead {
+        margin: 1.5rem 0 0;
+        font-size: 1.05rem;
+        color: #3a3f46;
+      }
+
+      .tm__toc {
+        margin: 2.5rem 0;
+        padding: 1.25rem 1.5rem;
+        background: #f6f6f7;
+        border: 2px solid #101114;
+        border-radius: 14px;
+      }
+      .tm__toc-h {
+        margin: 0 0 0.75rem;
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: #9a9aa3;
+      }
+      .tm__toc ol {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        gap: 0.4rem 1.5rem;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      }
+      .tm__toc a {
+        color: #3a3f46;
+        text-decoration: none;
+        font-size: 0.92rem;
+      }
+      .tm__toc a:hover {
+        color: #2b5cff;
+      }
+
+      .tm__body section {
+        margin-top: 2.5rem;
+        scroll-margin-top: 1.5rem;
+      }
+      .tm__body h2 {
+        margin: 0 0 0.75rem;
+        font-size: 1.25rem;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        color: #101114;
+      }
+      .tm__body p {
+        margin: 0 0 0.9rem;
+      }
+      .tm__body ul {
+        margin: 0 0 0.9rem;
+        padding-left: 1.25rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+      }
+      .tm__body strong {
+        color: #101114;
+      }
+      .tm__body a {
+        color: #2b5cff;
+        font-weight: 600;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+      }
+
+      .tm__nota,
+      .tm__resp {
+        font-size: 0.9rem;
+        color: #6a6f76;
+      }
+      .tm__nota {
+        border-left: 3px solid #e6e6e9;
+        padding-left: 1rem;
+      }
+
+      *:focus-visible {
+        outline: 2px solid #2b5cff;
+        outline-offset: 3px;
+        border-radius: 6px;
+      }
+
+      @media (max-width: 560px) {
+        .tm__toc ol {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </body>
+</html>

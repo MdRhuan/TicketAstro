@@ -1,0 +1,190 @@
+---
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
+import CookieConsent from '../components/CookieConsent.astro';
+
+// FAQ. Coerente com o modelo confirmado: o TicketHubh divulga e redireciona;
+// não vende, não recebe pagamento, não emite ingresso. As respostas NÃO
+// prometem políticas de venda (reembolso/troca) que são do produtor/plataforma.
+
+const perguntas = [
+  {
+    q: 'O TicketHubh vende ingressos?',
+    a: 'Não. O TicketHubh divulga eventos e leva você até o canal oficial de venda do produtor ou da plataforma parceira. A compra e o pagamento acontecem fora do nosso site.',
+  },
+  {
+    q: 'Então como eu compro o ingresso?',
+    a: 'Escolha o evento, confira os detalhes e clique em comprar. Você será redirecionado para o canal oficial de venda, onde finaliza a compra e recebe o ingresso.',
+  },
+  {
+    q: 'Comprei e tive um problema. Com quem eu falo?',
+    a: 'Como a compra é feita fora do TicketHubh, questões de pagamento, ingresso não recebido, troca, reembolso ou cancelamento devem ser tratadas diretamente com o produtor do evento ou com a plataforma onde você comprou. Se não souber a quem recorrer, fale com a gente que ajudamos a te direcionar.',
+  },
+  {
+    q: 'O evento foi cancelado ou adiado. E o reembolso?',
+    a: 'O reembolso segue as regras de quem vendeu o ingresso. Procure o produtor ou a plataforma de venda. O TicketHubh não recebe pagamentos e, por isso, não processa reembolsos.',
+  },
+  {
+    q: 'Tem meia-entrada?',
+    a: 'Depende de cada evento e da legislação aplicável. As condições de meia-entrada são definidas pelo produtor e aparecem, quando informadas, na página do evento e no canal de venda.',
+  },
+  {
+    q: 'Que tipo de evento aparece aqui?',
+    a: 'Festas em Belo Horizonte e shows em diversas cidades. É essa a seleção do TicketHubh.',
+  },
+  {
+    q: 'As informações do evento estão sempre corretas?',
+    a: 'Nós nos esforçamos para manter tudo atualizado, mas parte das informações vem dos produtores e pode mudar. Confirme sempre data, local, horário e preço no canal oficial antes de comprar.',
+  },
+  {
+    q: 'Como recebo avisos de novos eventos?',
+    a: 'Entre no nosso grupo de ofertas no WhatsApp e siga nossas redes. É por lá que avisamos as novidades primeiro.',
+  },
+  {
+    q: 'Sou produtor. Como divulgo meu evento no TicketHubh?',
+    a: 'Fale com a gente pelo WhatsApp para conversarmos sobre divulgação e parceria.',
+  },
+];
+---
+
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Perguntas frequentes do TicketHubh</title>
+    <meta
+      name="description"
+      content="Dúvidas sobre o TicketHubh: como funciona a compra, reembolso, meia-entrada e onde falar sobre um ingresso já comprado."
+    />
+  </head>
+
+  <body style="margin:0">
+    <Nav />
+
+    <main class="pg">
+      <header class="pg__head">
+        <p class="pg__eyebrow">Ajuda</p>
+        <h1 class="pg__title">Perguntas frequentes</h1>
+        <p class="pg__lead">
+          As dúvidas mais comuns sobre como o TicketHubh funciona. Não achou o
+          que procurava? Fala com a gente no
+          <a href="https://wa.me/5531983158818" target="_blank" rel="noopener">WhatsApp</a>.
+        </p>
+      </header>
+
+      <div class="faq">
+        {
+          perguntas.map((p) => (
+            <details class="faq__item">
+              <summary>
+                <span>{p.q}</span>
+                <svg class="faq__ic" viewBox="0 0 24 24" width="20" height="20" fill="none" aria-hidden="true">
+                  <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </summary>
+              <p>{p.a}</p>
+            </details>
+          ))
+        }
+      </div>
+    </main>
+
+    <Footer />
+    <WhatsAppButton />
+    <CookieConsent />
+
+    <style>
+      .pg {
+        max-width: 760px;
+        margin-inline: auto;
+        padding: clamp(2.5rem, 5vw, 4rem) 1.5rem 3rem;
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        color: #3a3f46;
+        line-height: 1.65;
+      }
+      .pg__eyebrow {
+        margin: 0 0 0.5rem;
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #2b5cff;
+      }
+      .pg__title {
+        margin: 0;
+        font-size: clamp(2rem, 5vw, 2.6rem);
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        color: #101114;
+      }
+      .pg__lead {
+        margin: 1.25rem 0 0;
+        font-size: 1.05rem;
+        max-width: 60ch;
+      }
+      .pg__lead a {
+        color: #2b5cff;
+        font-weight: 600;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+      }
+
+      .faq {
+        margin-top: 2.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+      .faq__item {
+        background: #fff;
+        border: 2px solid #101114;
+        border-radius: 14px;
+        padding: 0 1.25rem;
+      }
+      .faq__item summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 1.15rem 0;
+        cursor: pointer;
+        list-style: none;
+        font-weight: 700;
+        color: #101114;
+        font-size: 1.02rem;
+      }
+      .faq__item summary::-webkit-details-marker {
+        display: none;
+      }
+      .faq__ic {
+        flex: none;
+        color: #9aa0a6;
+        transition: transform 0.2s ease;
+      }
+      .faq__item[open] .faq__ic {
+        transform: rotate(180deg);
+      }
+      .faq__item p {
+        margin: 0;
+        padding: 0 0 1.2rem;
+        max-width: 62ch;
+      }
+
+      *:focus-visible {
+        outline: 2px solid #2b5cff;
+        outline-offset: 3px;
+        border-radius: 8px;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .faq__ic {
+          transition: none;
+        }
+      }
+    </style>
+  </body>
+</html>

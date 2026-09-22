@@ -1,0 +1,443 @@
+---
+// Eventos principais de exemplo — troca pelos reais depois.
+// (o botão leva para /eventos/<slug>; essas páginas ainda não existem)
+const eventos = [
+  {
+    slug: 'festa-neon',
+    titulo: 'Festa Neon',
+    data: '13 DEZ 2026',
+    local: 'Clube da Serra',
+    cidade: 'Belo Horizonte, MG',
+    cor: '#2b5cff',
+  },
+  {
+    slug: 'rock-nacional',
+    titulo: 'Rock Nacional ao Vivo',
+    data: '22 NOV 2026',
+    local: 'Espaço Unimed',
+    cidade: 'São Paulo, SP',
+    cor: '#b5462f',
+  },
+  {
+    slug: 'sertanejo-arena',
+    titulo: 'Sertanejo Arena',
+    data: '20 DEZ 2026',
+    local: 'Mineirão',
+    cidade: 'Belo Horizonte, MG',
+    cor: '#12141a',
+  },
+  {
+    slug: 'noite-eletronica',
+    titulo: 'Noite Eletrônica — Warehouse',
+    data: '28 NOV 2026',
+    local: 'Galpão 7',
+    cidade: 'Belo Horizonte, MG',
+    cor: '#0b7285',
+  },
+  {
+    slug: 'samba-na-lapa',
+    titulo: 'Samba na Lapa',
+    data: '30 NOV 2026',
+    local: 'Circo Voador',
+    cidade: 'Rio de Janeiro, RJ',
+    cor: '#1f7a5a',
+  },
+];
+---
+
+<section class="carr" data-carrossel aria-roledescription="carrossel" aria-label="Eventos principais">
+  <h1 class="carr__frase">Todas as Festas de Belo Horizonte Com Desconto</h1>
+
+  <div class="carr__linha">
+    <button class="carr__seta carr__seta--prev" data-prev aria-label="Evento anterior">
+      <span aria-hidden="true">←</span>
+    </button>
+
+    <div class="carr__stage" data-stage>
+      {
+        eventos.map((e, i) => (
+          <article
+            class="carr__card"
+            data-card
+            data-index={i}
+            data-slug={e.slug}
+            data-nome={e.titulo}
+            data-data={e.data}
+            data-local={`${e.local} · ${e.cidade}`}
+            style={`--cor:${e.cor}`}
+            role="group"
+            aria-roledescription="slide"
+            aria-label={`${i + 1} de ${eventos.length}`}
+          >
+            <span class="carr__card-tag">Evento</span>
+            <div class="carr__card-titulo">{e.titulo}</div>
+          </article>
+        ))
+      }
+    </div>
+
+    <button class="carr__seta carr__seta--next" data-next aria-label="Próximo evento">
+      <span aria-hidden="true">→</span>
+    </button>
+  </div>
+
+  <!-- Bolinhas (por cima da data) -->
+  <div class="carr__dots" data-dots role="tablist" aria-label="Escolher evento">
+    {
+      eventos.map((_, i) => (
+        <button
+          class="carr__dot"
+          data-dot
+          data-index={i}
+          aria-label={`Ir para o evento ${i + 1}`}
+        />
+      ))
+    }
+  </div>
+
+  <!-- Informações + botão (por baixo do card, sobre o evento em destaque) -->
+  <div class="carr__info">
+    <h2 class="carr__info-nome" data-info-nome></h2>
+    <p class="carr__info-data" data-info-data></p>
+    <p class="carr__info-local" data-info-local></p>
+    <a class="carr__btn" data-info-link href="#">Ver evento</a>
+  </div>
+</section>
+
+<style>
+  .carr {
+    padding: 1rem 1.5rem 2.5rem;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.75rem;
+    overflow: hidden; /* clipa os cards que espreitam para não gerar scroll */
+  }
+
+  .carr__frase {
+    margin: 1.5rem 0 0;
+    text-align: center;
+    white-space: nowrap;
+    font-size: clamp(0.8rem, 1.4vw, 1rem);
+    line-height: 1.2;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: #ff6a2b;
+  }
+
+  .carr__linha {
+    position: relative;
+    width: 100%;
+    max-width: 720px;
+    margin-inline: auto;
+  }
+
+  /* Palco com profundidade */
+  .carr__stage {
+    position: relative;
+    width: 100%;
+    height: 380px;
+  }
+
+  /* Card retangular (largo) e grande */
+  .carr__card {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: min(620px, 84vw);
+    height: 330px;
+    box-sizing: border-box;
+    padding: 2rem;
+    border-radius: 18px;
+    background: var(--cor, #2b5cff);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    transform: translate(-50%, -50%);
+    transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1),
+      opacity 0.5s ease, box-shadow 0.5s ease;
+    box-shadow: 0 24px 55px -22px rgba(0, 0, 0, 0.55);
+    will-change: transform, opacity;
+  }
+  .carr__card-tag {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.75;
+  }
+  .carr__card-titulo {
+    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+    line-height: 1.08;
+    margin: 0;
+  }
+
+  /* Setas — sobrepostas junto às bordas do card */
+  .carr__seta {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 50;
+    overflow: hidden;
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 50%;
+    border: 1.5px solid #cfcfcf;
+    background: #fff;
+    color: #111;
+    font-size: 1.15rem;
+    font-weight: 800;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.3s ease, color 0.3s ease;
+  }
+  .carr__seta--prev {
+    left: -1rem;
+  }
+  .carr__seta--next {
+    right: -1rem;
+  }
+  .carr__seta span {
+    position: relative;
+    z-index: 1;
+    -webkit-text-stroke: 0.6px currentColor; /* traço da seta mais grosso */
+  }
+  .carr__seta:hover {
+    border-color: #2b5cff;
+  }
+  /* Preenchimento azul ao clicar, depois volta ao normal */
+  .carr__seta::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: #2b5cff;
+    border-radius: 50%;
+    transform: scale(0);
+    opacity: 0;
+  }
+  .carr__seta.is-click {
+    border-color: #2b5cff;
+    color: #fff;
+  }
+  .carr__seta.is-click::after {
+    animation: seta-fill 0.5s ease-out;
+  }
+  @keyframes seta-fill {
+    0% {
+      transform: scale(0);
+      opacity: 1;
+    }
+    55% {
+      transform: scale(1.15);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1.15);
+      opacity: 0;
+    }
+  }
+
+  /* Info por baixo */
+  .carr__info {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .carr__info-nome {
+    margin: 0;
+    font-size: clamp(1.35rem, 3vw, 1.9rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: #111;
+  }
+  .carr__info-data {
+    margin: 0;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: #888;
+  }
+  .carr__info-local {
+    margin: 0;
+    font-size: 1.05rem;
+    color: #333;
+  }
+  .carr__btn {
+    margin-top: 0.5rem;
+    display: inline-block;
+    background: #2b5cff;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.7rem 1.5rem;
+    border-radius: 10px;
+    transition: background 0.2s ease;
+  }
+  .carr__btn:hover {
+    background: #1c46d1;
+  }
+
+  /* Bolinhas */
+  .carr__dots {
+    display: flex;
+    gap: 0.6rem;
+    margin-top: -1.25rem; /* puxa bolinhas + info para cima, perto do card */
+  }
+  .carr__dot {
+    width: 0.4rem;
+    height: 0.4rem;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: #cfcfcf;
+    cursor: pointer;
+    transition: background 0.25s ease, transform 0.25s ease;
+  }
+  .carr__dot[aria-current="true"] {
+    background: #2b5cff;
+    transform: scale(1.35);
+  }
+
+  @media (max-width: 560px) {
+    .carr__stage {
+      height: 360px;
+    }
+    .carr__card {
+      height: 320px;
+    }
+    .carr__seta {
+      width: 2.75rem;
+      height: 2.75rem;
+    }
+  }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-carrossel]');
+  if (root) {
+    const cards = Array.from(
+      root.querySelectorAll<HTMLElement>('[data-card]')
+    );
+    const dots = Array.from(root.querySelectorAll<HTMLElement>('[data-dot]'));
+    const infoNome = root.querySelector<HTMLElement>('[data-info-nome]')!;
+    const infoData = root.querySelector<HTMLElement>('[data-info-data]')!;
+    const infoLocal = root.querySelector<HTMLElement>('[data-info-local]')!;
+    const infoLink = root.querySelector<HTMLAnchorElement>('[data-info-link]')!;
+    const total = cards.length;
+    let ativo = 0;
+
+    // Estilos por distância ao card ativo → profundidade (1 de cada lado)
+    const camadas: Record<number, { x: number; s: number; o: number; z: number }> = {
+      0: { x: 0, s: 1, o: 1, z: 30 },
+      1: { x: 54, s: 0.82, o: 0.5, z: 20 },
+    };
+
+    const render = () => {
+      cards.forEach((card, i) => {
+        // Deslocamento circular: distribui os cards dos dois lados
+        let off = i - ativo;
+        if (off > total / 2) off -= total;
+        if (off < -total / 2) off += total;
+
+        const abs = Math.abs(off);
+        const c = camadas[abs] ?? { x: 120, s: 0.6, o: 0, z: 0 };
+        const sinal = off < 0 ? -1 : 1;
+
+        card.style.transform = `translate(-50%, -50%) translateX(${
+          sinal * c.x
+        }%) scale(${c.s})`;
+        card.style.opacity = String(c.o);
+        card.style.zIndex = String(c.z);
+        card.style.pointerEvents = c.o === 0 ? 'none' : 'auto';
+        card.setAttribute('aria-hidden', off === 0 ? 'false' : 'true');
+      });
+
+      dots.forEach((d, i) =>
+        d.setAttribute('aria-current', i === ativo ? 'true' : 'false')
+      );
+
+      const card = cards[ativo];
+      infoNome.textContent = card.dataset.nome || '';
+      infoData.textContent = card.dataset.data || '';
+      infoLocal.textContent = card.dataset.local || '';
+      infoLink.href = `/eventos/${card.dataset.slug}`;
+    };
+
+    // Loop infinito (do último volta ao primeiro e vice-versa)
+    const irPara = (n: number) => {
+      ativo = (n + total) % total;
+      render();
+    };
+
+    // Animação de clique na seta (preenche azul e volta)
+    const pulsar = (btn: HTMLElement) => {
+      btn.classList.remove('is-click');
+      void btn.offsetWidth; // reinicia a animação
+      btn.classList.add('is-click');
+    };
+
+    // ---- Autoplay (passa sozinho) ----
+    const INTERVALO = 5000; // ms entre eventos
+    const reduzir = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let timer: number | undefined;
+
+    const parar = () => {
+      if (timer) {
+        clearInterval(timer);
+        timer = undefined;
+      }
+    };
+    const comecar = () => {
+      parar();
+      if (reduzir || total <= 1) return;
+      timer = window.setInterval(() => irPara(ativo + 1), INTERVALO);
+    };
+    // Navegação manual: muda e reinicia a contagem do autoplay
+    const irManual = (n: number) => {
+      irPara(n);
+      comecar();
+    };
+
+    const prev = root.querySelector<HTMLElement>('[data-prev]')!;
+    const next = root.querySelector<HTMLElement>('[data-next]')!;
+    prev.addEventListener('click', () => {
+      pulsar(prev);
+      irManual(ativo - 1);
+    });
+    next.addEventListener('click', () => {
+      pulsar(next);
+      irManual(ativo + 1);
+    });
+    [prev, next].forEach((b) =>
+      b.addEventListener('animationend', () => b.classList.remove('is-click'))
+    );
+
+    // Clicar num card lateral traz-o para o centro
+    cards.forEach((card, i) =>
+      card.addEventListener('click', () => {
+        if (i !== ativo) irManual(i);
+      })
+    );
+    // Clicar nas bolinhas
+    dots.forEach((d, i) => d.addEventListener('click', () => irManual(i)));
+
+    // Pausa ao interagir; retoma ao sair
+    root.addEventListener('mouseenter', parar);
+    root.addEventListener('mouseleave', comecar);
+    root.addEventListener('focusin', parar);
+    root.addEventListener('focusout', comecar);
+    document.addEventListener('visibilitychange', () =>
+      document.hidden ? parar() : comecar()
+    );
+
+    render();
+    comecar();
+  }
+</script>

@@ -1,0 +1,307 @@
+---
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
+import CookieConsent from '../components/CookieConsent.astro';
+import { eventos } from '../data/eventos';
+
+const MESES = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+const WD = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+
+// Ordena por data e agrupa por mês
+const ordenados = [...eventos].sort((a, b) => a.dataISO.localeCompare(b.dataISO));
+
+type Item = (typeof eventos)[number] & { dia: number; wd: string };
+const grupos: { chave: string; label: string; itens: Item[] }[] = [];
+for (const e of ordenados) {
+  const [y, m, d] = e.dataISO.split('-').map(Number);
+  const dt = new Date(y, m - 1, d);
+  const chave = `${y}-${String(m).padStart(2, '0')}`;
+  const label = `${MESES[m - 1]} ${y}`;
+  let g = grupos.find((x) => x.chave === chave);
+  if (!g) {
+    g = { chave, label, itens: [] };
+    grupos.push(g);
+  }
+  g.itens.push({ ...e, dia: d, wd: WD[dt.getDay()] });
+}
+
+const catCls = (c: string) => (c === 'Festa' ? 'festa' : 'show');
+---
+
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Calendário de shows e festas — TicketHubh</title>
+    <meta
+      name="description"
+      content="Veja shows e festas por data no calendário do TicketHubh. Filtre por Festas ou Shows e garanta seu ingresso."
+    />
+  </head>
+
+  <body>
+    <Nav />
+
+    <main>
+      <header class="cal-hero">
+        <div class="cal-hero__wrap">
+          <h1 class="cal-hero__titulo">Calendário</h1>
+          <p class="cal-hero__sub">Todos os shows e festas, por data.</p>
+        </div>
+      </header>
+
+      <section class="cal-wrap" aria-label="Agenda de eventos">
+        <div class="ag" data-ag>
+          {
+            grupos.map((g) => (
+              <section class="ag-mes" data-mes>
+                <h2 class="ag-mes__titulo">{g.label}</h2>
+                <ul class="ag-lista">
+                  {g.itens.map((e) => (
+                    <li data-linha data-cat={e.categoria}>
+                      <a class="ag-row" href={`/eventos/${e.slug}`}>
+                        <span class={`ag-row__data ag-row__data--${catCls(e.categoria)}`}>
+                          <strong>{e.dia}</strong>
+                          <span>{e.wd}</span>
+                        </span>
+                        <span class="ag-row__info">
+                          <span class="ag-row__nome">{e.nome}</span>
+                          <span class="ag-row__meta">
+                            {e.local} · {e.cidade} · {e.horaAbertura}
+                          </span>
+                        </span>
+                        {e.exclusiva && <span class="ag-row__excl">Exclusiva</span>}
+                        <svg class="ag-row__seta" viewBox="0 0 24 24" width="20" height="20" fill="none" aria-hidden="true">
+                          <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ))
+          }
+        </div>
+      </section>
+    </main>
+
+    <Footer />
+    <WhatsAppButton />
+    <CookieConsent />
+
+    <style is:global>
+      ::selection {
+        background: #2b5cff;
+        color: #fff;
+      }
+    </style>
+
+    <style>
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        color: #101114;
+        background: #fff;
+      }
+      *:focus-visible {
+        outline: 2px solid #2b5cff;
+        outline-offset: 3px;
+        border-radius: 6px;
+      }
+
+      /* Hero */
+      .cal-hero {
+        position: relative;
+        display: flex;
+        align-items: flex-end;
+        min-height: clamp(280px, 42vh, 460px);
+        color: #fff;
+        background-color: #12141a;
+        background-image: radial-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1.4px);
+        background-size: 16px 16px;
+        overflow: hidden;
+      }
+      .cal-hero::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(18, 20, 26, 0.2), rgba(18, 20, 26, 0.85));
+      }
+      .cal-hero__wrap {
+        position: relative;
+        z-index: 1;
+        max-width: 1140px;
+        margin-inline: auto;
+        width: 100%;
+        padding: 2.5rem 1.5rem 2.75rem;
+      }
+      .cal-hero__titulo {
+        margin: 0;
+        font-size: clamp(2.2rem, 5.5vw, 3.6rem);
+        font-weight: 800;
+        letter-spacing: -0.03em;
+      }
+      .cal-hero__sub {
+        margin: 0.5rem 0 0;
+        font-size: 1.1rem;
+        color: rgba(255, 255, 255, 0.92);
+      }
+
+      .cal-wrap {
+        max-width: 880px;
+        margin-inline: auto;
+        padding: 2rem 1.5rem 4.5rem;
+      }
+
+      /* Agenda */
+      .ag-mes + .ag-mes {
+        margin-top: 2.25rem;
+      }
+      .ag-mes__titulo {
+        margin: 0 0 0.9rem;
+        font-size: 0.82rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #9aa0a6;
+      }
+      .ag-lista {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.7rem;
+      }
+
+      .ag-row {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.85rem 1rem;
+        background: #fff;
+        border: 1px solid #ececec;
+        border-radius: 14px;
+        text-decoration: none;
+        color: inherit;
+        box-shadow: 0 1px 2px rgba(16, 17, 20, 0.04);
+        transition: transform 0.18s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.18s ease, border-color 0.18s ease;
+      }
+      .ag-row:hover {
+        transform: translateY(-2px);
+        border-color: #dcdcdc;
+        box-shadow: 0 14px 28px -20px rgba(16, 17, 20, 0.35);
+      }
+
+      /* Bloco de data */
+      .ag-row__data {
+        flex: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 58px;
+        height: 58px;
+        border-radius: 12px;
+        line-height: 1;
+        background: #f4f5f7;
+      }
+      .ag-row__data strong {
+        font-size: 1.5rem;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        color: #101114;
+      }
+      .ag-row__data span {
+        margin-top: 0.2rem;
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: #9aa0a6;
+      }
+      /* Cor por categoria no número do dia */
+      .ag-row__data--festa strong {
+        color: #2b5cff;
+      }
+      .ag-row__data--show strong {
+        color: #7a3fb0;
+      }
+
+      /* Info */
+      .ag-row__info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.2rem;
+        flex: 1;
+        min-width: 0;
+      }
+      .ag-row__nome {
+        font-size: 1.08rem;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        color: #101114;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .ag-row__meta {
+        font-size: 0.86rem;
+        color: #5a5f66;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      /* Selo "Exclusiva" (mesmo estilo do banner em /eventos) */
+      .ag-row__excl {
+        flex: none;
+        font-size: 0.68rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        padding: 0.32rem 0.6rem;
+        border-radius: 7px;
+        color: #fff;
+        background: #2b5cff;
+        box-shadow: 0 2px 8px rgba(43, 92, 255, 0.4);
+      }
+
+      .ag-row__seta {
+        flex: none;
+        color: #c7c7cf;
+        transition: transform 0.18s ease, color 0.18s ease;
+      }
+      .ag-row:hover .ag-row__seta {
+        color: #2b5cff;
+        transform: translateX(3px);
+      }
+
+      /* Mobile */
+      @media (max-width: 560px) {
+        .ag-row {
+          gap: 0.8rem;
+          padding: 0.75rem 0.85rem;
+        }
+        .ag-row__data {
+          width: 50px;
+          height: 50px;
+        }
+        .ag-row__data strong {
+          font-size: 1.3rem;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .ag-row,
+        .ag-row__seta {
+          transition: none;
+        }
+      }
+    </style>
+  </body>
+</html>

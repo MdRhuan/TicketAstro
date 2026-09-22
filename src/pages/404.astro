@@ -1,0 +1,175 @@
+---
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
+import CookieConsent from '../components/CookieConsent.astro';
+
+const atalhos = [
+  { href: '/calendario', texto: 'Calendário' },
+  { href: '/blog', texto: 'Blog' },
+];
+---
+
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Página não encontrada — TicketHubh</title>
+    <meta name="description" content="A página que você procura não existe ou saiu do ar. Encontre o próximo rolê no TicketHubh." />
+    <meta name="robots" content="noindex" />
+  </head>
+
+  <body>
+    <Nav />
+
+    <main class="nf">
+      <div class="nf__wrap">
+        <span class="nf__code" aria-hidden="true">404</span>
+        <h1 class="nf__titulo">Essa página não está na lista</h1>
+        <p class="nf__texto">
+          O link pode ter expirado ou o rolê já acabou. Bora achar o próximo?
+        </p>
+
+        <div class="nf__acoes">
+          <a class="btn btn--primario" href="/">Voltar ao início</a>
+          <a class="btn btn--sec" href="/eventos">Ver eventos</a>
+        </div>
+
+        <p class="nf__atalhos">
+          Ou vá direto para
+          {
+            atalhos.map((a, i) => (
+              <>
+                {i === 0 ? ' ' : ' · '}
+                <a href={a.href}>{a.texto}</a>
+              </>
+            ))
+          }
+        </p>
+      </div>
+    </main>
+
+    <Footer />
+    <WhatsAppButton />
+    <CookieConsent />
+
+    <style is:global>
+      ::selection {
+        background: #2b5cff;
+        color: #fff;
+      }
+    </style>
+
+    <style>
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        color: #101114;
+        background: #fff;
+      }
+      *:focus-visible {
+        outline: 2px solid #2b5cff;
+        outline-offset: 3px;
+        border-radius: 8px;
+      }
+
+      .nf {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 68vh;
+        padding: clamp(3rem, 8vw, 6rem) 1.5rem;
+        text-align: center;
+        /* textura de pontos sutil da marca ao fundo */
+        background-image: radial-gradient(rgba(16, 17, 20, 0.05) 1px, transparent 1.4px);
+        background-size: 18px 18px;
+      }
+      .nf__wrap {
+        max-width: 560px;
+      }
+      .nf__code {
+        display: block;
+        font-size: clamp(5rem, 20vw, 9rem);
+        line-height: 0.9;
+        font-weight: 800;
+        letter-spacing: -0.05em;
+        color: #2b5cff;
+      }
+      .nf__titulo {
+        margin: 1rem 0 0;
+        font-size: clamp(1.6rem, 4vw, 2.4rem);
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        color: #101114;
+      }
+      .nf__texto {
+        margin: 0.75rem auto 0;
+        max-width: 42ch;
+        font-size: 1.1rem;
+        line-height: 1.6;
+        color: #5a5f66;
+      }
+
+      .nf__acoes {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.75rem;
+        margin-top: 2rem;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.9rem 1.6rem;
+        border-radius: 13px;
+        font-weight: 800;
+        font-size: 1.02rem;
+        text-decoration: none;
+        transition: transform 0.16s ease, box-shadow 0.18s ease, background 0.16s ease, border-color 0.16s ease;
+      }
+      .btn--primario {
+        background: #2b5cff;
+        color: #fff;
+        box-shadow: 0 12px 24px -14px rgba(16, 17, 20, 0.5);
+      }
+      .btn--primario:hover {
+        background: #1f4de0;
+        transform: translateY(-2px);
+      }
+      .btn--sec {
+        background: #fff;
+        color: #101114;
+        border: 1.5px solid #dcdce1;
+      }
+      .btn--sec:hover {
+        border-color: #2b5cff;
+        color: #2b5cff;
+        transform: translateY(-2px);
+      }
+
+      .nf__atalhos {
+        margin: 1.75rem 0 0;
+        font-size: 0.95rem;
+        color: #9aa0a6;
+      }
+      .nf__atalhos a {
+        color: #2b5cff;
+        font-weight: 600;
+        text-decoration: none;
+      }
+      .nf__atalhos a:hover {
+        text-decoration: underline;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .btn {
+          transition: none;
+        }
+      }
+    </style>
+  </body>
+</html>

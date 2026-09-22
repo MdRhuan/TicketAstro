@@ -1,0 +1,416 @@
+---
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
+import CookieConsent from '../components/CookieConsent.astro';
+import { posts } from '../data/posts';
+
+const ordenados = [...posts].sort((a, b) => b.dataISO.localeCompare(a.dataISO));
+const destaque = ordenados.find((p) => p.destaque) ?? ordenados[0];
+const resto = ordenados.filter((p) => p.slug !== destaque.slug);
+---
+
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Blog — TicketHubh</title>
+    <meta
+      name="description"
+      content="Guias, dicas e a cena por trás dos shows e festas. O blog do TicketHubh para quem vive a noite."
+    />
+  </head>
+
+  <body>
+    <Nav />
+
+    <main>
+      <header class="blog-hero">
+        <div class="blog-hero__wrap">
+          <h1 class="blog-hero__titulo">Blog</h1>
+          <p class="blog-hero__sub">Guias, dicas e a cena por trás dos rolês.</p>
+        </div>
+      </header>
+
+      <div class="blog-wrap">
+        <!-- Destaque -->
+        <a class="feat" href={`/blog/${destaque.slug}`} style={`--cor:${destaque.cor}`}>
+          <div class="feat__media">
+            <div class="feat__poster" aria-hidden="true"></div>
+            <img
+              class="feat__img"
+              src={destaque.imagem}
+              alt={`Imagem do artigo ${destaque.titulo}`}
+              loading="eager"
+              decoding="async"
+              width="1200"
+              height="800"
+              onerror="this.closest('.feat__media').classList.add('sem-foto')"
+            />
+            <span class="tag tag--cat">{destaque.categoria}</span>
+          </div>
+          <div class="feat__body">
+            <h2 class="feat__titulo">{destaque.titulo}</h2>
+            <p class="feat__resumo">{destaque.resumo}</p>
+            <p class="feat__meta">
+              {destaque.autor}<span class="sep" aria-hidden="true">·</span>{destaque.dataLabel}<span class="sep" aria-hidden="true">·</span>{destaque.tempoLeitura} min de leitura
+            </p>
+            <span class="feat__cta">
+              Ler artigo
+              <svg viewBox="0 0 24 24" width="17" height="17" fill="none" aria-hidden="true">
+                <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </span>
+          </div>
+        </a>
+
+        <!-- Lista editorial -->
+        <h2 class="sec-titulo">Últimas</h2>
+        <ul class="lista">
+          {
+            resto.map((p) => (
+              <li>
+                <a class="post" href={`/blog/${p.slug}`} style={`--cor:${p.cor}`}>
+                  <div class="post__media">
+                    <div class="post__poster" aria-hidden="true"></div>
+                    <img
+                      class="post__img"
+                      src={p.imagem}
+                      alt={`Imagem do artigo ${p.titulo}`}
+                      loading="lazy"
+                      decoding="async"
+                      width="480"
+                      height="480"
+                      onerror="this.closest('.post__media').classList.add('sem-foto')"
+                    />
+                    <span class="tag tag--cat">{p.categoria}</span>
+                  </div>
+                  <div class="post__body">
+                    <h3 class="post__titulo">{p.titulo}</h3>
+                    <p class="post__resumo">{p.resumo}</p>
+                    <p class="post__meta">
+                      {p.autor}<span class="sep" aria-hidden="true">·</span>{p.dataLabel}<span class="sep" aria-hidden="true">·</span>{p.tempoLeitura} min
+                    </p>
+                  </div>
+                  <svg class="post__seta" viewBox="0 0 24 24" width="20" height="20" fill="none" aria-hidden="true">
+                    <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </main>
+
+    <Footer />
+    <WhatsAppButton />
+    <CookieConsent />
+
+    <style is:global>
+      ::selection {
+        background: #2b5cff;
+        color: #fff;
+      }
+    </style>
+
+    <style>
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        color: #101114;
+        background: #fff;
+      }
+      *:focus-visible {
+        outline: 2px solid #2b5cff;
+        outline-offset: 3px;
+        border-radius: 8px;
+      }
+
+      /* Hero (mesmo tamanho das outras páginas) */
+      .blog-hero {
+        position: relative;
+        display: flex;
+        align-items: flex-end;
+        min-height: clamp(280px, 42vh, 460px);
+        color: #fff;
+        background-color: #12141a;
+        background-image: radial-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1.4px);
+        background-size: 16px 16px;
+        overflow: hidden;
+      }
+      .blog-hero::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(18, 20, 26, 0.2), rgba(18, 20, 26, 0.85));
+      }
+      .blog-hero__wrap {
+        position: relative;
+        z-index: 1;
+        max-width: 1140px;
+        margin-inline: auto;
+        width: 100%;
+        padding: 2.5rem 1.5rem 2.75rem;
+      }
+      .blog-hero__titulo {
+        margin: 0;
+        font-size: clamp(2.2rem, 5.5vw, 3.6rem);
+        font-weight: 800;
+        letter-spacing: -0.03em;
+      }
+      .blog-hero__sub {
+        margin: 0.5rem 0 0;
+        font-size: 1.1rem;
+        color: rgba(255, 255, 255, 0.92);
+      }
+
+      .blog-wrap {
+        max-width: 1140px;
+        margin-inline: auto;
+        padding: 3rem 1.5rem 4.5rem;
+      }
+
+      /* Tag de categoria sobre a imagem (linguagem do banner de /eventos) */
+      .tag {
+        position: absolute;
+        top: 0.85rem;
+        left: 0.85rem;
+        z-index: 2;
+        display: inline-flex;
+        align-items: center;
+        font-size: 0.72rem;
+        font-weight: 800;
+        line-height: 1;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        padding: 0.42rem 0.65rem;
+        border-radius: 8px;
+      }
+      .tag--cat {
+        background: #fff;
+        color: #101114;
+        box-shadow: 0 2px 8px rgba(16, 17, 20, 0.18);
+      }
+
+      /* Poster fallback (motivo de pontos da marca) */
+      .feat__poster,
+      .post__poster {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        background: linear-gradient(150deg,
+          color-mix(in srgb, var(--cor, #2b5cff) 88%, #fff) 0%,
+          color-mix(in srgb, var(--cor, #2b5cff) 74%, #000) 100%);
+      }
+      .feat__poster::before,
+      .post__poster::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(rgba(255, 255, 255, 0.16) 1px, transparent 1.4px);
+        background-size: 14px 14px;
+        mask-image: linear-gradient(160deg, #000, transparent 78%);
+      }
+
+      /* ---------- Destaque ---------- */
+      .feat {
+        display: grid;
+        grid-template-columns: 1.15fr 1fr;
+        gap: 0;
+        text-decoration: none;
+        color: inherit;
+        background: #fff;
+        border: 1px solid #ececec;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 1px 2px rgba(16, 17, 20, 0.04);
+        transition: transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.22s ease, border-color 0.22s ease;
+      }
+      .feat:hover {
+        transform: translateY(-4px);
+        border-color: #dcdcdc;
+        box-shadow: 0 26px 50px -30px rgba(16, 17, 20, 0.45);
+      }
+      .feat__media {
+        position: relative;
+        min-height: 340px;
+        overflow: hidden;
+      }
+      .feat__img,
+      .post__img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 1;
+      }
+      .feat__media.sem-foto .feat__img,
+      .post__media.sem-foto .post__img {
+        display: none;
+      }
+      .feat__body {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 0.9rem;
+        padding: 2.25rem 2.25rem 2.4rem;
+      }
+      .feat__titulo {
+        margin: 0;
+        font-size: clamp(1.7rem, 3vw, 2.5rem);
+        line-height: 1.08;
+        font-weight: 800;
+        letter-spacing: -0.035em;
+        color: #101114;
+      }
+      .feat__resumo {
+        margin: 0;
+        font-size: 1.05rem;
+        line-height: 1.6;
+        color: #3a3f46;
+        max-width: 46ch;
+      }
+      .feat__meta,
+      .post__meta {
+        margin: 0;
+        font-size: 0.85rem;
+        color: #9aa0a6;
+      }
+      .sep {
+        margin: 0 0.5rem;
+      }
+      .feat__cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        margin-top: 0.4rem;
+        font-weight: 700;
+        color: #2b5cff;
+      }
+      .feat__cta svg {
+        transition: transform 0.2s ease;
+      }
+      .feat:hover .feat__cta svg {
+        transform: translateX(4px);
+      }
+
+      /* ---------- Lista editorial ---------- */
+      .sec-titulo {
+        margin: 3.5rem 0 1.25rem;
+        font-size: 0.82rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #9aa0a6;
+      }
+      .lista {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+      }
+      .post {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        padding: 1.5rem 0;
+        border-top: 1px solid #ececec;
+        text-decoration: none;
+        color: inherit;
+      }
+      .lista li:last-child .post {
+        border-bottom: 1px solid #ececec;
+      }
+      .post__media {
+        position: relative;
+        flex: none;
+        width: 168px;
+        aspect-ratio: 3 / 2;
+        border-radius: 12px;
+        overflow: hidden;
+        background: var(--cor, #2b5cff);
+      }
+      .post__body {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+        flex: 1;
+        min-width: 0;
+      }
+      .post__titulo {
+        margin: 0;
+        font-size: clamp(1.15rem, 2vw, 1.6rem);
+        line-height: 1.15;
+        font-weight: 800;
+        letter-spacing: -0.025em;
+        color: #101114;
+        transition: color 0.16s ease;
+      }
+      .post:hover .post__titulo {
+        color: #2b5cff;
+      }
+      .post__resumo {
+        margin: 0;
+        font-size: 0.98rem;
+        line-height: 1.5;
+        color: #5a5f66;
+        max-width: 62ch;
+      }
+      .post__seta {
+        flex: none;
+        color: #c7c7cf;
+        transition: transform 0.18s ease, color 0.18s ease;
+      }
+      .post:hover .post__seta {
+        color: #2b5cff;
+        transform: translateX(4px);
+      }
+
+      /* ---------- Responsivo ---------- */
+      @media (max-width: 820px) {
+        .feat {
+          grid-template-columns: 1fr;
+        }
+        .feat__media {
+          min-height: 220px;
+          aspect-ratio: 16 / 9;
+        }
+        .feat__body {
+          padding: 1.5rem 1.4rem 1.75rem;
+        }
+      }
+      @media (max-width: 560px) {
+        .post {
+          flex-wrap: wrap;
+          gap: 1rem;
+        }
+        .post__media {
+          width: 92px;
+          border-radius: 10px;
+        }
+        .post__resumo {
+          display: none; /* no celular, título + meta bastam para escanear */
+        }
+        .post__seta {
+          display: none;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .feat,
+        .feat__cta svg,
+        .post__titulo,
+        .post__seta {
+          transition: none;
+        }
+      }
+    </style>
+  </body>
+</html>

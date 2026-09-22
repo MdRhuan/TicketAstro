@@ -1,0 +1,583 @@
+---
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import WhatsAppButton from '../../components/WhatsAppButton.astro';
+import CookieConsent from '../../components/CookieConsent.astro';
+
+// Eventos de exemplo — troca pelos reais depois.
+// FOTO: public/eventos/<slug>.jpg  (sem foto → fallback autoral)
+const eventos = [
+  { slug: 'festa-neon', nome: 'Festa Neon', categoria: 'Festa', estilo: 'Eletrônica', produtora: 'Neon Produções', local: 'Clube da Serra', cidade: 'Belo Horizonte', dataISO: '2026-12-13', dataLabel: '13 DEZ 2026', preco: 70, exclusiva: true, imagem: '/eventos/festa-neon.jpg', cor: '#2b5cff' },
+  { slug: 'sunset-club', nome: 'Sunset Club — Rooftop', categoria: 'Festa', estilo: 'House', produtora: 'Neon Produções', local: 'Terraço 22', cidade: 'Belo Horizonte', dataISO: '2026-11-15', dataLabel: '15 NOV 2026', preco: 60, exclusiva: false, imagem: '/eventos/sunset-club.jpg', cor: '#7a3fb0' },
+  { slug: 'noite-eletronica', nome: 'Noite Eletrônica — Warehouse', categoria: 'Festa', estilo: 'Techno', produtora: 'Neon Produções', local: 'Galpão 7', cidade: 'Belo Horizonte', dataISO: '2026-11-28', dataLabel: '28 NOV 2026', preco: 120, exclusiva: true, imagem: '/eventos/noite-eletronica.jpg', cor: '#0b7285' },
+  { slug: 'baile-do-mercado', nome: 'Baile do Mercado', categoria: 'Festa', estilo: 'Funk', produtora: 'Baile Coletivo', local: 'Mercado Central', cidade: 'Belo Horizonte', dataISO: '2026-12-06', dataLabel: '06 DEZ 2026', preco: 40, exclusiva: false, imagem: '/eventos/baile-do-mercado.jpg', cor: '#c0392b' },
+  { slug: 'rock-nacional', nome: 'Rock Nacional ao Vivo', categoria: 'Show', estilo: 'Rock', produtora: 'Palco BR', local: 'Espaço Unimed', cidade: 'São Paulo', dataISO: '2026-11-22', dataLabel: '22 NOV 2026', preco: 140, exclusiva: false, imagem: '/eventos/rock-nacional.jpg', cor: '#b5462f' },
+  { slug: 'pagode-do-mirante', nome: 'Pagode do Mirante', categoria: 'Show', estilo: 'Pagode', produtora: 'Roda Produções', local: 'Mirante 9 de Julho', cidade: 'São Paulo', dataISO: '2026-11-16', dataLabel: '16 NOV 2026', preco: 45, exclusiva: false, imagem: '/eventos/pagode-do-mirante.jpg', cor: '#7a5c1f' },
+  { slug: 'samba-na-lapa', nome: 'Samba na Lapa', categoria: 'Show', estilo: 'Samba', produtora: 'Roda Produções', local: 'Circo Voador', cidade: 'Rio de Janeiro', dataISO: '2026-11-30', dataLabel: '30 NOV 2026', preco: 80, exclusiva: false, imagem: '/eventos/samba-na-lapa.jpg', cor: '#1f7a5a' },
+  { slug: 'sertanejo-arena', nome: 'Sertanejo Arena', categoria: 'Show', estilo: 'Sertanejo', produtora: 'Palco BR', local: 'Mineirão', cidade: 'Belo Horizonte', dataISO: '2026-12-20', dataLabel: '20 DEZ 2026', preco: 160, exclusiva: true, imagem: '/eventos/sertanejo-arena.jpg', cor: '#12141a' },
+];
+
+const hoje = new Date();
+hoje.setHours(0, 0, 0, 0);
+function diasFalta(iso: string): string {
+  const d = new Date(iso + 'T00:00:00');
+  const diff = Math.ceil((d.getTime() - hoje.getTime()) / 86400000);
+  if (diff < 0) return 'Já aconteceu';
+  if (diff === 0) return 'É hoje';
+  if (diff === 1) return 'Falta 1 dia';
+  return `Faltam ${diff} dias`;
+}
+
+const produtoras = [...new Set(eventos.map((e) => e.produtora))].sort();
+const estilos = [...new Set(eventos.map((e) => e.estilo))].sort();
+---
+
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Todos os ingressos — TicketHubh</title>
+    <meta
+      name="description"
+      content="Encontre e garanta ingressos para shows e festas. Filtra por casa de show e estilo de música no TicketHubh."
+    />
+  </head>
+  <body>
+    <Nav />
+
+    <main>
+      <!-- Cabeçalho + busca -->
+      <header class="ing-hero">
+        <div class="ing-hero__wrap">
+          <h1 class="ing-hero__titulo">Todos os ingressos</h1>
+          <p class="ing-hero__sub">
+            Shows e festas — encontra o teu próximo rolê.
+          </p>
+        </div>
+      </header>
+
+      <!-- Filtros -->
+      <section class="filtros" aria-label="Buscar e filtrar">
+        <div class="filtros__wrap">
+          <div class="busca">
+            <svg class="busca__icone" viewBox="0 0 24 24" width="20" height="20" fill="none" aria-hidden="true">
+              <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8" />
+              <path d="M20 20l-3.2-3.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+            </svg>
+            <input
+              type="search"
+              class="busca__input"
+              data-busca
+              placeholder="Busca por evento, artista ou local"
+              aria-label="Buscar eventos"
+            />
+          </div>
+
+          <div class="selects">
+            <label class="sr-only" for="f-produtora">Produtora</label>
+            <select id="f-produtora" class="select" data-produtora>
+              <option value="todos">Todas as produtoras</option>
+              {produtoras.map((p) => <option value={p}>{p}</option>)}
+            </select>
+
+            <label class="sr-only" for="f-estilo">Estilo de música</label>
+            <select id="f-estilo" class="select" data-estilo>
+              <option value="todos">Todos os estilos</option>
+              {estilos.map((s) => <option value={s}>{s}</option>)}
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <!-- Resultados -->
+      <section class="resultados">
+        <div class="resultados__wrap">
+          <p class="resultados__contagem" data-contagem aria-live="polite"></p>
+
+          <ul class="ev-grade" data-grade>
+            {
+              eventos.map((e) => (
+                <li
+                  data-card
+                  data-produtora={e.produtora}
+                  data-estilo={e.estilo}
+                  data-busca-txt={`${e.nome} ${e.local} ${e.cidade} ${e.estilo} ${e.produtora}`.toLowerCase()}
+                >
+                  <a class="ev" href={`/eventos/${e.slug}`}>
+                    <div class="ev__foto" style={`--cor:${e.cor}`}>
+                      <div class="ev__poster" aria-hidden="true">
+                        <span class="ev__poster-cat">{e.categoria}</span>
+                      </div>
+                      <img
+                        class="ev__img"
+                        src={e.imagem}
+                        alt={`Foto do evento ${e.nome}`}
+                        loading="lazy"
+                        decoding="async"
+                        width="600"
+                        height="750"
+                        onerror="this.closest('.ev__foto').classList.add('sem-foto')"
+                      />
+                      <span class="ev__tag ev__tag--dias" data-date={e.dataISO}>
+                        <span data-dias-text>{diasFalta(e.dataISO)}</span>
+                      </span>
+                      {e.exclusiva && <span class="ev__tag ev__tag--excl">Exclusiva</span>}
+                    </div>
+
+                    <div class="ev__corpo">
+                      <h2 class="ev__nome">{e.nome}</h2>
+                      <p class="ev__local">
+                        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" aria-hidden="true">
+                          <path d="M12 21s-6.5-5.3-6.5-10A6.5 6.5 0 0 1 18.5 11c0 4.7-6.5 10-6.5 10z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+                          <circle cx="12" cy="11" r="2.3" stroke="currentColor" stroke-width="1.6" />
+                        </svg>
+                        <span>{e.local} · {e.cidade}</span>
+                      </p>
+                      <div class="ev__rodape">
+                        <span class="ev__data">{e.dataLabel}</span>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+
+          <p class="vazio" data-vazio hidden>
+            Nenhum evento encontrado. Tenta ajustar a busca ou os filtros.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <Footer />
+    <WhatsAppButton />
+    <CookieConsent />
+
+    <style is:global>
+      ::selection {
+        background: #2b5cff;
+        color: #fff;
+      }
+    </style>
+
+    <style>
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        color: #101114;
+      }
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      /* Hero + busca */
+      .ing-hero {
+        position: relative;
+        display: flex;
+        align-items: flex-end;
+        min-height: clamp(280px, 42vh, 460px);
+        color: #fff;
+        /* FOTO DE FUNDO: coloca o ficheiro em public/hero-eventos.jpg
+           A cor escura por baixo é o fallback enquanto não existir a foto. */
+        background-color: #12141a;
+        background-image: linear-gradient(
+            180deg,
+            rgba(8, 8, 12, 0.25) 0%,
+            rgba(8, 8, 12, 0.75) 100%
+          ),
+          url("/hero-eventos.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+      .ing-hero__wrap {
+        max-width: 1140px;
+        margin-inline: auto;
+        width: 100%;
+        padding: 2.5rem 1.5rem 2.75rem;
+      }
+      .ing-hero__titulo {
+        margin: 0;
+        font-size: clamp(2.2rem, 5.5vw, 3.6rem);
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        text-shadow: 0 2px 24px rgba(0, 0, 0, 0.4);
+      }
+      .ing-hero__sub {
+        margin: 0.5rem 0 0;
+        font-size: 1.1rem;
+        color: rgba(255, 255, 255, 0.92);
+      }
+      .busca {
+        position: relative;
+        flex: 1 1 260px;
+      }
+      .busca__icone {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #9aa0a6;
+      }
+      .busca__input {
+        width: 100%;
+        height: 2.75rem;
+        padding: 0 1rem 0 3rem;
+        font-size: 1rem;
+        font-family: inherit;
+        color: #101114;
+        background: #fff;
+        border: 1px solid #dcdce1;
+        border-radius: 12px;
+        transition: border-color 0.18s ease, box-shadow 0.18s ease;
+      }
+      .busca__input::placeholder {
+        color: #9aa0a6;
+      }
+      .busca__input:focus {
+        outline: none;
+        border-color: #2b5cff;
+        box-shadow: 0 0 0 3px rgba(43, 92, 255, 0.18);
+      }
+
+      /* Filtros */
+      .filtros {
+        border-bottom: 1px solid #ececed;
+        background: #fff;
+      }
+      .filtros__wrap {
+        max-width: 1140px;
+        margin-inline: auto;
+        padding: 1rem 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem 1rem;
+        flex-wrap: wrap;
+      }
+      .chips {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+      }
+      .chip {
+        min-height: 40px;
+        padding: 0.5rem 1rem;
+        font-family: inherit;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #3a3f46;
+        background: #f2f2f4;
+        border: 1px solid transparent;
+        border-radius: 999px;
+        cursor: pointer;
+        transition: background 0.16s ease, color 0.16s ease;
+      }
+      .chip:hover {
+        background: #e7e7ea;
+      }
+      .chip.is-ativo {
+        background: #2b5cff;
+        color: #fff;
+      }
+      .chip:focus-visible {
+        outline: 2px solid #2b5cff;
+        outline-offset: 2px;
+      }
+      .selects {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        flex: 0 0 auto;
+      }
+      .select {
+        min-height: 2.75rem;
+        padding: 0.5rem 2rem 0.5rem 0.85rem;
+        font-family: inherit;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #3a3f46;
+        background: #fff
+          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none'%3E%3Cpath d='M4 6l4 4 4-4' stroke='%235a5f66' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+          no-repeat right 0.75rem center;
+        border: 1px solid #dcdce1;
+        border-radius: 10px;
+        cursor: pointer;
+        appearance: none;
+      }
+      .select:focus-visible {
+        outline: 2px solid #2b5cff;
+        outline-offset: 2px;
+      }
+
+      /* Resultados */
+      .resultados__wrap {
+        max-width: 1140px;
+        margin-inline: auto;
+        padding: 1.75rem 1.5rem 4.5rem;
+      }
+      .resultados__contagem {
+        margin: 0 0 1.25rem;
+        font-size: 0.9rem;
+        color: #5a5f66;
+      }
+      .ev-grade {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 1.25rem;
+      }
+      @media (max-width: 980px) {
+        .ev-grade {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+      @media (max-width: 540px) {
+        .ev-grade {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* Card (mesma linguagem da home) */
+      .ev {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        text-decoration: none;
+        color: inherit;
+        background: #fff;
+        border: 1px solid #ececec;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 1px 2px rgba(16, 17, 20, 0.04);
+        transition: transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1),
+          box-shadow 0.22s ease, border-color 0.22s ease;
+      }
+      .ev:hover {
+        transform: translateY(-5px);
+        border-color: #dcdcdc;
+        box-shadow: 0 18px 34px -20px rgba(16, 17, 20, 0.35);
+      }
+      .ev:focus-visible {
+        outline: 2px solid #2b5cff;
+        outline-offset: 3px;
+      }
+      .ev__foto {
+        position: relative;
+        aspect-ratio: 4 / 5;
+        overflow: hidden;
+        background: var(--cor, #2b5cff);
+      }
+      .ev__poster {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: flex-end;
+        padding: 1rem 1.1rem;
+        background: linear-gradient(150deg,
+          color-mix(in srgb, var(--cor, #2b5cff) 88%, #fff) 0%,
+          color-mix(in srgb, var(--cor, #2b5cff) 78%, #000) 100%);
+      }
+      .ev__poster::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(rgba(255, 255, 255, 0.16) 1px, transparent 1.4px);
+        background-size: 13px 13px;
+        mask-image: linear-gradient(160deg, #000, transparent 75%);
+      }
+      .ev__poster-cat {
+        position: relative;
+        font-size: 1.15rem;
+        font-weight: 800;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.95);
+      }
+      .ev__img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        z-index: 1;
+      }
+      .ev__foto.sem-foto .ev__img {
+        display: none;
+      }
+      .ev__tag {
+        position: absolute;
+        top: 0.8rem;
+        z-index: 2;
+        display: inline-flex;
+        align-items: center;
+        font-size: 0.75rem;
+        font-weight: 700;
+        line-height: 1;
+        padding: 0.42rem 0.6rem;
+        border-radius: 9px;
+      }
+      .ev__tag--dias {
+        left: 0.8rem;
+        background: #fff;
+        color: #101114;
+        box-shadow: 0 2px 8px rgba(16, 17, 20, 0.18);
+      }
+      .ev__tag--excl {
+        right: 0.8rem;
+        background: #2b5cff;
+        color: #fff;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        box-shadow: 0 2px 8px rgba(43, 92, 255, 0.4);
+      }
+      .ev__corpo {
+        display: flex;
+        flex-direction: column;
+        gap: 0.45rem;
+        padding: 1.05rem 1.15rem 1.2rem;
+        flex: 1;
+      }
+      .ev__nome {
+        margin: 0;
+        font-size: 1.15rem;
+        line-height: 1.22;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+      .ev__local {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        margin: 0;
+        font-size: 0.88rem;
+        color: #5a5f66;
+      }
+      .ev__local svg {
+        flex: none;
+        color: #9aa0a6;
+      }
+      .ev__rodape {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 0.75rem;
+        margin-top: auto;
+        padding-top: 0.5rem;
+        border-top: 1px solid #f0f0f2;
+      }
+      .ev__data {
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: #5a5f66;
+      }
+      .ev__preco {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        line-height: 1.1;
+      }
+      .ev__preco small {
+        font-size: 0.68rem;
+        color: #9aa0a6;
+      }
+      .ev__preco strong {
+        font-size: 1.05rem;
+        font-weight: 800;
+        color: #2b5cff;
+      }
+
+      .vazio {
+        padding: 3rem 0;
+        text-align: center;
+        color: #5a5f66;
+        font-size: 1.05rem;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .ev {
+          transition: none;
+        }
+      }
+    </style>
+
+    <script>
+      // Recalcula "faltam X dias" para hoje
+      const hoje = new Date();
+      hoje.setHours(0, 0, 0, 0);
+      document.querySelectorAll<HTMLElement>('.ev__tag--dias').forEach((tag) => {
+        const iso = tag.dataset.date;
+        const alvo = tag.querySelector<HTMLElement>('[data-dias-text]');
+        if (!iso || !alvo) return;
+        const d = new Date(iso + 'T00:00:00');
+        const diff = Math.ceil((d.getTime() - hoje.getTime()) / 86400000);
+        let txt = `Faltam ${diff} dias`;
+        if (diff < 0) txt = 'Já aconteceu';
+        else if (diff === 0) txt = 'É hoje';
+        else if (diff === 1) txt = 'Falta 1 dia';
+        alvo.textContent = txt;
+      });
+
+      // Busca + filtros de Lugar e Estilo (cliente)
+      const grade = document.querySelector<HTMLElement>('[data-grade]');
+      if (grade) {
+        const cards = Array.from(grade.querySelectorAll<HTMLElement>('[data-card]'));
+        const inputBusca = document.querySelector<HTMLInputElement>('[data-busca]');
+        const selProdutora = document.querySelector<HTMLSelectElement>('[data-produtora]');
+        const selEstilo = document.querySelector<HTMLSelectElement>('[data-estilo]');
+        const contagem = document.querySelector<HTMLElement>('[data-contagem]');
+        const vazio = document.querySelector<HTMLElement>('[data-vazio]');
+
+        const estado = { q: '', produtora: 'todos', estilo: 'todos' };
+
+        const aplicar = () => {
+          let visiveis = 0;
+          cards.forEach((card) => {
+            const okProdutora = estado.produtora === 'todos' || card.dataset.produtora === estado.produtora;
+            const okEstilo = estado.estilo === 'todos' || card.dataset.estilo === estado.estilo;
+            const okBusca = !estado.q || (card.dataset.buscaTxt || '').includes(estado.q);
+            const mostra = okProdutora && okEstilo && okBusca;
+            card.hidden = !mostra;
+            if (mostra) visiveis++;
+          });
+
+          if (contagem)
+            contagem.textContent =
+              visiveis === 1 ? '1 evento encontrado' : `${visiveis} eventos encontrados`;
+          if (vazio) vazio.hidden = visiveis !== 0;
+        };
+
+        inputBusca?.addEventListener('input', () => {
+          estado.q = inputBusca.value.trim().toLowerCase();
+          aplicar();
+        });
+        selProdutora?.addEventListener('change', () => {
+          estado.produtora = selProdutora.value;
+          aplicar();
+        });
+        selEstilo?.addEventListener('change', () => {
+          estado.estilo = selEstilo.value;
+          aplicar();
+        });
+
+        aplicar();
+      }
+    </script>
+  </body>
+</html>

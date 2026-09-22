@@ -1,0 +1,392 @@
+---
+// Eventos de exemplo — troca pelos reais depois.
+// FOTO: coloca o ficheiro em  public/eventos/<slug>.jpg  (campo `imagem`).
+//       Enquanto não existir, o card mostra um fallback autoral.
+const eventos = [
+  {
+    slug: 'festa-neon',
+    nome: 'Festa Neon',
+    categoria: 'Festa',
+    local: 'Clube da Serra',
+    cidade: 'Belo Horizonte, MG',
+    dataISO: '2026-12-13',
+    dataLabel: '13 DEZ 2026',
+    exclusiva: true,
+    imagem: '/eventos/festa-neon.jpg',
+    cor: '#2b5cff',
+  },
+  {
+    slug: 'sunset-club',
+    nome: 'Sunset Club — Rooftop',
+    categoria: 'Festa',
+    local: 'Terraço 22',
+    cidade: 'Belo Horizonte, MG',
+    dataISO: '2026-11-15',
+    dataLabel: '15 NOV 2026',
+    exclusiva: false,
+    imagem: '/eventos/sunset-club.jpg',
+    cor: '#7a3fb0',
+  },
+  {
+    slug: 'noite-eletronica',
+    nome: 'Noite Eletrônica — Warehouse',
+    categoria: 'Festa',
+    local: 'Galpão 7',
+    cidade: 'Belo Horizonte, MG',
+    dataISO: '2026-11-28',
+    dataLabel: '28 NOV 2026',
+    exclusiva: true,
+    imagem: '/eventos/noite-eletronica.jpg',
+    cor: '#0b7285',
+  },
+  {
+    slug: 'rock-nacional',
+    nome: 'Rock Nacional ao Vivo',
+    categoria: 'Show',
+    local: 'Espaço Unimed',
+    cidade: 'São Paulo, SP',
+    dataISO: '2026-11-22',
+    dataLabel: '22 NOV 2026',
+    exclusiva: false,
+    imagem: '/eventos/rock-nacional.jpg',
+    cor: '#b5462f',
+  },
+  {
+    slug: 'samba-na-lapa',
+    nome: 'Samba na Lapa',
+    categoria: 'Show',
+    local: 'Circo Voador',
+    cidade: 'Rio de Janeiro, RJ',
+    dataISO: '2026-11-30',
+    dataLabel: '30 NOV 2026',
+    exclusiva: false,
+    imagem: '/eventos/samba-na-lapa.jpg',
+    cor: '#1f7a5a',
+  },
+  {
+    slug: 'sertanejo-arena',
+    nome: 'Sertanejo Arena',
+    categoria: 'Show',
+    local: 'Mineirão',
+    cidade: 'Belo Horizonte, MG',
+    dataISO: '2026-12-20',
+    dataLabel: '20 DEZ 2026',
+    exclusiva: true,
+    imagem: '/eventos/sertanejo-arena.jpg',
+    cor: '#12141a',
+  },
+];
+
+// Contagem de dias (build). O script no browser recalcula para hoje.
+const hoje = new Date();
+hoje.setHours(0, 0, 0, 0);
+function diasFalta(iso: string): string {
+  const d = new Date(iso + 'T00:00:00');
+  const diff = Math.ceil((d.getTime() - hoje.getTime()) / 86400000);
+  if (diff < 0) return 'Já aconteceu';
+  if (diff === 0) return 'É hoje';
+  if (diff === 1) return 'Falta 1 dia';
+  return `Faltam ${diff} dias`;
+}
+---
+
+<section class="ev-sec" aria-labelledby="ev-sec-titulo">
+  <div class="ev-sec__head">
+    <h2 class="ev-sec__titulo" id="ev-sec-titulo">Próximos eventos</h2>
+    <a class="ev-sec__todos" href="/eventos">
+      Ver todos
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true">
+        <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </a>
+  </div>
+
+  {
+    eventos.length === 0 ? (
+      <p class="ev-vazio">Ainda não há eventos publicados. Volta em breve.</p>
+    ) : (
+      <ul class="ev-grade">
+        {eventos.map((e) => (
+          <li>
+            <a class="ev" href={`/eventos/${e.slug}`}>
+              <div class="ev__foto" style={`--cor:${e.cor}`}>
+                {/* Fallback autoral (mostra-se quando não há foto) */}
+                <div class="ev__poster" aria-hidden="true">
+                  <span class="ev__poster-cat">{e.categoria}</span>
+                </div>
+
+                <img
+                  class="ev__img"
+                  src={e.imagem}
+                  alt={`Foto do evento ${e.nome}`}
+                  loading="lazy"
+                  decoding="async"
+                  width="600"
+                  height="750"
+                  onerror="this.closest('.ev__foto').classList.add('sem-foto')"
+                />
+
+                {/* Tag: dias que faltam (superior esquerdo) */}
+                <span class="ev__tag ev__tag--dias" data-date={e.dataISO}>
+                  <span data-dias-text>{diasFalta(e.dataISO)}</span>
+                </span>
+
+                {/* Tag: exclusiva (superior direito) — só em alguns eventos */}
+                {e.exclusiva && <span class="ev__tag ev__tag--excl">Exclusiva</span>}
+              </div>
+
+              <div class="ev__corpo">
+                <h3 class="ev__nome">{e.nome}</h3>
+                <p class="ev__local">
+                  <svg viewBox="0 0 24 24" width="15" height="15" fill="none" aria-hidden="true">
+                    <path d="M12 21s-6.5-5.3-6.5-10A6.5 6.5 0 0 1 18.5 11c0 4.7-6.5 10-6.5 10z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+                    <circle cx="12" cy="11" r="2.3" stroke="currentColor" stroke-width="1.6" />
+                  </svg>
+                  <span>{e.local} · {e.cidade}</span>
+                </p>
+                <p class="ev__data">{e.dataLabel}</p>
+              </div>
+            </a>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</section>
+
+<style is:global>
+  ::selection {
+    background: #2b5cff;
+    color: #fff;
+  }
+</style>
+
+<style>
+  .ev-sec {
+    max-width: 1140px;
+    margin-inline: auto;
+    padding: 3.5rem 1.5rem 4.5rem;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+
+  .ev-sec__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.75rem;
+  }
+  .ev-sec__titulo {
+    margin: 0;
+    font-size: clamp(1.5rem, 3vw, 2.15rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: #101114;
+  }
+  .ev-sec__todos {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: #2b5cff;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .ev-sec__todos svg {
+    transition: transform 0.2s ease;
+  }
+  .ev-sec__todos:hover svg {
+    transform: translateX(3px);
+  }
+
+  .ev-grade {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+  @media (max-width: 980px) {
+    .ev-grade {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 540px) {
+    .ev-grade {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ---- Card ---- */
+  .ev {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
+    background: #fff;
+    border: 1px solid #ececec;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 1px 2px rgba(16, 17, 20, 0.04);
+    transition: transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1),
+      box-shadow 0.22s ease, border-color 0.22s ease;
+  }
+  .ev:hover {
+    transform: translateY(-5px);
+    border-color: #dcdcdc;
+    box-shadow: 0 18px 34px -20px rgba(16, 17, 20, 0.35);
+  }
+  .ev:focus-visible {
+    outline: 2px solid #2b5cff;
+    outline-offset: 3px;
+  }
+
+  /* ---- Foto + fallback ---- */
+  .ev__foto {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    background: var(--cor, #2b5cff);
+  }
+  .ev__poster {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    padding: 1rem 1.1rem;
+    background: linear-gradient(150deg,
+      color-mix(in srgb, var(--cor, #2b5cff) 88%, #fff) 0%,
+      color-mix(in srgb, var(--cor, #2b5cff) 78%, #000) 100%);
+  }
+  .ev__poster::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(
+      rgba(255, 255, 255, 0.16) 1px,
+      transparent 1.4px
+    );
+    background-size: 13px 13px;
+    mask-image: linear-gradient(160deg, #000, transparent 75%);
+  }
+  .ev__poster-cat {
+    position: relative;
+    font-size: 1.15rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.95);
+  }
+  .ev__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    z-index: 1;
+  }
+  .ev__foto.sem-foto .ev__img {
+    display: none;
+  }
+
+  /* ---- Tags sobre a foto ---- */
+  .ev__tag {
+    position: absolute;
+    top: 0.8rem;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.32rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 1;
+    padding: 0.42rem 0.6rem;
+    border-radius: 9px;
+  }
+  .ev__tag--dias {
+    left: 0.8rem;
+    background: #fff;
+    color: #101114;
+    box-shadow: 0 2px 8px rgba(16, 17, 20, 0.18);
+  }
+  .ev__tag--excl {
+    right: 0.8rem;
+    background: #2b5cff;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    box-shadow: 0 2px 8px rgba(43, 92, 255, 0.4);
+  }
+
+  /* ---- Corpo ---- */
+  .ev__corpo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: 1.05rem 1.15rem 1.3rem;
+  }
+  .ev__nome {
+    margin: 0;
+    font-size: 1.2rem;
+    line-height: 1.22;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #101114;
+  }
+  .ev__local {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 0;
+    font-size: 0.9rem;
+    color: #5a5f66;
+  }
+  .ev__local svg {
+    flex: none;
+    color: #9aa0a6;
+  }
+  .ev__data {
+    margin: 0.1rem 0 0;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #2b5cff;
+  }
+
+  .ev-vazio {
+    color: #5a5f66;
+    font-size: 1.05rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ev,
+    .ev-sec__todos svg {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  // Recalcula "quantos dias faltam" no browser, sempre relativo a hoje.
+  const hoje = new Date();
+  hoje.setHours(0, 0, 0, 0);
+  document
+    .querySelectorAll<HTMLElement>('.ev__tag--dias')
+    .forEach((tag) => {
+      const iso = tag.dataset.date;
+      const alvo = tag.querySelector<HTMLElement>('[data-dias-text]');
+      if (!iso || !alvo) return;
+      const d = new Date(iso + 'T00:00:00');
+      const diff = Math.ceil((d.getTime() - hoje.getTime()) / 86400000);
+      let txt = `Faltam ${diff} dias`;
+      if (diff < 0) txt = 'Já aconteceu';
+      else if (diff === 0) txt = 'É hoje';
+      else if (diff === 1) txt = 'Falta 1 dia';
+      alvo.textContent = txt;
+    });
+</script>

@@ -1,0 +1,181 @@
+---
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
+import CookieConsent from '../components/CookieConsent.astro';
+
+// Página "Sobre". Escrita sem inventar histórico, números ou conquistas.
+// O que precisar de dado real (fundação, equipe, métricas) fica [preencher].
+---
+
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Sobre o TicketHubh</title>
+    <meta
+      name="description"
+      content="O TicketHubh reúne festas de Belo Horizonte e shows de várias cidades num só lugar, com uma seleção dos melhores eventos e link direto para a compra oficial."
+    />
+  </head>
+
+  <body style="margin:0">
+    <Nav />
+
+    <main class="pg">
+      <header class="pg__head">
+        <p class="pg__eyebrow">Sobre</p>
+        <h1 class="pg__title">Os melhores rolês da cidade, num só lugar</h1>
+        <p class="pg__lead">
+          O TicketHubh reúne festas de Belo Horizonte e shows de várias cidades
+          para você descobrir o que vale a pena e ir direto para a compra
+          oficial, sem ficar caçando informação espalhada por vários lugares.
+        </p>
+      </header>
+
+      <section class="bloco">
+        <h2>O que a gente faz</h2>
+        <p>
+          Selecionamos e divulgamos os melhores eventos: reunimos data, local,
+          line-up, classificação e faixa de preço numa página só e indicamos
+          onde comprar o ingresso. Quando você decide ir, mandamos você direto
+          para o canal oficial de quem organiza.
+        </p>
+      </section>
+
+      <section class="bloco">
+        <h2>O que a gente não faz</h2>
+        <p>
+          O TicketHubh não vende ingressos, não processa pagamentos e não
+          organiza os eventos. A compra é feita com o produtor ou com a
+          plataforma de venda parceira. Isso está detalhado nos
+          <a href="/termos">Termos de Uso</a>.
+        </p>
+      </section>
+
+      <section class="bloco">
+        <h2>Por que existimos</h2>
+        <p>
+          Achar um bom rolê costuma ser trabalhoso: a informação fica
+          espalhada, muda de última hora e nem sempre é confiável. A proposta do
+          TicketHubh é simples: juntar o que está acontecendo, deixar claro o
+          essencial e te levar rápido para a compra oficial.
+        </p>
+      </section>
+
+      <div class="cta">
+        <a class="cta__btn cta__btn--pri" href="/eventos">Ver eventos</a>
+        <a class="cta__btn cta__btn--sec" href="/como-funciona">Como funciona</a>
+      </div>
+    </main>
+
+    <Footer />
+    <WhatsAppButton />
+    <CookieConsent />
+
+    <style>
+      .pg {
+        max-width: 760px;
+        margin-inline: auto;
+        padding: clamp(2.5rem, 5vw, 4rem) 1.5rem 3rem;
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        color: #3a3f46;
+        line-height: 1.65;
+      }
+      .pg__eyebrow {
+        margin: 0 0 0.5rem;
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #2b5cff;
+      }
+      .pg__title {
+        margin: 0;
+        font-size: clamp(2rem, 5vw, 2.6rem);
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        color: #101114;
+        max-width: 16ch;
+      }
+      .pg__lead {
+        margin: 1.25rem 0 0;
+        font-size: 1.05rem;
+        max-width: 62ch;
+      }
+
+      .bloco {
+        margin-top: 2.25rem;
+      }
+      .bloco h2 {
+        margin: 0 0 0.5rem;
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #101114;
+      }
+      .bloco p {
+        margin: 0;
+        max-width: 62ch;
+      }
+      .bloco a {
+        color: #2b5cff;
+        font-weight: 600;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+      }
+
+      .cta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-top: 2.75rem;
+      }
+      .cta__btn {
+        min-height: 48px;
+        display: inline-flex;
+        align-items: center;
+        padding: 0.7rem 1.5rem;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 1rem;
+        text-decoration: none;
+        transition: background 0.18s ease, border-color 0.18s ease,
+          color 0.18s ease, transform 0.16s ease;
+      }
+      .cta__btn:active {
+        transform: translateY(1px);
+      }
+      .cta__btn--pri {
+        background: #2b5cff;
+        color: #fff;
+        border: 1px solid #2b5cff;
+      }
+      .cta__btn--pri:hover {
+        background: #1f4de0;
+        border-color: #1f4de0;
+      }
+      .cta__btn--sec {
+        background: #fff;
+        color: #101114;
+        border: 1px solid #d3d3d9;
+      }
+      .cta__btn--sec:hover {
+        border-color: #101114;
+      }
+
+      *:focus-visible {
+        outline: 2px solid #2b5cff;
+        outline-offset: 3px;
+        border-radius: 8px;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .cta__btn {
+          transition: none;
+        }
+      }
+    </style>
+  </body>
+</html>

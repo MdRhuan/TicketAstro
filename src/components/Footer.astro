@@ -1,0 +1,235 @@
+---
+const ano = new Date().getFullYear();
+
+const navegar = [
+  { href: '/', texto: 'Início' },
+  { href: '/eventos', texto: 'Eventos' },
+  { href: '/calendario', texto: 'Calendário' },
+  { href: '/blog', texto: 'Blog' },
+  { href: '/sobre', texto: 'Sobre' },
+  { href: '/contato', texto: 'Contato' },
+];
+const legal = [
+  { href: '/faq', texto: 'FAQ' },
+  { href: '/como-funciona', texto: 'Como funciona' },
+  { href: '/termos', texto: 'Termos de Uso' },
+  { href: '/privacidade', texto: 'Política de Privacidade' },
+  { href: '/links', texto: 'Árvore de links' },
+];
+
+// WhatsApp real fornecido pelo cliente
+const whatsappNumero = '+55 (31) 98315-8818';
+const whatsappLink = 'https://wa.me/5531983158818';
+---
+
+<footer class="ft">
+  <div class="ft__wrap">
+    <div class="ft__top">
+      <div class="ft__brand">
+        <a href="/" class="ft__logo" aria-label="TicketHubh — início">
+          Ticket<span>Hubh</span>
+        </a>
+        <p class="ft__tag">Os melhores rolês da cidade, num só lugar.</p>
+      </div>
+
+      <nav class="ft__cols" aria-label="Rodapé">
+        <div class="ft__col">
+          <h3>Navegar</h3>
+          <ul>
+            {navegar.map((l) => <li><a href={l.href}>{l.texto}</a></li>)}
+          </ul>
+        </div>
+        <div class="ft__col">
+          <h3>Legal</h3>
+          <ul>
+            {legal.map((l) => <li><a href={l.href}>{l.texto}</a></li>)}
+          </ul>
+        </div>
+        <div class="ft__col ft__col--aten">
+          <h3>Atendimento</h3>
+          <p class="ft__aten-txt">Fale com a gente</p>
+          <a class="ft__wpp" href={whatsappLink} target="_blank" rel="noopener">
+            {whatsappNumero}
+          </a>
+
+          <div class="ft__social">
+            <a href="#" aria-label="Instagram do TicketHubh">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" aria-hidden="true">
+                <rect x="3.5" y="3.5" width="17" height="17" rx="5" stroke="currentColor" stroke-width="1.7" />
+                <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.7" />
+                <circle cx="17" cy="7" r="1.2" fill="currentColor" />
+              </svg>
+            </a>
+            <a href="#" aria-label="TikTok do TicketHubh">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" aria-hidden="true">
+                <path d="M13.5 3v11.2a3.2 3.2 0 1 1-2.4-3.1" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M13.5 4.5c.7 2 2.3 3.3 4.5 3.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </a>
+            <a href="#" aria-label="Google do TicketHubh">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" aria-hidden="true">
+                <path d="M19.6 12a7.6 7.6 0 1 1-2.2-5.35" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
+                <path d="M20 12h-6.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </nav>
+    </div>
+
+    <div class="ft__bottom">
+      <span>© {ano} TicketHubh. Todos os direitos reservados.</span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .ft {
+    background: #f6f6f7;
+    border-top: 1px solid #e6e6e9;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  .ft__wrap {
+    max-width: 1140px;
+    margin-inline: auto;
+    padding: 3.5rem 1.5rem 2rem;
+  }
+
+  .ft__top {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2.5rem 3rem;
+    justify-content: space-between;
+  }
+
+  /* Marca */
+  .ft__brand {
+    flex: 1 1 240px;
+    max-width: 22rem;
+  }
+  .ft__logo {
+    font-size: 1.4rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: #101114;
+    text-decoration: none;
+  }
+  .ft__logo span {
+    color: #2b5cff;
+  }
+  .ft__tag {
+    margin: 0.75rem 0 1.1rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #5a5f66;
+  }
+  .ft__social {
+    display: flex;
+    gap: 0.6rem;
+    margin-top: 1rem;
+  }
+  .ft__social a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 10px;
+    border: 1px solid #e0e0e4;
+    color: #5a5f66;
+    background: #fff;
+    transition: color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  }
+  .ft__social a:hover {
+    color: #2b5cff;
+    border-color: #2b5cff;
+    transform: translateY(-2px);
+  }
+
+  /* Colunas de links */
+  .ft__cols {
+    flex: 2 1 560px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem 2.5rem;
+  }
+  .ft__col {
+    flex: 1 1 130px;
+    min-width: 130px;
+  }
+  .ft__col--aten {
+    flex: 1 1 180px;
+  }
+  .ft__col h3 {
+    margin: 0 0 0.9rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #9a9aa3;
+  }
+  .ft__col ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+  .ft__col a {
+    font-size: 0.92rem;
+    color: #3a3f46;
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+  .ft__col a:hover {
+    color: #2b5cff;
+  }
+
+  /* Atendimento / WhatsApp */
+  .ft__aten-txt {
+    margin: 0 0 0.6rem;
+    font-size: 0.92rem;
+    color: #3a3f46;
+  }
+  .ft__wpp {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #101114;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  .ft__wpp:hover {
+    color: #2b5cff;
+  }
+
+  /* Barra inferior */
+  .ft__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 0.75rem 1.5rem;
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e6e6e9;
+    font-size: 0.85rem;
+    color: #9a9aa3;
+  }
+
+  *:focus-visible {
+    outline: 2px solid #2b5cff;
+    outline-offset: 3px;
+  }
+
+  @media (max-width: 760px) {
+    .ft__brand {
+      flex-basis: 100%;
+      max-width: none;
+    }
+    .ft__cols {
+      flex-basis: 100%;
+    }
+  }
+</style>

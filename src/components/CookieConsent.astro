@@ -1,0 +1,146 @@
+---
+// Aviso de cookies (LGPD). Aparece uma vez; a escolha fica guardada
+// em localStorage. Só faz sentido mostrar quando o site usar cookies
+// não essenciais (ex.: analytics) — liga esses scripts só após "Aceitar".
+---
+
+<div class="ck" data-cookie role="region" aria-label="Aviso de cookies" hidden>
+  <div class="ck__box">
+    <p class="ck__txt">
+      Usamos cookies essenciais para o site funcionar e, com a tua permissão,
+      cookies para entender como o usas e melhorar a experiência.
+      <a href="/privacidade">Saber mais</a>.
+    </p>
+    <div class="ck__acoes">
+      <button type="button" class="ck__btn ck__btn--sec" data-choice="rejected">
+        Rejeitar
+      </button>
+      <button type="button" class="ck__btn ck__btn--pri" data-choice="accepted">
+        Aceitar
+      </button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .ck {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1100;
+    padding: 1rem;
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    transform: translateY(120%);
+    transition: transform 0.32s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .ck.is-visible {
+    transform: translateY(0);
+  }
+
+  .ck__box {
+    max-width: 1000px;
+    margin-inline: auto;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+    background: #fff;
+    border: 1px solid #e6e6e9;
+    border-radius: 14px;
+    box-shadow: 0 16px 40px -16px rgba(16, 17, 20, 0.28);
+    padding: 1rem 1.25rem;
+  }
+
+  .ck__txt {
+    flex: 1 1 320px;
+    margin: 0;
+    font-size: 0.92rem;
+    line-height: 1.5;
+    color: #3a3f46;
+  }
+  .ck__txt a {
+    color: #2b5cff;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .ck__acoes {
+    display: flex;
+    gap: 0.6rem;
+    flex: 0 0 auto;
+  }
+  .ck__btn {
+    min-height: 44px;
+    padding: 0.6rem 1.3rem;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 0.92rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.18s ease, border-color 0.18s ease,
+      color 0.18s ease, transform 0.18s ease;
+  }
+  .ck__btn:active {
+    transform: translateY(1px);
+  }
+  .ck__btn--pri {
+    background: #2b5cff;
+    color: #fff;
+    border: 1px solid #2b5cff;
+  }
+  .ck__btn--pri:hover {
+    background: #1c46d1;
+    border-color: #1c46d1;
+  }
+  .ck__btn--sec {
+    background: #fff;
+    color: #3a3f46;
+    border: 1px solid #d3d3d9;
+  }
+  .ck__btn--sec:hover {
+    border-color: #101114;
+    color: #101114;
+  }
+  .ck__btn:focus-visible {
+    outline: 2px solid #2b5cff;
+    outline-offset: 3px;
+  }
+
+  @media (max-width: 560px) {
+    .ck__acoes {
+      width: 100%;
+    }
+    .ck__btn {
+      flex: 1 1 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ck {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const KEY = 'th-cookie-consent';
+  const el = document.querySelector<HTMLElement>('[data-cookie]');
+  if (el && !localStorage.getItem(KEY)) {
+    el.hidden = false;
+    requestAnimationFrame(() => el.classList.add('is-visible'));
+
+    el.querySelectorAll<HTMLButtonElement>('[data-choice]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        localStorage.setItem(KEY, btn.dataset.choice || 'accepted');
+        el.classList.remove('is-visible');
+        const remover = () => (el.hidden = true);
+        // espera a transição terminar
+        el.addEventListener('transitionend', remover, { once: true });
+        setTimeout(remover, 400); // fallback
+        // Aqui podes disparar os scripts de analytics se a escolha for "accepted".
+      });
+    });
+  }
+</script>
