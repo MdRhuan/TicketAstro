@@ -1,0 +1,44 @@
+# robots.txt — TicketHubh
+# Site de descoberta de festas e shows. O objetivo é ser encontrado:
+# por isso liberamos o rastreamento por completo, inclusive pelos crawlers de IA.
+
+# ── Buscadores tradicionais (Google, Bing, etc.) ────────────────────────────
+User-agent: *
+Allow: /
+
+# ── Crawlers de IA (busca generativa) ───────────────────────────────────────
+# Liberados de propósito: queremos aparecer nas respostas do ChatGPT,
+# Perplexity, Google AI Overviews e afins — é distribuição grátis para um
+# negócio de descoberta de eventos.
+#
+# Se um dia quiser IMPEDIR que o conteúdo alimente TREINO de modelos (mantendo
+# a aparição em respostas em tempo real), troque o "Allow: /" pelo "Disallow: /"
+# nos agentes de treino abaixo (GPTBot, ClaudeBot, CCBot, Google-Extended).
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+# ── Sitemap ─────────────────────────────────────────────────────────────────
+# Gerado pelo @astrojs/sitemap no build. Se trocar o domínio no astro.config.mjs,
+# troque também a URL abaixo (precisa ser absoluta e bater com o domínio real).
+Sitemap: https://www.tickethubh.com.br/sitemap-index.xml

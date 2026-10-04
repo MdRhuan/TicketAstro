@@ -1,4 +1,5 @@
 ---
+import BaseHead from '../components/BaseHead.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import WhatsAppButton from '../components/WhatsAppButton.astro';
@@ -31,7 +32,7 @@ const perguntas = [
   },
   {
     q: 'Que tipo de evento aparece aqui?',
-    a: 'Festas em Belo Horizonte e shows em diversas cidades. É essa a seleção do TicketHubh.',
+    a: 'Festas e shows em Belo Horizonte. É essa a seleção do TicketHubh.',
   },
   {
     q: 'As informações do evento estão sempre corretas?',
@@ -46,20 +47,27 @@ const perguntas = [
     a: 'Fale com a gente pelo WhatsApp para conversarmos sobre divulgação e parceria.',
   },
 ];
+
+// FAQPage JSON-LD — gerado a partir do MESMO array acima (fonte única).
+// Candidato a rich result (accordion de perguntas na SERP).
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: perguntas.map((p) => ({
+    '@type': 'Question',
+    name: p.q,
+    acceptedAnswer: { '@type': 'Answer', text: p.a },
+  })),
+};
 ---
 
 <html lang="pt-BR">
   <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="generator" content={Astro.generator} />
-    <title>Perguntas frequentes do TicketHubh</title>
-    <meta
-      name="description"
-      content="Dúvidas sobre o TicketHubh: como funciona a compra, reembolso, meia-entrada e onde falar sobre um ingresso já comprado."
+    <BaseHead
+      title="Perguntas frequentes do TicketHubh"
+      description="Dúvidas sobre o TicketHubh: como funciona a compra, reembolso, meia-entrada e onde falar sobre um ingresso já comprado."
     />
+    <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
   </head>
 
   <body style="margin:0">
@@ -103,7 +111,7 @@ const perguntas = [
         margin-inline: auto;
         padding: clamp(2.5rem, 5vw, 4rem) 1.5rem 3rem;
         font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-        color: #3a3f46;
+        color: var(--texto-2);
         line-height: 1.65;
       }
       .pg__eyebrow {
@@ -112,14 +120,14 @@ const perguntas = [
         font-weight: 700;
         letter-spacing: 0.08em;
         text-transform: uppercase;
-        color: #2b5cff;
+        color: var(--marca);
       }
       .pg__title {
         margin: 0;
         font-size: clamp(2rem, 5vw, 2.6rem);
         font-weight: 800;
         letter-spacing: -0.03em;
-        color: #101114;
+        color: var(--texto);
       }
       .pg__lead {
         margin: 1.25rem 0 0;
@@ -127,7 +135,7 @@ const perguntas = [
         max-width: 60ch;
       }
       .pg__lead a {
-        color: #2b5cff;
+        color: var(--marca);
         font-weight: 600;
         text-decoration: underline;
         text-underline-offset: 2px;
@@ -141,7 +149,7 @@ const perguntas = [
       }
       .faq__item {
         background: #fff;
-        border: 2px solid #101114;
+        border: 2px solid var(--texto);
         border-radius: 14px;
         padding: 0 1.25rem;
       }
@@ -154,7 +162,7 @@ const perguntas = [
         cursor: pointer;
         list-style: none;
         font-weight: 700;
-        color: #101114;
+        color: var(--texto);
         font-size: 1.02rem;
       }
       .faq__item summary::-webkit-details-marker {
@@ -162,7 +170,7 @@ const perguntas = [
       }
       .faq__ic {
         flex: none;
-        color: #9aa0a6;
+        color: var(--texto-muted);
         transition: transform 0.2s ease;
       }
       .faq__item[open] .faq__ic {
@@ -175,7 +183,7 @@ const perguntas = [
       }
 
       *:focus-visible {
-        outline: 2px solid #2b5cff;
+        outline: 2px solid var(--marca);
         outline-offset: 3px;
         border-radius: 8px;
       }

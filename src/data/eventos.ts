@@ -62,8 +62,8 @@ export interface Evento {
 export const WHATSAPP = '5531983158818';
 
 // Link do grupo de ofertas no WhatsApp (chat.whatsapp.com/...).
-// COLOCA AQUI o link real do grupo. Vale para todos os eventos por padrão.
-export const GRUPO_OFERTAS = '#';
+// Vale para todos os eventos por padrão.
+export const GRUPO_OFERTAS = 'https://chat.whatsapp.com/EGrwvkC1N8WJyfp9Rsb8LM';
 
 export function linkCondicoes(e: Evento): string {
   if (e.linkCondicoes) return e.linkCondicoes;
@@ -123,7 +123,7 @@ export const eventos: Evento[] = [
     produtora: 'Neon Produções',
     local: 'Clube da Serra',
     cidade: 'Belo Horizonte',
-    endereco: 'Av. Bandeirantes, 1200 — Mangabeiras',
+    endereco: 'Av. Bandeirantes, 1200 | Mangabeiras',
     dataISO: '2026-12-13',
     dataLabel: '13 DEZ 2026',
     diaSemana: 'Sábado',
@@ -167,13 +167,13 @@ export const eventos: Evento[] = [
   },
   {
     slug: 'sunset-club',
-    nome: 'Sunset Club — Rooftop',
+    nome: 'Sunset Club | Rooftop',
     categoria: 'Festa',
     estilo: 'House',
     produtora: 'Neon Produções',
     local: 'Terraço 22',
     cidade: 'Belo Horizonte',
-    endereco: 'Rua dos Aimorés, 22 — Funcionários (cobertura)',
+    endereco: 'Rua dos Aimorés, 22 | Funcionários (cobertura)',
     dataISO: '2026-11-15',
     dataLabel: '15 NOV 2026',
     diaSemana: 'Domingo',
@@ -207,7 +207,7 @@ export const eventos: Evento[] = [
       },
     ],
     regras: [
-      'Evento ao ar livre — sujeito às condições do tempo.',
+      'Evento ao ar livre | sujeito às condições do tempo.',
       'Obrigatório documento com foto na entrada.',
       'Meia-entrada mediante comprovação, conforme lei.',
     ],
@@ -215,13 +215,13 @@ export const eventos: Evento[] = [
   },
   {
     slug: 'noite-eletronica',
-    nome: 'Noite Eletrônica — Warehouse',
+    nome: 'Noite Eletrônica | Warehouse',
     categoria: 'Festa',
     estilo: 'Techno',
     produtora: 'Neon Produções',
     local: 'Galpão 7',
     cidade: 'Belo Horizonte',
-    endereco: 'Rua da Bahia, 700 — Lourdes',
+    endereco: 'Rua da Bahia, 700 | Lourdes',
     dataISO: '2026-11-28',
     dataLabel: '28 NOV 2026',
     diaSemana: 'Sábado',
@@ -269,7 +269,7 @@ export const eventos: Evento[] = [
     produtora: 'Baile Coletivo',
     local: 'Mercado Central',
     cidade: 'Belo Horizonte',
-    endereco: 'Av. Augusto de Lima, 744 — Centro',
+    endereco: 'Av. Augusto de Lima, 744 | Centro',
     dataISO: '2026-12-06',
     dataLabel: '06 DEZ 2026',
     diaSemana: 'Domingo',
@@ -307,9 +307,9 @@ export const eventos: Evento[] = [
     categoria: 'Show',
     estilo: 'Rock',
     produtora: 'Palco BR',
-    local: 'Espaço Unimed',
-    cidade: 'São Paulo',
-    endereco: 'Rua Tagipuru, 795 — Barra Funda',
+    local: 'Arena Hall',
+    cidade: 'Belo Horizonte',
+    endereco: 'Av. Nossa Senhora do Carmo, 230 | Sion',
     dataISO: '2026-11-22',
     dataLabel: '22 NOV 2026',
     diaSemana: 'Domingo',
@@ -354,9 +354,9 @@ export const eventos: Evento[] = [
     categoria: 'Show',
     estilo: 'Pagode',
     produtora: 'Roda Produções',
-    local: 'Mirante 9 de Julho',
-    cidade: 'São Paulo',
-    endereco: 'Rua Min. Rocha Azevedo, s/n — Jardim Paulista',
+    local: 'Mirante das Mangabeiras',
+    cidade: 'Belo Horizonte',
+    endereco: 'Av. José do Patrocínio Pontes, 580 | Mangabeiras',
     dataISO: '2026-11-16',
     dataLabel: '16 NOV 2026',
     diaSemana: 'Segunda',
@@ -382,31 +382,31 @@ export const eventos: Evento[] = [
       },
     ],
     regras: [
-      'Evento ao ar livre — sujeito às condições do tempo.',
+      'Evento ao ar livre | sujeito às condições do tempo.',
       'Obrigatório documento com foto na entrada.',
       'Meia-entrada mediante comprovação, conforme lei.',
     ],
     linkCompra: '#',
   },
   {
-    slug: 'samba-na-lapa',
-    nome: 'Samba na Lapa',
+    slug: 'samba-da-praca',
+    nome: 'Samba da Praça',
     categoria: 'Show',
     estilo: 'Samba',
     produtora: 'Roda Produções',
-    local: 'Circo Voador',
-    cidade: 'Rio de Janeiro',
-    endereco: 'Rua dos Arcos, s/n — Lapa',
+    local: 'Praça da Estação',
+    cidade: 'Belo Horizonte',
+    endereco: 'Praça Rui Barbosa, s/n | Centro',
     dataISO: '2026-11-30',
     dataLabel: '30 NOV 2026',
     diaSemana: 'Domingo',
     horaAbertura: '20:00',
     classificacao: '18 anos',
     exclusiva: false,
-    imagem: '/eventos/samba-na-lapa.jpg',
+    imagem: '/eventos/samba-da-praca.jpg',
     cor: '#1f7a5a',
     descricao:
-      'O melhor do samba carioca no palco mais tradicional da Lapa. Uma noite de roda, com convidados subindo ao palco a cada bloco.',
+      'O melhor do samba mineiro no coração de BH. Uma noite de roda na Praça da Estação, com convidados subindo ao palco a cada bloco.',
     lineup: [
       { nome: 'Grupo residente', foto: '/artistas/grupo-residente.jpg' },
       { nome: 'Convidados especiais', foto: '/artistas/convidados-especiais.jpg' },
@@ -414,7 +414,7 @@ export const eventos: Evento[] = [
     ingressos: [
       {
         tipo: 'Pista',
-        descricao: 'Acesso em pé à pista do Circo Voador.',
+        descricao: 'Acesso em pé à pista da Praça da Estação.',
         lotes: [
           { nome: '1º lote', preco: 80, estado: 'esgotado' },
           { nome: '2º lote', preco: 100, estado: 'a-venda' },
@@ -442,7 +442,7 @@ export const eventos: Evento[] = [
     produtora: 'Palco BR',
     local: 'Mineirão',
     cidade: 'Belo Horizonte',
-    endereco: 'Av. Antônio Abrahão Caram, 1001 — São José',
+    endereco: 'Av. Antônio Abrahão Caram, 1001 | São José',
     dataISO: '2026-12-20',
     dataLabel: '20 DEZ 2026',
     diaSemana: 'Domingo',

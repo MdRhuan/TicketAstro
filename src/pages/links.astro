@@ -1,13 +1,14 @@
 ---
+import { Image } from 'astro:assets';
+import logo from '../assets/LogoTH.webp';
 import CookieConsent from '../components/CookieConsent.astro';
+import BaseHead from '../components/BaseHead.astro';
 // Página standalone (estilo Linktree): SEM Nav e SEM Footer, por decisão do cliente.
 // Também sem <WhatsAppButton /> — tem o botão "Grupo de ofertas" (regra do projeto).
 import { WHATSAPP, GRUPO_OFERTAS } from '../data/eventos';
 
 const wppFalar = `https://wa.me/${WHATSAPP}`;
-const wppNiver = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(
-  'Olá! Quero comemorar meu aniversário com o TicketHubh. Como funciona?'
-)}`;
+const wppNiver = 'https://wa.link/aaoyj1';
 
 // Botões principais da árvore
 const links = [
@@ -20,15 +21,9 @@ const links = [
 
 <html lang="pt-BR">
   <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="generator" content={Astro.generator} />
-    <title>Links — TicketHubh</title>
-    <meta
-      name="description"
-      content="Todos os canais do TicketHubh num só lugar: eventos, calendário, blog e o grupo de ofertas no WhatsApp."
+    <BaseHead
+      title="Links do TicketHubh | eventos, blog e ofertas em BH"
+      description="Todos os canais oficiais do TicketHubh num só lugar: eventos, calendário, blog, Instagram e o grupo de ofertas no WhatsApp com as festas de BH."
     />
   </head>
 
@@ -37,30 +32,34 @@ const links = [
       <section class="tree__card">
         <div class="tree__brand">
           <span class="tree__logo">
-            <img src="/favicon.svg" alt="" width="40" height="40" />
+            <Image src={logo} alt="" class="tree__logo-img" loading="eager" />
           </span>
           <h1 class="tree__nome">TicketHubh</h1>
           <p class="tree__tag">Os melhores rolês da cidade, num só lugar.</p>
         </div>
 
         <div class="tree__social">
-          <a href="#" aria-label="Instagram do TicketHubh">
+          <a href="https://www.instagram.com/tickethubh/" target="_blank" rel="noopener" aria-label="Instagram do TicketHubh">
             <svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true">
               <rect x="3.5" y="3.5" width="17" height="17" rx="5" stroke="currentColor" stroke-width="1.7" />
               <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.7" />
               <circle cx="17" cy="7" r="1.2" fill="currentColor" />
             </svg>
           </a>
-          <a href="#" aria-label="TikTok do TicketHubh">
+          <a href="https://wa.me/5531983158818" target="_blank" rel="noopener" aria-label="WhatsApp do TicketHubh">
             <svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true">
-              <path d="M13.5 3v11.2a3.2 3.2 0 1 1-2.4-3.1" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
-              <path d="M13.5 4.5c.7 2 2.3 3.3 4.5 3.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M3.50002 12C3.50002 7.30558 7.3056 3.5 12 3.5C16.6944 3.5 20.5 7.30558 20.5 12C20.5 16.6944 16.6944 20.5 12 20.5C10.3278 20.5 8.77127 20.0182 7.45798 19.1861C7.21357 19.0313 6.91408 18.9899 6.63684 19.0726L3.75769 19.9319L4.84173 17.3953C4.96986 17.0955 4.94379 16.7521 4.77187 16.4751C3.9657 15.176 3.50002 13.6439 3.50002 12ZM12 1.5C6.20103 1.5 1.50002 6.20101 1.50002 12C1.50002 13.8381 1.97316 15.5683 2.80465 17.0727L1.08047 21.107C0.928048 21.4637 0.99561 21.8763 1.25382 22.1657C1.51203 22.4552 1.91432 22.5692 2.28599 22.4582L6.78541 21.1155C8.32245 21.9965 10.1037 22.5 12 22.5C17.799 22.5 22.5 17.799 22.5 12C22.5 6.20101 17.799 1.5 12 1.5ZM14.2925 14.1824L12.9783 15.1081C12.3628 14.7575 11.6823 14.2681 10.9997 13.5855C10.2901 12.8759 9.76402 12.1433 9.37612 11.4713L10.2113 10.7624C10.5697 10.4582 10.6678 9.94533 10.447 9.53028L9.38284 7.53028C9.23954 7.26097 8.98116 7.0718 8.68115 7.01654C8.38113 6.96129 8.07231 7.046 7.84247 7.24659L7.52696 7.52195C6.76823 8.18414 6.3195 9.2723 6.69141 10.3741C7.07698 11.5163 7.89983 13.314 9.58552 14.9997C11.3991 16.8133 13.2413 17.5275 14.3186 17.8049C15.1866 18.0283 16.008 17.7288 16.5868 17.2572L17.1783 16.7752C17.4313 16.5691 17.5678 16.2524 17.544 15.9269C17.5201 15.6014 17.3389 15.308 17.0585 15.1409L15.3802 14.1409C15.0412 13.939 14.6152 13.9552 14.2925 14.1824Z" fill="currentColor"/>
             </svg>
           </a>
-          <a href="#" aria-label="Google do TicketHubh">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true">
-              <path d="M19.6 12a7.6 7.6 0 1 1-2.2-5.35" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
-              <path d="M20 12h-6.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
+          <a href="https://g.page/r/CcnVTNNZ-cF7EAE/review" target="_blank" rel="noopener" aria-label="Google do TicketHubh">
+            <svg viewBox="0 0 20 20" width="22" height="22" fill="none" aria-hidden="true">
+              <g fill="none" fill-rule="evenodd">
+                <g transform="translate(-300.000000, -7399.000000)" fill="currentColor">
+                  <g transform="translate(56.000000, 160.000000)">
+                    <path d="M263.821537,7247.00386 L254.211298,7247.00386 C254.211298,7248.0033 254.211298,7250.00218 254.205172,7251.00161 L259.774046,7251.00161 C259.560644,7252.00105 258.804036,7253.40026 257.734984,7254.10487 C257.733963,7254.10387 257.732942,7254.11086 257.7309,7254.10986 C256.309581,7255.04834 254.43389,7255.26122 253.041161,7254.98137 C250.85813,7254.54762 249.130492,7252.96451 248.429023,7250.95364 C248.433107,7250.95064 248.43617,7250.92266 248.439233,7250.92066 C248.000176,7249.67336 248.000176,7248.0033 248.439233,7247.00386 L248.438212,7247.00386 C249.003881,7245.1669 250.783592,7243.49084 252.969687,7243.0321 C254.727956,7242.65931 256.71188,7243.06308 258.170978,7244.42831 C258.36498,7244.23842 260.856372,7241.80579 261.043226,7241.6079 C256.0584,7237.09344 248.076756,7238.68155 245.090149,7244.51127 L245.089128,7244.51127 C245.089128,7244.51127 245.090149,7244.51127 245.084023,7244.52226 L245.084023,7244.52226 C243.606545,7247.38565 243.667809,7250.75975 245.094233,7253.48622 C245.090149,7253.48921 245.087086,7253.49121 245.084023,7253.49421 C246.376687,7256.0028 248.729215,7257.92672 251.563684,7258.6593 C254.574796,7259.44886 258.406843,7258.90916 260.973794,7256.58747 C260.974815,7256.58847 260.975836,7256.58947 260.976857,7256.59047 C263.15172,7254.63157 264.505648,7251.29445 263.821537,7247.00386" />
+                  </g>
+                </g>
+              </g>
             </svg>
           </a>
         </div>
@@ -88,7 +87,7 @@ const links = [
 
     <style is:global>
       ::selection {
-        background: #2b5cff;
+        background: var(--marca);
         color: #fff;
       }
     </style>
@@ -97,11 +96,11 @@ const links = [
       body {
         margin: 0;
         font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-        color: #101114;
+        color: var(--texto);
         background: #fff;
       }
       *:focus-visible {
-        outline: 2px solid #2b5cff;
+        outline: 2px solid var(--marca);
         outline-offset: 3px;
         border-radius: 10px;
       }
@@ -114,7 +113,7 @@ const links = [
         min-height: 100vh;
         min-height: 100dvh;
         padding: clamp(2rem, 6vw, 4.5rem) 1.25rem 4rem;
-        background-color: #12141a;
+        background-color: var(--fundo-escuro);
         background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1.4px);
         background-size: 16px 16px;
       }
@@ -139,6 +138,11 @@ const links = [
         border-radius: 22px;
         background: #fff;
         box-shadow: 0 12px 30px -14px rgba(0, 0, 0, 0.6);
+      }
+      .tree__logo-img {
+        display: block;
+        width: 56px;
+        height: auto; /* preserva a proporção do LogoTH (landscape); centrado pelo flex do box */
       }
       .tree__nome {
         margin: 1rem 0 0;
@@ -166,7 +170,7 @@ const links = [
         padding: 1.05rem 1.25rem;
         border-radius: 14px;
         background: rgba(255, 255, 255, 0.96);
-        color: #101114;
+        color: var(--texto);
         text-decoration: none;
         font-weight: 700;
         font-size: 1.02rem;
@@ -181,21 +185,21 @@ const links = [
       }
       .lk__seta {
         flex: none;
-        color: #9aa0a6;
+        color: var(--texto-muted);
         transition: transform 0.18s ease, color 0.18s ease;
       }
       .lk:hover .lk__seta {
         transform: translateX(3px);
-        color: #2b5cff;
+        color: var(--marca);
       }
       /* Botão em destaque (Eventos) */
       .lk--destaque {
-        background: #2b5cff;
+        background: var(--marca);
         color: #fff;
         box-shadow: 0 14px 28px -16px rgba(0, 0, 0, 0.55);
       }
       .lk--destaque:hover {
-        background: #1f4de0;
+        background: var(--marca-hover);
       }
       .lk--destaque .lk__seta {
         color: rgba(255, 255, 255, 0.85);

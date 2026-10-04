@@ -1,0 +1,24 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   TOKENS DE COR — fonte única da paleta do TicketHubh.
+   Importado globalmente pelo BaseHead.astro (presente em todas as páginas).
+   Trocar a cor da marca aqui reflete no site inteiro.
+
+   Mantidos como literais de propósito: #fff, #000 (neutros universais) e as
+   cores por evento (campo `cor` nos dados) — são conteúdo, não tema.
+   ───────────────────────────────────────────────────────────────────────────── */
+:root {
+  /* Marca */
+  --marca: #2b5cff;
+  --marca-hover: #1f4de0;
+
+  /* Texto (do mais forte ao mais fraco) */
+  --texto: #101114; /* títulos / texto forte */
+  --texto-2: #3a3f46; /* corpo */
+  --texto-3: #5a5f66; /* secundário */
+  --texto-muted: #9aa0a6; /* placeholder / ícones suaves */
+
+  /* Superfícies e bordas */
+  --fundo-escuro: #12141a; /* heros e fundos escuros */
+  --superficie: #f6f6f7; /* fundo claro de blocos */
+  --borda: #e6e6e9; /* linhas / divisórias */
+}

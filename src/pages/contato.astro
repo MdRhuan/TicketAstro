@@ -1,4 +1,5 @@
 ---
+import BaseHead from '../components/BaseHead.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import WhatsAppButton from '../components/WhatsAppButton.astro';
@@ -13,15 +14,9 @@ const wppParceria = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(
 
 <html lang="pt-BR">
   <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="generator" content={Astro.generator} />
-    <title>Fale com o TicketHubh</title>
-    <meta
-      name="description"
-      content="Fale com o TicketHubh pelo WhatsApp: dúvidas sobre eventos, ajuda com uma compra ou parceria para divulgar seu evento."
+    <BaseHead
+      title="Fale com o TicketHubh | dúvidas, ajuda e parcerias em BH"
+      description="Fale com o TicketHubh pelo WhatsApp: dúvidas sobre eventos, ajuda com uma compra ou parceria para divulgar seu evento."
     />
   </head>
 
@@ -74,7 +69,7 @@ const wppParceria = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(
         margin-inline: auto;
         padding: clamp(2.5rem, 5vw, 4rem) 1.5rem 3rem;
         font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-        color: #3a3f46;
+        color: var(--texto-2);
         line-height: 1.65;
       }
       .pg__eyebrow {
@@ -83,14 +78,14 @@ const wppParceria = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(
         font-weight: 700;
         letter-spacing: 0.08em;
         text-transform: uppercase;
-        color: #2b5cff;
+        color: var(--marca);
       }
       .pg__title {
         margin: 0;
         font-size: clamp(2rem, 5vw, 2.6rem);
         font-weight: 800;
         letter-spacing: -0.03em;
-        color: #101114;
+        color: var(--texto);
       }
       .pg__lead {
         margin: 1.25rem 0 0;
@@ -110,7 +105,7 @@ const wppParceria = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(
         gap: 0.35rem;
         padding: 1.4rem 1.5rem;
         background: #fff;
-        border: 2px solid #101114;
+        border: 2px solid var(--texto);
         border-radius: 16px;
         text-decoration: none;
         color: inherit;
@@ -118,12 +113,12 @@ const wppParceria = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(
           box-shadow 0.18s ease;
       }
       a.cartao:hover {
-        border-color: #2b5cff;
+        border-color: var(--marca);
         transform: translateY(-2px);
         box-shadow: 0 16px 32px -20px rgba(16, 17, 20, 0.4);
       }
       .cartao--info {
-        background: #f6f6f7;
+        background: var(--superficie);
       }
       .cartao__tag {
         font-size: 0.74rem;
@@ -135,23 +130,23 @@ const wppParceria = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(
       .cartao__tit {
         font-size: 1.1rem;
         font-weight: 700;
-        color: #101114;
+        color: var(--texto);
       }
       .cartao__num {
         font-size: 1rem;
         font-weight: 600;
-        color: #2b5cff;
+        color: var(--marca);
       }
       .cartao__desc {
         font-size: 0.95rem;
-        color: #5a5f66;
+        color: var(--texto-3);
       }
 
       .nota {
         margin-top: 2.25rem;
         padding: 1.4rem 1.5rem;
-        background: #f6f6f7;
-        border: 2px solid #101114;
+        background: var(--superficie);
+        border: 2px solid var(--texto);
         border-radius: 14px;
       }
       .nota p {
@@ -159,14 +154,14 @@ const wppParceria = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(
         max-width: 68ch;
       }
       .nota a {
-        color: #2b5cff;
+        color: var(--marca);
         font-weight: 600;
         text-decoration: underline;
         text-underline-offset: 2px;
       }
 
       *:focus-visible {
-        outline: 2px solid #2b5cff;
+        outline: 2px solid var(--marca);
         outline-offset: 3px;
         border-radius: 8px;
       }

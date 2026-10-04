@@ -1,4 +1,5 @@
 ---
+import BaseHead from '../components/BaseHead.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import WhatsAppButton from '../components/WhatsAppButton.astro';
@@ -32,15 +33,9 @@ const secoes = [
 
 <html lang="pt-BR">
   <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="generator" content={Astro.generator} />
-    <title>Política de Privacidade do TicketHubh</title>
-    <meta
-      name="description"
-      content="Como o TicketHubh trata dados pessoais e usa cookies, conforme a LGPD, e como você exerce seus direitos."
+    <BaseHead
+      title="Política de Privacidade do TicketHubh"
+      description="Como o TicketHubh trata seus dados pessoais e cookies, em conformidade com a LGPD: para que servem, com quem falamos e como você exerce seus direitos."
     />
   </head>
 
@@ -228,7 +223,7 @@ const secoes = [
         margin-inline: auto;
         padding: clamp(2.5rem, 5vw, 4rem) 1.5rem 3rem;
         font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-        color: #3a3f46;
+        color: var(--texto-2);
         line-height: 1.65;
       }
       .tm__eyebrow {
@@ -237,14 +232,14 @@ const secoes = [
         font-weight: 700;
         letter-spacing: 0.08em;
         text-transform: uppercase;
-        color: #2b5cff;
+        color: var(--marca);
       }
       .tm__title {
         margin: 0;
         font-size: clamp(2rem, 5vw, 2.6rem);
         font-weight: 800;
         letter-spacing: -0.03em;
-        color: #101114;
+        color: var(--texto);
       }
       .tm__meta {
         margin: 0.6rem 0 0;
@@ -254,14 +249,14 @@ const secoes = [
       .tm__lead {
         margin: 1.5rem 0 0;
         font-size: 1.05rem;
-        color: #3a3f46;
+        color: var(--texto-2);
       }
 
       .tm__toc {
         margin: 2.5rem 0;
         padding: 1.25rem 1.5rem;
-        background: #f6f6f7;
-        border: 2px solid #101114;
+        background: var(--superficie);
+        border: 2px solid var(--texto);
         border-radius: 14px;
       }
       .tm__toc-h {
@@ -281,12 +276,12 @@ const secoes = [
         grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
       }
       .tm__toc a {
-        color: #3a3f46;
+        color: var(--texto-2);
         text-decoration: none;
         font-size: 0.92rem;
       }
       .tm__toc a:hover {
-        color: #2b5cff;
+        color: var(--marca);
       }
 
       .tm__body section {
@@ -298,7 +293,7 @@ const secoes = [
         font-size: 1.25rem;
         font-weight: 700;
         letter-spacing: -0.01em;
-        color: #101114;
+        color: var(--texto);
       }
       .tm__body p {
         margin: 0 0 0.9rem;
@@ -311,10 +306,10 @@ const secoes = [
         gap: 0.4rem;
       }
       .tm__body strong {
-        color: #101114;
+        color: var(--texto);
       }
       .tm__body a {
-        color: #2b5cff;
+        color: var(--marca);
         font-weight: 600;
         text-decoration: underline;
         text-underline-offset: 2px;
@@ -326,12 +321,12 @@ const secoes = [
         color: #6a6f76;
       }
       .tm__nota {
-        border-left: 3px solid #e6e6e9;
+        border-left: 1px solid var(--borda);
         padding-left: 1rem;
       }
 
       *:focus-visible {
-        outline: 2px solid #2b5cff;
+        outline: 2px solid var(--marca);
         outline-offset: 3px;
         border-radius: 6px;
       }

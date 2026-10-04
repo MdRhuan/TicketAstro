@@ -1,13 +1,16 @@
 ---
+import { Image } from 'astro:assets';
+import logo from '../assets/LogoTH.webp';
+
 const ano = new Date().getFullYear();
 
 const navegar = [
   { href: '/', texto: 'Início' },
-  { href: '/eventos', texto: 'Eventos' },
+  { href: '/eventos', texto: 'Festas' },
+  { href: '/grupos', texto: 'Grupos' },
   { href: '/calendario', texto: 'Calendário' },
   { href: '/blog', texto: 'Blog' },
   { href: '/sobre', texto: 'Sobre' },
-  { href: '/contato', texto: 'Contato' },
 ];
 const legal = [
   { href: '/faq', texto: 'FAQ' },
@@ -27,9 +30,10 @@ const whatsappLink = 'https://wa.me/5531983158818';
     <div class="ft__top">
       <div class="ft__brand">
         <a href="/" class="ft__logo" aria-label="TicketHubh — início">
-          Ticket<span>Hubh</span>
+          <Image src={logo} alt="" class="ft__logo-img" loading="lazy" />
+          <span class="ft__logo-txt">TicketHubh</span>
         </a>
-        <p class="ft__tag">Os melhores rolês da cidade, num só lugar.</p>
+        <p class="ft__tag">Festas e Shows de BH Em Um Só Lugar, Com Ingresso Mais Barato.</p>
       </div>
 
       <nav class="ft__cols" aria-label="Rodapé">
@@ -47,30 +51,20 @@ const whatsappLink = 'https://wa.me/5531983158818';
         </div>
         <div class="ft__col ft__col--aten">
           <h3>Atendimento</h3>
-          <p class="ft__aten-txt">Fale com a gente</p>
+          <a class="ft__aten-txt" href="/contato">Contato</a>
           <a class="ft__wpp" href={whatsappLink} target="_blank" rel="noopener">
-            {whatsappNumero}
+            WhatsApp : {whatsappNumero}
           </a>
 
           <div class="ft__social">
-            <a href="#" aria-label="Instagram do TicketHubh">
-              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" aria-hidden="true">
-                <rect x="3.5" y="3.5" width="17" height="17" rx="5" stroke="currentColor" stroke-width="1.7" />
-                <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.7" />
-                <circle cx="17" cy="7" r="1.2" fill="currentColor" />
-              </svg>
+            <a href="https://www.instagram.com/tickethubh/" target="_blank" rel="noopener" aria-label="Instagram do TicketHubh">
+              <img src="/social/instagram.svg" width="20" height="20" alt="" aria-hidden="true" loading="lazy" />
             </a>
-            <a href="#" aria-label="TikTok do TicketHubh">
-              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" aria-hidden="true">
-                <path d="M13.5 3v11.2a3.2 3.2 0 1 1-2.4-3.1" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
-                <path d="M13.5 4.5c.7 2 2.3 3.3 4.5 3.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
+            <a href={whatsappLink} target="_blank" rel="noopener" aria-label="WhatsApp do TicketHubh">
+              <img src="/social/whatsapp.svg" width="20" height="20" alt="" aria-hidden="true" loading="lazy" />
             </a>
-            <a href="#" aria-label="Google do TicketHubh">
-              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" aria-hidden="true">
-                <path d="M19.6 12a7.6 7.6 0 1 1-2.2-5.35" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
-                <path d="M20 12h-6.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
-              </svg>
+            <a href="https://g.page/r/CcnVTNNZ-cF7EAE/review" target="_blank" rel="noopener" aria-label="Google do TicketHubh">
+              <img src="/social/google.svg" width="20" height="20" alt="" aria-hidden="true" loading="lazy" />
             </a>
           </div>
         </div>
@@ -85,8 +79,8 @@ const whatsappLink = 'https://wa.me/5531983158818';
 
 <style>
   .ft {
-    background: #f6f6f7;
-    border-top: 1px solid #e6e6e9;
+    background: var(--superficie);
+    border-top: 1px solid var(--borda);
     font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   }
   .ft__wrap {
@@ -108,20 +102,25 @@ const whatsappLink = 'https://wa.me/5531983158818';
     max-width: 22rem;
   }
   .ft__logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
     font-size: 1.4rem;
     font-weight: 800;
     letter-spacing: -0.03em;
-    color: #101114;
+    color: var(--texto);
     text-decoration: none;
   }
-  .ft__logo span {
-    color: #2b5cff;
+  .ft__logo-img {
+    display: block;
+    height: 34px;
+    width: auto; /* preserva a proporção do LogoTH (evita distorção e CLS) */
   }
   .ft__tag {
     margin: 0.75rem 0 1.1rem;
     font-size: 0.95rem;
     line-height: 1.5;
-    color: #5a5f66;
+    color: var(--texto-3);
   }
   .ft__social {
     display: flex;
@@ -136,13 +135,13 @@ const whatsappLink = 'https://wa.me/5531983158818';
     height: 2.4rem;
     border-radius: 10px;
     border: 1px solid #e0e0e4;
-    color: #5a5f66;
+    color: var(--texto-3);
     background: #fff;
     transition: color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
   }
   .ft__social a:hover {
-    color: #2b5cff;
-    border-color: #2b5cff;
+    color: var(--marca);
+    border-color: var(--marca);
     transform: translateY(-2px);
   }
 
@@ -166,7 +165,7 @@ const whatsappLink = 'https://wa.me/5531983158818';
     font-weight: 700;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: #9a9aa3;
+    color: var(--texto);
   }
   .ft__col ul {
     list-style: none;
@@ -178,29 +177,36 @@ const whatsappLink = 'https://wa.me/5531983158818';
   }
   .ft__col a {
     font-size: 0.92rem;
-    color: #3a3f46;
+    color: var(--texto-2);
     text-decoration: none;
     transition: color 0.15s ease;
   }
   .ft__col a:hover {
-    color: #2b5cff;
+    color: var(--marca);
   }
 
   /* Atendimento / WhatsApp */
   .ft__aten-txt {
+    display: inline-block;
     margin: 0 0 0.6rem;
     font-size: 0.92rem;
-    color: #3a3f46;
+    color: var(--texto-2);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+  .ft__aten-txt:hover {
+    color: var(--marca);
   }
   .ft__wpp {
+    display: block;
     font-size: 0.95rem;
-    font-weight: 600;
-    color: #101114;
+    font-weight: 400;
+    color: var(--texto);
     text-decoration: none;
     transition: color 0.2s ease;
   }
   .ft__wpp:hover {
-    color: #2b5cff;
+    color: var(--marca);
   }
 
   /* Barra inferior */
@@ -213,13 +219,13 @@ const whatsappLink = 'https://wa.me/5531983158818';
     gap: 0.75rem 1.5rem;
     margin-top: 3rem;
     padding-top: 1.5rem;
-    border-top: 1px solid #e6e6e9;
+    border-top: 1px solid var(--borda);
     font-size: 0.85rem;
     color: #9a9aa3;
   }
 
   *:focus-visible {
-    outline: 2px solid #2b5cff;
+    outline: 2px solid var(--marca);
     outline-offset: 3px;
   }
 

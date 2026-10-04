@@ -1,4 +1,7 @@
 ---
+import { Image } from 'astro:assets';
+import capaBlog from '../assets/CapaBlog.webp';
+import BaseHead from '../components/BaseHead.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import WhatsAppButton from '../components/WhatsAppButton.astro';
@@ -12,15 +15,9 @@ const resto = ordenados.filter((p) => p.slug !== destaque.slug);
 
 <html lang="pt-BR">
   <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="generator" content={Astro.generator} />
-    <title>Blog — TicketHubh</title>
-    <meta
-      name="description"
-      content="Guias, dicas e a cena por trás dos shows e festas. O blog do TicketHubh para quem vive a noite."
+    <BaseHead
+      title="Blog do TicketHubh | guias das festas e shows de BH"
+      description="Guias, dicas e bastidores da cena de festas e shows de Belo Horizonte. O blog do TicketHubh para quem quer aproveitar cada rolê da cidade sem erro."
     />
   </head>
 
@@ -29,9 +26,19 @@ const resto = ordenados.filter((p) => p.slug !== destaque.slug);
 
     <main>
       <header class="blog-hero">
+        <Image
+          class="blog-hero__img"
+          src={capaBlog}
+          widths={[800, 1280, 1920, 2400]}
+          sizes="100vw"
+          quality={72}
+          alt="Público em uma festa ao entardecer, de frente para um palco iluminado em Belo Horizonte"
+          loading="eager"
+          fetchpriority="high"
+        />
         <div class="blog-hero__wrap">
           <h1 class="blog-hero__titulo">Blog</h1>
-          <p class="blog-hero__sub">Guias, dicas e a cena por trás dos rolês.</p>
+          <p class="blog-hero__sub">Guias, dicas e bastidores das festas e shows de BH, pra aproveitar cada rolê.</p>
         </div>
       </header>
 
@@ -43,7 +50,7 @@ const resto = ordenados.filter((p) => p.slug !== destaque.slug);
             <img
               class="feat__img"
               src={destaque.imagem}
-              alt={`Imagem do artigo ${destaque.titulo}`}
+              alt={`${destaque.titulo} — ${destaque.categoria}`}
               loading="eager"
               decoding="async"
               width="1200"
@@ -68,7 +75,7 @@ const resto = ordenados.filter((p) => p.slug !== destaque.slug);
         </a>
 
         <!-- Lista editorial -->
-        <h2 class="sec-titulo">Últimas</h2>
+        <h2 class="sec-titulo">Últimas Notícias</h2>
         <ul class="lista">
           {
             resto.map((p) => (
@@ -79,7 +86,7 @@ const resto = ordenados.filter((p) => p.slug !== destaque.slug);
                     <img
                       class="post__img"
                       src={p.imagem}
-                      alt={`Imagem do artigo ${p.titulo}`}
+                      alt={`${p.titulo} — ${p.categoria}`}
                       loading="lazy"
                       decoding="async"
                       width="480"
@@ -112,7 +119,7 @@ const resto = ordenados.filter((p) => p.slug !== destaque.slug);
 
     <style is:global>
       ::selection {
-        background: #2b5cff;
+        background: var(--marca);
         color: #fff;
       }
     </style>
@@ -121,11 +128,11 @@ const resto = ordenados.filter((p) => p.slug !== destaque.slug);
       body {
         margin: 0;
         font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-        color: #101114;
+        color: var(--texto);
         background: #fff;
       }
       *:focus-visible {
-        outline: 2px solid #2b5cff;
+        outline: 2px solid var(--marca);
         outline-offset: 3px;
         border-radius: 8px;
       }
@@ -137,20 +144,28 @@ const resto = ordenados.filter((p) => p.slug !== destaque.slug);
         align-items: flex-end;
         min-height: clamp(280px, 42vh, 460px);
         color: #fff;
-        background-color: #12141a;
-        background-image: radial-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1.4px);
-        background-size: 16px 16px;
+        background-color: var(--fundo-escuro); /* fallback enquanto a foto carrega */
         overflow: hidden;
+      }
+      .blog-hero__img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center 88%; /* desce o recorte: tampa o céu claro do topo */
+        z-index: 0;
       }
       .blog-hero::after {
         content: "";
         position: absolute;
         inset: 0;
+        z-index: 1;
         background: linear-gradient(180deg, rgba(18, 20, 26, 0.2), rgba(18, 20, 26, 0.85));
       }
       .blog-hero__wrap {
         position: relative;
-        z-index: 1;
+        z-index: 2;
         max-width: 1140px;
         margin-inline: auto;
         width: 100%;
@@ -192,7 +207,7 @@ const resto = ordenados.filter((p) => p.slug !== destaque.slug);
       }
       .tag--cat {
         background: #fff;
-        color: #101114;
+        color: var(--texto);
         box-shadow: 0 2px 8px rgba(16, 17, 20, 0.18);
       }
 
@@ -203,8 +218,8 @@ const resto = ordenados.filter((p) => p.slug !== destaque.slug);
         inset: 0;
         z-index: 0;
         background: linear-gradient(150deg,
-          color-mix(in srgb, var(--cor, #2b5cff) 88%, #fff) 0%,
-          color-mix(in srgb, var(--cor, #2b5cff) 74%, #000) 100%);
+          color-mix(in srgb, var(--cor, var(--marca)) 88%, #fff) 0%,
+          color-mix(in srgb, var(--cor, var(--marca)) 74%, #000) 100%);
       }
       .feat__poster::before,
       .post__poster::before {
@@ -267,20 +282,20 @@ const resto = ordenados.filter((p) => p.slug !== destaque.slug);
         line-height: 1.08;
         font-weight: 800;
         letter-spacing: -0.035em;
-        color: #101114;
+        color: var(--texto);
       }
       .feat__resumo {
         margin: 0;
         font-size: 1.05rem;
         line-height: 1.6;
-        color: #3a3f46;
+        color: var(--texto-2);
         max-width: 46ch;
       }
       .feat__meta,
       .post__meta {
         margin: 0;
         font-size: 0.85rem;
-        color: #9aa0a6;
+        color: var(--texto-muted);
       }
       .sep {
         margin: 0 0.5rem;
@@ -291,7 +306,7 @@ const resto = ordenados.filter((p) => p.slug !== destaque.slug);
         gap: 0.4rem;
         margin-top: 0.4rem;
         font-weight: 700;
-        color: #2b5cff;
+        color: var(--marca);
       }
       .feat__cta svg {
         transition: transform 0.2s ease;
@@ -307,7 +322,7 @@ const resto = ordenados.filter((p) => p.slug !== destaque.slug);
         font-weight: 800;
         letter-spacing: 0.08em;
         text-transform: uppercase;
-        color: #9aa0a6;
+        color: var(--texto);
       }
       .lista {
         list-style: none;
@@ -335,7 +350,7 @@ const resto = ordenados.filter((p) => p.slug !== destaque.slug);
         aspect-ratio: 3 / 2;
         border-radius: 12px;
         overflow: hidden;
-        background: var(--cor, #2b5cff);
+        background: var(--cor, var(--marca));
       }
       .post__body {
         display: flex;
@@ -350,17 +365,17 @@ const resto = ordenados.filter((p) => p.slug !== destaque.slug);
         line-height: 1.15;
         font-weight: 800;
         letter-spacing: -0.025em;
-        color: #101114;
+        color: var(--texto);
         transition: color 0.16s ease;
       }
       .post:hover .post__titulo {
-        color: #2b5cff;
+        color: var(--marca);
       }
       .post__resumo {
         margin: 0;
         font-size: 0.98rem;
         line-height: 1.5;
-        color: #5a5f66;
+        color: var(--texto-3);
         max-width: 62ch;
       }
       .post__seta {
@@ -369,7 +384,7 @@ const resto = ordenados.filter((p) => p.slug !== destaque.slug);
         transition: transform 0.18s ease, color 0.18s ease;
       }
       .post:hover .post__seta {
-        color: #2b5cff;
+        color: var(--marca);
         transform: translateX(4px);
       }
 

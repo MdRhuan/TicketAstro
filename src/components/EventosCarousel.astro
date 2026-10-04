@@ -14,8 +14,8 @@ const eventos = [
     slug: 'rock-nacional',
     titulo: 'Rock Nacional ao Vivo',
     data: '22 NOV 2026',
-    local: 'Espaço Unimed',
-    cidade: 'São Paulo, SP',
+    local: 'Arena Hall',
+    cidade: 'Belo Horizonte, MG',
     cor: '#b5462f',
   },
   {
@@ -28,18 +28,18 @@ const eventos = [
   },
   {
     slug: 'noite-eletronica',
-    titulo: 'Noite Eletrônica — Warehouse',
+    titulo: 'Noite Eletrônica | Warehouse',
     data: '28 NOV 2026',
     local: 'Galpão 7',
     cidade: 'Belo Horizonte, MG',
     cor: '#0b7285',
   },
   {
-    slug: 'samba-na-lapa',
-    titulo: 'Samba na Lapa',
+    slug: 'samba-da-praca',
+    titulo: 'Samba da Praça',
     data: '30 NOV 2026',
-    local: 'Circo Voador',
-    cidade: 'Rio de Janeiro, RJ',
+    local: 'Praça da Estação',
+    cidade: 'Belo Horizonte, MG',
     cor: '#1f7a5a',
   },
 ];
@@ -150,7 +150,7 @@ const eventos = [
     box-sizing: border-box;
     padding: 2rem;
     border-radius: 18px;
-    background: var(--cor, #2b5cff);
+    background: var(--cor, var(--marca));
     color: #fff;
     display: flex;
     flex-direction: column;
@@ -208,20 +208,20 @@ const eventos = [
     -webkit-text-stroke: 0.6px currentColor; /* traço da seta mais grosso */
   }
   .carr__seta:hover {
-    border-color: #2b5cff;
+    border-color: var(--marca);
   }
   /* Preenchimento azul ao clicar, depois volta ao normal */
   .carr__seta::after {
     content: "";
     position: absolute;
     inset: 0;
-    background: #2b5cff;
+    background: var(--marca);
     border-radius: 50%;
     transform: scale(0);
     opacity: 0;
   }
   .carr__seta.is-click {
-    border-color: #2b5cff;
+    border-color: var(--marca);
     color: #fff;
   }
   .carr__seta.is-click::after {
@@ -272,7 +272,7 @@ const eventos = [
   .carr__btn {
     margin-top: 0.5rem;
     display: inline-block;
-    background: #2b5cff;
+    background: var(--marca);
     color: #fff;
     text-decoration: none;
     font-weight: 600;
@@ -301,7 +301,7 @@ const eventos = [
     transition: background 0.25s ease, transform 0.25s ease;
   }
   .carr__dot[aria-current="true"] {
-    background: #2b5cff;
+    background: var(--marca);
     transform: scale(1.35);
   }
 

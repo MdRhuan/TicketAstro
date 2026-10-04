@@ -26,3 +26,9 @@ pnpm-debug.log*
 # local AI tooling artifacts
 .claude/
 .impeccable/
+
+.vercel
+.env*
+
+# Playwright CLI debug artifacts
+.playwright-cli/

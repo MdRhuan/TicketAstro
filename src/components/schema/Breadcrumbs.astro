@@ -1,0 +1,41 @@
+---
+// ─────────────────────────────────────────────────────────────────────────────
+// BreadcrumbList JSON-LD — gera a trilha (Home › Seção › Página) na SERP.
+//
+// Uso:
+//   <Breadcrumbs items={[
+//     { name: 'Eventos', path: '/eventos' },
+//     { name: e.nome, path: `/eventos/${e.slug}` },
+//   ]} />
+//
+// A "Home" é adicionada automaticamente como primeiro item. Passe os caminhos
+// relativos (começando com "/"); as URLs absolutas são montadas com Astro.site.
+// ─────────────────────────────────────────────────────────────────────────────
+
+export interface Crumb {
+  name: string;
+  path: string; // caminho relativo, ex.: '/eventos/festa-neon'
+}
+
+interface Props {
+  items: Crumb[];
+}
+
+const { items } = Astro.props;
+const site = Astro.site!;
+
+const trilha: Crumb[] = [{ name: 'Início', path: '/' }, ...items];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: trilha.map((c, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: c.name,
+    item: new URL(c.path, site).href,
+  })),
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />

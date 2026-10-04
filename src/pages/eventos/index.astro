@@ -1,4 +1,7 @@
 ---
+import { Image } from 'astro:assets';
+import capaFestas from '../../assets/CapaFestas.webp';
+import BaseHead from '../../components/BaseHead.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
 import WhatsAppButton from '../../components/WhatsAppButton.astro';
@@ -7,14 +10,14 @@ import CookieConsent from '../../components/CookieConsent.astro';
 // Eventos de exemplo — troca pelos reais depois.
 // FOTO: public/eventos/<slug>.jpg  (sem foto → fallback autoral)
 const eventos = [
-  { slug: 'festa-neon', nome: 'Festa Neon', categoria: 'Festa', estilo: 'Eletrônica', produtora: 'Neon Produções', local: 'Clube da Serra', cidade: 'Belo Horizonte', dataISO: '2026-12-13', dataLabel: '13 DEZ 2026', preco: 70, exclusiva: true, imagem: '/eventos/festa-neon.jpg', cor: '#2b5cff' },
-  { slug: 'sunset-club', nome: 'Sunset Club — Rooftop', categoria: 'Festa', estilo: 'House', produtora: 'Neon Produções', local: 'Terraço 22', cidade: 'Belo Horizonte', dataISO: '2026-11-15', dataLabel: '15 NOV 2026', preco: 60, exclusiva: false, imagem: '/eventos/sunset-club.jpg', cor: '#7a3fb0' },
-  { slug: 'noite-eletronica', nome: 'Noite Eletrônica — Warehouse', categoria: 'Festa', estilo: 'Techno', produtora: 'Neon Produções', local: 'Galpão 7', cidade: 'Belo Horizonte', dataISO: '2026-11-28', dataLabel: '28 NOV 2026', preco: 120, exclusiva: true, imagem: '/eventos/noite-eletronica.jpg', cor: '#0b7285' },
-  { slug: 'baile-do-mercado', nome: 'Baile do Mercado', categoria: 'Festa', estilo: 'Funk', produtora: 'Baile Coletivo', local: 'Mercado Central', cidade: 'Belo Horizonte', dataISO: '2026-12-06', dataLabel: '06 DEZ 2026', preco: 40, exclusiva: false, imagem: '/eventos/baile-do-mercado.jpg', cor: '#c0392b' },
-  { slug: 'rock-nacional', nome: 'Rock Nacional ao Vivo', categoria: 'Show', estilo: 'Rock', produtora: 'Palco BR', local: 'Espaço Unimed', cidade: 'São Paulo', dataISO: '2026-11-22', dataLabel: '22 NOV 2026', preco: 140, exclusiva: false, imagem: '/eventos/rock-nacional.jpg', cor: '#b5462f' },
-  { slug: 'pagode-do-mirante', nome: 'Pagode do Mirante', categoria: 'Show', estilo: 'Pagode', produtora: 'Roda Produções', local: 'Mirante 9 de Julho', cidade: 'São Paulo', dataISO: '2026-11-16', dataLabel: '16 NOV 2026', preco: 45, exclusiva: false, imagem: '/eventos/pagode-do-mirante.jpg', cor: '#7a5c1f' },
-  { slug: 'samba-na-lapa', nome: 'Samba na Lapa', categoria: 'Show', estilo: 'Samba', produtora: 'Roda Produções', local: 'Circo Voador', cidade: 'Rio de Janeiro', dataISO: '2026-11-30', dataLabel: '30 NOV 2026', preco: 80, exclusiva: false, imagem: '/eventos/samba-na-lapa.jpg', cor: '#1f7a5a' },
-  { slug: 'sertanejo-arena', nome: 'Sertanejo Arena', categoria: 'Show', estilo: 'Sertanejo', produtora: 'Palco BR', local: 'Mineirão', cidade: 'Belo Horizonte', dataISO: '2026-12-20', dataLabel: '20 DEZ 2026', preco: 160, exclusiva: true, imagem: '/eventos/sertanejo-arena.jpg', cor: '#12141a' },
+  { slug: 'festa-neon', nome: 'Festa Neon', categoria: 'Festa', estilo: 'Eletrônica', produtora: 'Raro', local: 'Clube da Serra', cidade: 'Belo Horizonte', dataISO: '2026-12-13', dataLabel: '13 DEZ 2026', preco: 70, exclusiva: true, imagem: '/eventos/festa-neon.jpg', cor: '#2b5cff' },
+  { slug: 'sunset-club', nome: 'Sunset Club | Rooftop', categoria: 'Festa', estilo: 'Eletrônica', produtora: '2Liv', local: 'Terraço 22', cidade: 'Belo Horizonte', dataISO: '2026-11-15', dataLabel: '15 NOV 2026', preco: 60, exclusiva: false, imagem: '/eventos/sunset-club.jpg', cor: '#7a3fb0' },
+  { slug: 'noite-eletronica', nome: 'Noite Eletrônica | Warehouse', categoria: 'Festa', estilo: 'Eletrônica', produtora: 'Chalé', local: 'Galpão 7', cidade: 'Belo Horizonte', dataISO: '2026-11-28', dataLabel: '28 NOV 2026', preco: 120, exclusiva: true, imagem: '/eventos/noite-eletronica.jpg', cor: '#0b7285' },
+  { slug: 'baile-do-mercado', nome: 'Baile do Mercado', categoria: 'Festa', estilo: 'Funk', produtora: 'NaSala', local: 'Mercado Central', cidade: 'Belo Horizonte', dataISO: '2026-12-06', dataLabel: '06 DEZ 2026', preco: 40, exclusiva: false, imagem: '/eventos/baile-do-mercado.jpg', cor: '#c0392b' },
+  { slug: 'rock-nacional', nome: 'Rock Nacional ao Vivo', categoria: 'Show', estilo: 'Sertanejo', produtora: 'Raro', local: 'Arena Hall', cidade: 'Belo Horizonte', dataISO: '2026-11-22', dataLabel: '22 NOV 2026', preco: 140, exclusiva: false, imagem: '/eventos/rock-nacional.jpg', cor: '#b5462f' },
+  { slug: 'pagode-do-mirante', nome: 'Pagode do Mirante', categoria: 'Show', estilo: 'Pagode', produtora: '2Liv', local: 'Mirante das Mangabeiras', cidade: 'Belo Horizonte', dataISO: '2026-11-16', dataLabel: '16 NOV 2026', preco: 45, exclusiva: false, imagem: '/eventos/pagode-do-mirante.jpg', cor: '#7a5c1f' },
+  { slug: 'samba-da-praca', nome: 'Samba da Praça', categoria: 'Show', estilo: 'Pagode', produtora: 'Chalé', local: 'Praça da Estação', cidade: 'Belo Horizonte', dataISO: '2026-11-30', dataLabel: '30 NOV 2026', preco: 80, exclusiva: false, imagem: '/eventos/samba-da-praca.jpg', cor: '#1f7a5a' },
+  { slug: 'sertanejo-arena', nome: 'Sertanejo Arena', categoria: 'Show', estilo: 'Sertanejo', produtora: 'NaSala', local: 'Mineirão', cidade: 'Belo Horizonte', dataISO: '2026-12-20', dataLabel: '20 DEZ 2026', preco: 160, exclusiva: true, imagem: '/eventos/sertanejo-arena.jpg', cor: '#12141a' },
 ];
 
 const hoje = new Date();
@@ -34,15 +37,9 @@ const estilos = [...new Set(eventos.map((e) => e.estilo))].sort();
 
 <html lang="pt-BR">
   <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="generator" content={Astro.generator} />
-    <title>Todos os ingressos — TicketHubh</title>
-    <meta
-      name="description"
-      content="Encontre e garanta ingressos para shows e festas. Filtra por casa de show e estilo de música no TicketHubh."
+    <BaseHead
+      title="Ingressos para as festas e shows de BH | TicketHubh"
+      description="Encontre ingressos para as festas e os shows de Belo Horizonte. Filtre por casa de show e estilo de música e vá direto ao canal oficial de compra."
     />
   </head>
   <body>
@@ -51,10 +48,20 @@ const estilos = [...new Set(eventos.map((e) => e.estilo))].sort();
     <main>
       <!-- Cabeçalho + busca -->
       <header class="ing-hero">
+        <Image
+          class="ing-hero__img"
+          src={capaFestas}
+          widths={[800, 1280, 1920, 2400]}
+          sizes="100vw"
+          quality={72}
+          alt="Multidão lotando uma festa à noite, de frente para um palco iluminado em Belo Horizonte"
+          loading="eager"
+          fetchpriority="high"
+        />
         <div class="ing-hero__wrap">
-          <h1 class="ing-hero__titulo">Todos os ingressos</h1>
+          <h1 class="ing-hero__titulo">Todas as Festas</h1>
           <p class="ing-hero__sub">
-            Shows e festas — encontra o teu próximo rolê.
+            Ingressos para festas e shows de BH, com os melhores descontos.
           </p>
         </div>
       </header>
@@ -71,7 +78,7 @@ const estilos = [...new Set(eventos.map((e) => e.estilo))].sort();
               type="search"
               class="busca__input"
               data-busca
-              placeholder="Busca por evento, artista ou local"
+              placeholder="Busca por festa, produtora ou local"
               aria-label="Buscar eventos"
             />
           </div>
@@ -114,7 +121,7 @@ const estilos = [...new Set(eventos.map((e) => e.estilo))].sort();
                       <img
                         class="ev__img"
                         src={e.imagem}
-                        alt={`Foto do evento ${e.nome}`}
+                        alt={`${e.nome} — ${e.estilo} em ${e.local}, ${e.cidade}`}
                         loading="lazy"
                         decoding="async"
                         width="600"
@@ -159,7 +166,7 @@ const estilos = [...new Set(eventos.map((e) => e.estilo))].sort();
 
     <style is:global>
       ::selection {
-        background: #2b5cff;
+        background: var(--marca);
         color: #fff;
       }
     </style>
@@ -168,7 +175,7 @@ const estilos = [...new Set(eventos.map((e) => e.estilo))].sort();
       body {
         margin: 0;
         font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-        color: #101114;
+        color: var(--texto);
       }
       .sr-only {
         position: absolute;
@@ -189,20 +196,34 @@ const estilos = [...new Set(eventos.map((e) => e.estilo))].sort();
         align-items: flex-end;
         min-height: clamp(280px, 42vh, 460px);
         color: #fff;
-        /* FOTO DE FUNDO: coloca o ficheiro em public/hero-eventos.jpg
-           A cor escura por baixo é o fallback enquanto não existir a foto. */
-        background-color: #12141a;
-        background-image: linear-gradient(
-            180deg,
-            rgba(8, 8, 12, 0.25) 0%,
-            rgba(8, 8, 12, 0.75) 100%
-          ),
-          url("/hero-eventos.jpg");
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
+        background-color: var(--fundo-escuro); /* fallback enquanto a foto carrega */
+        overflow: hidden;
+      }
+      /* FOTO DE FUNDO como <img> real: indexável e com alt para SEO */
+      .ing-hero__img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        z-index: 0;
+      }
+      /* Escurecimento por cima da foto para manter o texto branco legível */
+      .ing-hero::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        background: linear-gradient(
+          180deg,
+          rgba(8, 8, 12, 0.25) 0%,
+          rgba(8, 8, 12, 0.75) 100%
+        );
       }
       .ing-hero__wrap {
+        position: relative;
+        z-index: 2;
         max-width: 1140px;
         margin-inline: auto;
         width: 100%;
@@ -229,7 +250,7 @@ const estilos = [...new Set(eventos.map((e) => e.estilo))].sort();
         left: 1rem;
         top: 50%;
         transform: translateY(-50%);
-        color: #9aa0a6;
+        color: var(--texto-muted);
       }
       .busca__input {
         width: 100%;
@@ -237,18 +258,18 @@ const estilos = [...new Set(eventos.map((e) => e.estilo))].sort();
         padding: 0 1rem 0 3rem;
         font-size: 1rem;
         font-family: inherit;
-        color: #101114;
+        color: var(--texto);
         background: #fff;
-        border: 1px solid #dcdce1;
+        border: 1px solid #b0b0ba;
         border-radius: 12px;
         transition: border-color 0.18s ease, box-shadow 0.18s ease;
       }
       .busca__input::placeholder {
-        color: #9aa0a6;
+        color: var(--texto-muted);
       }
       .busca__input:focus {
         outline: none;
-        border-color: #2b5cff;
+        border-color: var(--marca);
         box-shadow: 0 0 0 3px rgba(43, 92, 255, 0.18);
       }
 
@@ -266,35 +287,6 @@ const estilos = [...new Set(eventos.map((e) => e.estilo))].sort();
         gap: 0.75rem 1rem;
         flex-wrap: wrap;
       }
-      .chips {
-        display: flex;
-        gap: 0.5rem;
-        flex-wrap: wrap;
-      }
-      .chip {
-        min-height: 40px;
-        padding: 0.5rem 1rem;
-        font-family: inherit;
-        font-size: 0.9rem;
-        font-weight: 600;
-        color: #3a3f46;
-        background: #f2f2f4;
-        border: 1px solid transparent;
-        border-radius: 999px;
-        cursor: pointer;
-        transition: background 0.16s ease, color 0.16s ease;
-      }
-      .chip:hover {
-        background: #e7e7ea;
-      }
-      .chip.is-ativo {
-        background: #2b5cff;
-        color: #fff;
-      }
-      .chip:focus-visible {
-        outline: 2px solid #2b5cff;
-        outline-offset: 2px;
-      }
       .selects {
         display: flex;
         gap: 0.5rem;
@@ -307,17 +299,17 @@ const estilos = [...new Set(eventos.map((e) => e.estilo))].sort();
         font-family: inherit;
         font-size: 0.9rem;
         font-weight: 600;
-        color: #3a3f46;
+        color: var(--texto-2);
         background: #fff
           url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none'%3E%3Cpath d='M4 6l4 4 4-4' stroke='%235a5f66' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
           no-repeat right 0.75rem center;
-        border: 1px solid #dcdce1;
+        border: 1px solid #b0b0ba;
         border-radius: 10px;
         cursor: pointer;
         appearance: none;
       }
       .select:focus-visible {
-        outline: 2px solid #2b5cff;
+        outline: 2px solid var(--marca);
         outline-offset: 2px;
       }
 
@@ -330,7 +322,7 @@ const estilos = [...new Set(eventos.map((e) => e.estilo))].sort();
       .resultados__contagem {
         margin: 0 0 1.25rem;
         font-size: 0.9rem;
-        color: #5a5f66;
+        color: var(--texto-3);
       }
       .ev-grade {
         list-style: none;
@@ -372,14 +364,14 @@ const estilos = [...new Set(eventos.map((e) => e.estilo))].sort();
         box-shadow: 0 18px 34px -20px rgba(16, 17, 20, 0.35);
       }
       .ev:focus-visible {
-        outline: 2px solid #2b5cff;
+        outline: 2px solid var(--marca);
         outline-offset: 3px;
       }
       .ev__foto {
         position: relative;
         aspect-ratio: 4 / 5;
         overflow: hidden;
-        background: var(--cor, #2b5cff);
+        background: var(--cor, var(--marca));
       }
       .ev__poster {
         position: absolute;
@@ -388,8 +380,8 @@ const estilos = [...new Set(eventos.map((e) => e.estilo))].sort();
         align-items: flex-end;
         padding: 1rem 1.1rem;
         background: linear-gradient(150deg,
-          color-mix(in srgb, var(--cor, #2b5cff) 88%, #fff) 0%,
-          color-mix(in srgb, var(--cor, #2b5cff) 78%, #000) 100%);
+          color-mix(in srgb, var(--cor, var(--marca)) 88%, #fff) 0%,
+          color-mix(in srgb, var(--cor, var(--marca)) 78%, #000) 100%);
       }
       .ev__poster::before {
         content: "";
@@ -434,16 +426,16 @@ const estilos = [...new Set(eventos.map((e) => e.estilo))].sort();
       .ev__tag--dias {
         left: 0.8rem;
         background: #fff;
-        color: #101114;
+        color: var(--texto);
         box-shadow: 0 2px 8px rgba(16, 17, 20, 0.18);
       }
       .ev__tag--excl {
         right: 0.8rem;
-        background: #2b5cff;
+        background: var(--marca);
         color: #fff;
         text-transform: uppercase;
         letter-spacing: 0.03em;
-        box-shadow: 0 2px 8px rgba(43, 92, 255, 0.4);
+        box-shadow: 0 2px 8px rgba(16, 17, 20, 0.18);
       }
       .ev__corpo {
         display: flex;
@@ -465,11 +457,11 @@ const estilos = [...new Set(eventos.map((e) => e.estilo))].sort();
         gap: 0.4rem;
         margin: 0;
         font-size: 0.88rem;
-        color: #5a5f66;
+        color: var(--texto-3);
       }
       .ev__local svg {
         flex: none;
-        color: #9aa0a6;
+        color: var(--texto-muted);
       }
       .ev__rodape {
         display: flex;
@@ -485,28 +477,13 @@ const estilos = [...new Set(eventos.map((e) => e.estilo))].sort();
         font-weight: 700;
         letter-spacing: 0.04em;
         text-transform: uppercase;
-        color: #5a5f66;
-      }
-      .ev__preco {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-        line-height: 1.1;
-      }
-      .ev__preco small {
-        font-size: 0.68rem;
-        color: #9aa0a6;
-      }
-      .ev__preco strong {
-        font-size: 1.05rem;
-        font-weight: 800;
-        color: #2b5cff;
+        color: var(--texto-3);
       }
 
       .vazio {
         padding: 3rem 0;
         text-align: center;
-        color: #5a5f66;
+        color: var(--texto-3);
         font-size: 1.05rem;
       }
 
@@ -546,6 +523,14 @@ const estilos = [...new Set(eventos.map((e) => e.estilo))].sort();
 
         const estado = { q: '', produtora: 'todos', estilo: 'todos' };
 
+        // Busca vinda da URL (?busca=…): alimenta a "sitelinks searchbox" do
+        // Google (SearchAction em SiteSchema.astro) e links compartilhados.
+        const buscaURL = new URLSearchParams(location.search).get('busca');
+        if (buscaURL && inputBusca) {
+          inputBusca.value = buscaURL;
+          estado.q = buscaURL.trim().toLowerCase();
+        }
+
         const aplicar = () => {
           let visiveis = 0;
           cards.forEach((card) => {
@@ -559,7 +544,7 @@ const estilos = [...new Set(eventos.map((e) => e.estilo))].sort();
 
           if (contagem)
             contagem.textContent =
-              visiveis === 1 ? '1 evento encontrado' : `${visiveis} eventos encontrados`;
+              visiveis === 1 ? '1 Festa Encontrada' : `${visiveis} Festas Encontradas`;
           if (vazio) vazio.hidden = visiveis !== 0;
         };
 

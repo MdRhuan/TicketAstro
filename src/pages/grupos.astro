@@ -1,0 +1,377 @@
+---
+import { Image } from 'astro:assets';
+// Capa do banner. Não existe uma capa dedicada de Grupos ainda — reaproveita a
+// de festas (multidão numa festa de BH, combina com "grupos de festas e
+// ofertas"). Para uma foto própria: adicione src/assets/CapaGrupos.webp e troque
+// o import abaixo + o alt da <Image>.
+import capaGrupos from '../assets/CapaFestas.webp';
+import BaseHead from '../components/BaseHead.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import CookieConsent from '../components/CookieConsent.astro';
+// Sem <WhatsAppButton />: regra do projeto — página com link de grupo de
+// WhatsApp dispensa o FAB (evita dois atalhos de WhatsApp concorrendo).
+import { grupos } from '../data/grupos';
+
+// Monta as seções a partir dos dados. Cada seção só entra na lista se tiver
+// pelo menos um grupo, então a página nunca mostra um título vazio enquanto
+// você não cadastra os grupos de festa em src/data/grupos.ts.
+const secoes = [
+  { titulo: 'Ofertas e avisos', items: grupos.filter((g) => g.tipo === 'ofertas') },
+  { titulo: 'Grupos das festas', items: grupos.filter((g) => g.tipo === 'festa') },
+].filter((s) => s.items.length > 0);
+---
+
+<html lang="pt-BR">
+  <head>
+    <BaseHead
+      title="Grupos de WhatsApp do TicketHubh | festas e ofertas em BH"
+      description="Entre nos grupos de WhatsApp do TicketHubh: avisos de festas, novos lotes e condições exclusivas de Belo Horizonte, direto no seu celular."
+    />
+  </head>
+
+  <body>
+    <Nav />
+
+    <main>
+      <header class="grp-hero">
+        <Image
+          class="grp-hero__img"
+          src={capaGrupos}
+          widths={[800, 1280, 1920, 2400]}
+          sizes="100vw"
+          quality={72}
+          alt="Multidão lotando uma festa à noite, de frente para um palco iluminado em Belo Horizonte"
+          loading="eager"
+          fetchpriority="high"
+        />
+        <div class="grp-hero__wrap">
+          <h1 class="grp-hero__titulo">Grupos</h1>
+          <p class="grp-hero__sub">
+            Entre nos grupos do TicketHubh e saiba primeiro das festas e das
+            condições exclusivas de BH.
+          </p>
+        </div>
+      </header>
+
+      <div class="grp-wrap">
+        <div class="grupos">
+          {
+            secoes.map((sec) => (
+              <section>
+                <h2 class="grupos__sec">{sec.titulo}</h2>
+                <div class="grupos__list">
+                  {sec.items.map((g) => (
+                    <article class={`grp${g.destaque ? ' grp--destaque' : ''}`}>
+                      <div class="grp__foto">
+                        {/* Fallback autoral — aparece quando não há foto (ou ela falha) */}
+                        <div class="grp__poster" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" width="44" height="44" fill="currentColor">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M3.50002 12C3.50002 7.30558 7.3056 3.5 12 3.5C16.6944 3.5 20.5 7.30558 20.5 12C20.5 16.6944 16.6944 20.5 12 20.5C10.3278 20.5 8.77127 20.0182 7.45798 19.1861C7.21357 19.0313 6.91408 18.9899 6.63684 19.0726L3.75769 19.9319L4.84173 17.3953C4.96986 17.0955 4.94379 16.7521 4.77187 16.4751C3.9657 15.176 3.50002 13.6439 3.50002 12ZM12 1.5C6.20103 1.5 1.50002 6.20101 1.50002 12C1.50002 13.8381 1.97316 15.5683 2.80465 17.0727L1.08047 21.107C0.928048 21.4637 0.99561 21.8763 1.25382 22.1657C1.51203 22.4552 1.91432 22.5692 2.28599 22.4582L6.78541 21.1155C8.32245 21.9965 10.1037 22.5 12 22.5C17.799 22.5 22.5 17.799 22.5 12C22.5 6.20101 17.799 1.5 12 1.5ZM14.2925 14.1824L12.9783 15.1081C12.3628 14.7575 11.6823 14.2681 10.9997 13.5855C10.2901 12.8759 9.76402 12.1433 9.37612 11.4713L10.2113 10.7624C10.5697 10.4582 10.6678 9.94533 10.447 9.53028L9.38284 7.53028C9.23954 7.26097 8.98116 7.0718 8.68115 7.01654C8.38113 6.96129 8.07231 7.046 7.84247 7.24659L7.52696 7.52195C6.76823 8.18414 6.3195 9.2723 6.69141 10.3741C7.07698 11.5163 7.89983 13.314 9.58552 14.9997C11.3991 16.8133 13.2413 17.5275 14.3186 17.8049C15.1866 18.0283 16.008 17.7288 16.5868 17.2572L17.1783 16.7752C17.4313 16.5691 17.5678 16.2524 17.544 15.9269C17.5201 15.6014 17.3389 15.308 17.0585 15.1409L15.3802 14.1409C15.0412 13.939 14.6152 13.9552 14.2925 14.1824Z" />
+                          </svg>
+                        </div>
+
+                        {g.foto && (
+                          <img
+                            class="grp__img"
+                            src={g.foto}
+                            alt={`Grupo ${g.nome} no WhatsApp`}
+                            loading="lazy"
+                            decoding="async"
+                            width="600"
+                            height="338"
+                            onerror="this.closest('.grp__foto').classList.add('sem-foto')"
+                          />
+                        )}
+
+                        {g.destaque && <span class="grp__badge">Principal</span>}
+                      </div>
+
+                      <div class="grp__corpo">
+                        <h3 class="grp__nome">{g.nome}</h3>
+                        <p class="grp__desc">{g.descricao}</p>
+                        <a
+                          class="grp__btn"
+                          href={g.link}
+                          target="_blank"
+                          rel="noopener"
+                          aria-label={`Entrar no grupo ${g.nome} (abre o WhatsApp em nova aba)`}
+                        >
+                          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M3.50002 12C3.50002 7.30558 7.3056 3.5 12 3.5C16.6944 3.5 20.5 7.30558 20.5 12C20.5 16.6944 16.6944 20.5 12 20.5C10.3278 20.5 8.77127 20.0182 7.45798 19.1861C7.21357 19.0313 6.91408 18.9899 6.63684 19.0726L3.75769 19.9319L4.84173 17.3953C4.96986 17.0955 4.94379 16.7521 4.77187 16.4751C3.9657 15.176 3.50002 13.6439 3.50002 12ZM12 1.5C6.20103 1.5 1.50002 6.20101 1.50002 12C1.50002 13.8381 1.97316 15.5683 2.80465 17.0727L1.08047 21.107C0.928048 21.4637 0.99561 21.8763 1.25382 22.1657C1.51203 22.4552 1.91432 22.5692 2.28599 22.4582L6.78541 21.1155C8.32245 21.9965 10.1037 22.5 12 22.5C17.799 22.5 22.5 17.799 22.5 12C22.5 6.20101 17.799 1.5 12 1.5ZM14.2925 14.1824L12.9783 15.1081C12.3628 14.7575 11.6823 14.2681 10.9997 13.5855C10.2901 12.8759 9.76402 12.1433 9.37612 11.4713L10.2113 10.7624C10.5697 10.4582 10.6678 9.94533 10.447 9.53028L9.38284 7.53028C9.23954 7.26097 8.98116 7.0718 8.68115 7.01654C8.38113 6.96129 8.07231 7.046 7.84247 7.24659L7.52696 7.52195C6.76823 8.18414 6.3195 9.2723 6.69141 10.3741C7.07698 11.5163 7.89983 13.314 9.58552 14.9997C11.3991 16.8133 13.2413 17.5275 14.3186 17.8049C15.1866 18.0283 16.008 17.7288 16.5868 17.2572L17.1783 16.7752C17.4313 16.5691 17.5678 16.2524 17.544 15.9269C17.5201 15.6014 17.3389 15.308 17.0585 15.1409L15.3802 14.1409C15.0412 13.939 14.6152 13.9552 14.2925 14.1824Z" />
+                          </svg>
+                          Entrar no grupo
+                        </a>
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              </section>
+            ))
+          }
+        </div>
+
+        <p class="grp-nota">
+          Os grupos são abertos e divulgam festas e shows de BH. Você pode sair
+          quando quiser pelas opções do próprio grupo no WhatsApp.
+        </p>
+      </div>
+    </main>
+
+    <Footer />
+    <CookieConsent />
+
+    <style is:global>
+      ::selection {
+        background: var(--marca);
+        color: #fff;
+      }
+    </style>
+
+    <style>
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        color: var(--texto);
+        background: #fff;
+      }
+      *:focus-visible {
+        outline: 2px solid var(--marca);
+        outline-offset: 3px;
+        border-radius: 8px;
+      }
+
+      /* ---- Hero (mesmo padrão de blog/calendário/eventos) ---- */
+      .grp-hero {
+        position: relative;
+        display: flex;
+        align-items: flex-end;
+        min-height: clamp(280px, 42vh, 460px);
+        color: #fff;
+        background-color: var(--fundo-escuro); /* fallback enquanto a foto carrega */
+        overflow: hidden;
+      }
+      .grp-hero__img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center 70%;
+        z-index: 0;
+      }
+      .grp-hero::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        background: linear-gradient(180deg, rgba(18, 20, 26, 0.2), rgba(18, 20, 26, 0.85));
+      }
+      .grp-hero__wrap {
+        position: relative;
+        z-index: 2;
+        max-width: 1140px;
+        margin-inline: auto;
+        width: 100%;
+        padding: 2.5rem 1.5rem 2.75rem;
+      }
+      .grp-hero__titulo {
+        margin: 0;
+        font-size: clamp(2.2rem, 5.5vw, 3.6rem);
+        font-weight: 800;
+        letter-spacing: -0.03em;
+      }
+      .grp-hero__sub {
+        margin: 0.5rem 0 0;
+        font-size: 1.1rem;
+        max-width: 52ch;
+        color: rgba(255, 255, 255, 0.92);
+      }
+
+      /* ---- Conteúdo ---- */
+      .grp-wrap {
+        max-width: 1140px;
+        margin-inline: auto;
+        padding: 3rem 1.5rem 4.5rem;
+      }
+
+      .grupos {
+        display: flex;
+        flex-direction: column;
+        gap: 2.75rem;
+      }
+      .grupos__sec {
+        margin: 0 0 1.1rem;
+        font-size: 0.82rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--texto);
+      }
+      .grupos__list {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1.25rem;
+      }
+      /* 3 por linha no desktop → 2 no tablet → 1 no celular. */
+      @media (max-width: 860px) {
+        .grupos__list {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+      @media (max-width: 540px) {
+        .grupos__list {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* ---- Card de grupo (foto + corpo + botão) ---- */
+      .grp {
+        display: flex;
+        flex-direction: column;
+        background: #fff;
+        border: 2px solid var(--texto);
+        border-radius: 16px;
+        overflow: hidden;
+        transition: transform 0.16s ease, box-shadow 0.18s ease,
+          border-color 0.18s ease;
+      }
+      .grp:hover,
+      .grp:focus-within {
+        transform: translateY(-2px);
+        box-shadow: 0 16px 32px -20px rgba(16, 17, 20, 0.4);
+      }
+
+      /* ---- Foto + fallback autoral ---- */
+      .grp__foto {
+        position: relative;
+        aspect-ratio: 16 / 9;
+        overflow: hidden;
+        background: var(--marca);
+      }
+      .grp__poster {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: rgba(255, 255, 255, 0.92);
+        background: linear-gradient(150deg,
+          color-mix(in srgb, var(--marca) 92%, #fff) 0%,
+          color-mix(in srgb, var(--marca) 80%, #000) 100%);
+      }
+      .grp__poster::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(
+          rgba(255, 255, 255, 0.18) 1px,
+          transparent 1.4px
+        );
+        background-size: 13px 13px;
+        mask-image: linear-gradient(160deg, #000, transparent 78%);
+      }
+      .grp__poster svg {
+        position: relative;
+      }
+      .grp__img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        z-index: 1;
+      }
+      .grp__foto.sem-foto .grp__img {
+        display: none;
+      }
+      .grp__badge {
+        position: absolute;
+        top: 0.7rem;
+        left: 0.7rem;
+        z-index: 2;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+        padding: 0.35rem 0.55rem;
+        border-radius: 9px;
+        background: #fff;
+        color: var(--texto);
+        box-shadow: 0 2px 8px rgba(16, 17, 20, 0.18);
+      }
+
+      /* ---- Corpo ---- */
+      .grp__corpo {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 1.1rem 1.2rem 1.3rem;
+      }
+      .grp__nome {
+        margin: 0;
+        font-size: 1.1rem;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        color: var(--texto);
+      }
+      .grp__desc {
+        margin: 0;
+        font-size: 0.92rem;
+        line-height: 1.45;
+        color: var(--texto-3);
+      }
+      .grp__btn {
+        margin-top: auto;
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.45rem;
+        padding: 0.6rem 1rem;
+        border: 1px solid var(--marca);
+        border-radius: 12px;
+        background: var(--marca);
+        color: #fff;
+        font-weight: 700;
+        font-size: 0.95rem;
+        text-decoration: none;
+        transition: background 0.18s ease, border-color 0.18s ease,
+          transform 0.16s ease;
+      }
+      .grp__btn:hover {
+        background: var(--marca-hover);
+        border-color: var(--marca-hover);
+      }
+      .grp__btn:active {
+        transform: translateY(1px);
+      }
+
+      /* ---- Card em destaque (o principal) — moldura da marca ---- */
+      .grp--destaque {
+        border-color: var(--marca);
+      }
+      .grp--destaque .grp__badge {
+        background: var(--marca);
+        color: #fff;
+        box-shadow: 0 2px 8px rgba(43, 92, 255, 0.4);
+      }
+
+      .grp-nota {
+        margin: 2.5rem 0 0;
+        font-size: 0.88rem;
+        color: var(--texto-3);
+        max-width: 68ch;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .grp,
+        .grp__btn {
+          transition: none;
+        }
+      }
+    </style>
+  </body>
+</html>

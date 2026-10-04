@@ -1,4 +1,7 @@
 ---
+import BaseHead from '../../components/BaseHead.astro';
+import Breadcrumbs from '../../components/schema/Breadcrumbs.astro';
+import { imagemLocal } from '../../lib/imagem';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
 import WhatsAppButton from '../../components/WhatsAppButton.astro';
@@ -23,7 +26,7 @@ const outros = posts
   .sort((a, b) => b.dataISO.localeCompare(a.dataISO))
   .slice(0, 3);
 
-const titulo = `${p.titulo} — Blog TicketHubh`;
+const titulo = `${p.titulo} | Blog TicketHubh`;
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -31,25 +34,21 @@ const jsonLd = {
   headline: p.titulo,
   datePublished: p.dataISO,
   author: { '@type': 'Organization', name: p.autor },
-  image: [`https://tickethub.com.br${p.imagem}`],
+  image: [new URL(imagemLocal(p.imagem), Astro.site).href],
   description: p.resumo,
 };
 ---
 
 <html lang="pt-BR">
   <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="generator" content={Astro.generator} />
-    <title>{titulo}</title>
-    <meta name="description" content={p.resumo} />
-    <meta property="og:type" content="article" />
-    <meta property="og:title" content={p.titulo} />
-    <meta property="og:description" content={p.resumo} />
-    <meta property="og:image" content={p.imagem} />
+    <BaseHead title={titulo} description={p.resumo} image={p.imagem} type="article" />
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <Breadcrumbs
+      items={[
+        { name: 'Blog', path: '/blog' },
+        { name: p.titulo, path: `/blog/${p.slug}` },
+      ]}
+    />
   </head>
 
   <body>
@@ -63,7 +62,7 @@ const jsonLd = {
             <img
               class="art-hero__img"
               src={p.imagem}
-              alt={`Imagem do artigo ${p.titulo}`}
+              alt={`${p.titulo} — ${p.categoria}`}
               width="1600"
               height="900"
               onerror="this.closest('.art-hero__media').classList.add('sem-foto')"
@@ -109,7 +108,7 @@ const jsonLd = {
                       <img
                         class="mini__img"
                         src={o.imagem}
-                        alt={`Imagem do artigo ${o.titulo}`}
+                        alt={`${o.titulo} — ${o.categoria}`}
                         loading="lazy"
                         decoding="async"
                         width="480"
@@ -134,7 +133,7 @@ const jsonLd = {
 
     <style is:global>
       ::selection {
-        background: #2b5cff;
+        background: var(--marca);
         color: #fff;
       }
     </style>
@@ -143,11 +142,11 @@ const jsonLd = {
       body {
         margin: 0;
         font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-        color: #101114;
+        color: var(--texto);
         background: #fff;
       }
       *:focus-visible {
-        outline: 2px solid #2b5cff;
+        outline: 2px solid var(--marca);
         outline-offset: 3px;
         border-radius: 6px;
       }
@@ -160,7 +159,7 @@ const jsonLd = {
         min-height: clamp(300px, 46vh, 500px);
         color: #fff;
         overflow: hidden;
-        background: #12141a;
+        background: var(--fundo-escuro);
       }
       .art-hero__media {
         position: absolute;
@@ -171,8 +170,8 @@ const jsonLd = {
         position: absolute;
         inset: 0;
         background: linear-gradient(150deg,
-          color-mix(in srgb, var(--cor, #2b5cff) 88%, #fff) 0%,
-          color-mix(in srgb, var(--cor, #2b5cff) 74%, #000) 100%);
+          color-mix(in srgb, var(--cor, var(--marca)) 88%, #fff) 0%,
+          color-mix(in srgb, var(--cor, var(--marca)) 74%, #000) 100%);
       }
       .art-hero__poster::before {
         content: "";
@@ -251,7 +250,7 @@ const jsonLd = {
         font-size: 1.3rem;
         line-height: 1.5;
         font-weight: 500;
-        color: #101114;
+        color: var(--texto);
       }
       .art-p {
         margin: 0 0 1.35rem;
@@ -265,7 +264,7 @@ const jsonLd = {
         gap: 0.45rem;
         margin: 1.5rem 0 0;
         font-weight: 700;
-        color: #2b5cff;
+        color: var(--marca);
         text-decoration: none;
       }
       .voltar svg {
@@ -287,7 +286,7 @@ const jsonLd = {
         font-weight: 800;
         letter-spacing: 0.08em;
         text-transform: uppercase;
-        color: #9aa0a6;
+        color: var(--texto-muted);
       }
       .mais-grade {
         list-style: none;
@@ -307,15 +306,15 @@ const jsonLd = {
         aspect-ratio: 16 / 10;
         border-radius: 14px;
         overflow: hidden;
-        background: var(--cor, #2b5cff);
+        background: var(--cor, var(--marca));
         margin-bottom: 0.85rem;
       }
       .mini__poster {
         position: absolute;
         inset: 0;
         background: linear-gradient(150deg,
-          color-mix(in srgb, var(--cor, #2b5cff) 88%, #fff) 0%,
-          color-mix(in srgb, var(--cor, #2b5cff) 74%, #000) 100%);
+          color-mix(in srgb, var(--cor, var(--marca)) 88%, #fff) 0%,
+          color-mix(in srgb, var(--cor, var(--marca)) 74%, #000) 100%);
       }
       .mini__poster::before {
         content: "";
@@ -342,7 +341,7 @@ const jsonLd = {
         font-weight: 800;
         letter-spacing: 0.04em;
         text-transform: uppercase;
-        color: #9aa0a6;
+        color: var(--texto-muted);
       }
       .mini__titulo {
         margin: 0.3rem 0 0;
@@ -350,11 +349,11 @@ const jsonLd = {
         line-height: 1.2;
         font-weight: 700;
         letter-spacing: -0.02em;
-        color: #101114;
+        color: var(--texto);
         transition: color 0.16s ease;
       }
       .mini:hover .mini__titulo {
-        color: #2b5cff;
+        color: var(--marca);
       }
 
       @media (max-width: 720px) {

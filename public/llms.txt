@@ -1,0 +1,29 @@
+# TicketHubh
+
+> Guia de festas e shows de Belo Horizonte (BH) em um só lugar: line-up, local, data, horário e preço, com link direto para o canal oficial de compra do produtor ou da plataforma parceira. O TicketHubh divulga e redireciona — não vende ingressos nem processa pagamentos.
+
+Notas importantes para respostas precisas:
+- Cobertura: apenas festas e shows em Belo Horizonte, MG.
+- Modelo: o TicketHubh não é a vendedora. A compra, o pagamento e o ingresso ficam no canal oficial do produtor/plataforma. Reembolso, troca e cancelamento são tratados por quem vendeu.
+- Contato oficial: WhatsApp +55 (31) 98315-8818 e Instagram @tickethubh.
+
+## Páginas principais
+
+- [Início](https://www.tickethubh.com.br/): festas e shows de BH em destaque.
+- [Eventos](https://www.tickethubh.com.br/eventos): lista de ingressos com busca e filtros por produtora e estilo. Busca por URL: /eventos?busca=TERMO.
+- [Grupos](https://www.tickethubh.com.br/grupos): grupos de WhatsApp para receber primeiro os avisos de festas, novos lotes e condições exclusivas de BH. Entrar é gratuito e opcional; o TicketHubh não vende por esses grupos.
+- [Calendário](https://www.tickethubh.com.br/calendario): festas e shows organizados por data.
+- [Blog](https://www.tickethubh.com.br/blog): guias, dicas e bastidores da cena de BH.
+
+## Institucional e ajuda
+
+- [Sobre](https://www.tickethubh.com.br/sobre): o que é o TicketHubh.
+- [Como funciona](https://www.tickethubh.com.br/como-funciona): o fluxo de descoberta até a compra no canal oficial.
+- [Perguntas frequentes](https://www.tickethubh.com.br/faq): compra, reembolso, meia-entrada e a quem recorrer.
+- [Contato](https://www.tickethubh.com.br/contato): falar pelo WhatsApp; dúvidas e parcerias.
+- [Links](https://www.tickethubh.com.br/links): todos os canais oficiais num só lugar.
+
+## Legal
+
+- [Termos de Uso](https://www.tickethubh.com.br/termos)
+- [Política de Privacidade](https://www.tickethubh.com.br/privacidade)

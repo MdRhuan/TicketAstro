@@ -19,7 +19,7 @@ export interface Post {
 }
 
 const CORPO_EX = [
-  'Este é um texto de exemplo para o artigo. Substitua pelo conteúdo real antes de publicar — mantenha os parágrafos curtos e diretos, do jeito que o público de 18 a 25 lê no celular.',
+  'Este é um texto de exemplo para o artigo. Substitua pelo conteúdo real antes de publicar | mantenha os parágrafos curtos e diretos, do jeito que o público de 18 a 25 lê no celular.',
   'Use subtítulos, listas e imagens para quebrar o texto. O importante é que a leitura role fácil e que cada seção entregue uma ideia clara, sem enrolação.',
   'No fim, feche com um convite: qual é o próximo rolê? Aponte para a página de eventos ou para o grupo de ofertas.',
 ];
@@ -86,7 +86,7 @@ export const posts: Post[] = [
     slug: 'bastidores-line-up',
     titulo: 'Bastidores: como se monta o line-up de uma festa',
     resumo:
-      'Da negociação com o artista ao horário de cada set — o quebra-cabeça que ninguém vê na pista.',
+      'Da negociação com o artista ao horário de cada set | o quebra-cabeça que ninguém vê na pista.',
     categoria: 'Bastidores',
     autor: 'Redação TicketHubh',
     dataISO: '2026-08-12',

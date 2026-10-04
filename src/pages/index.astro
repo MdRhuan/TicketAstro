@@ -1,4 +1,6 @@
 ---
+import BaseHead from '../components/BaseHead.astro';
+import SiteSchema from '../components/schema/SiteSchema.astro';
 import Nav from '../components/Nav.astro';
 import EventosCarousel from '../components/EventosCarousel.astro';
 import EventosGrid from '../components/EventosGrid.astro';
@@ -9,12 +11,11 @@ import CookieConsent from '../components/CookieConsent.astro';
 
 <html lang="pt-BR">
 	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>TicketHubh</title>
+		<BaseHead
+			title="TicketHubh | Festas em BH e shows em um só lugar"
+			description="Descubra as festas e os shows de Belo Horizonte: line-up, local, horário e preço num só lugar, com link direto para o canal oficial de compra."
+		/>
+		<SiteSchema />
 	</head>
 	<body style="margin:0">
 		<Nav />

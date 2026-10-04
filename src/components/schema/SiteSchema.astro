@@ -1,0 +1,66 @@
+---
+// ─────────────────────────────────────────────────────────────────────────────
+// JSON-LD da entidade da marca — usar SÓ na home (uma vez por site).
+//
+//   • Organization → ensina ao Google o nome, logo e canais oficiais da marca.
+//     Ajuda a formar o Knowledge Panel e a exibir o nome "TicketHubh" na SERP.
+//   • WebSite + SearchAction → habilita a "sitelinks searchbox" na SERP.
+//
+// IMPORTANTE (verdade dos dados): o SearchAction aponta para /eventos?busca=…,
+// que é lido pelo script de /eventos (index.astro). Se aquele parâmetro deixar
+// de ser tratado lá, remova o potentialAction daqui — um SearchAction que não
+// executa busca de verdade é sinal falso para o buscador.
+// ─────────────────────────────────────────────────────────────────────────────
+
+const site = Astro.site!; // definido em astro.config.mjs (obrigatório)
+const org = new URL('/#organization', site).href;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': org,
+      name: 'TicketHubh',
+      url: site.href,
+      logo: {
+        '@type': 'ImageObject',
+        url: new URL('/apple-touch-icon.png', site).href,
+        width: 180,
+        height: 180,
+      },
+      // Canais oficiais verificáveis da marca.
+      sameAs: [
+        'https://www.instagram.com/tickethubh/',
+        'https://g.page/r/CcnVTNNZ-cF7EAE/review',
+      ],
+      // WhatsApp como ponto de contato (forma correta — não vai no sameAs).
+      contactPoint: {
+        '@type': 'ContactPoint',
+        contactType: 'customer support',
+        telephone: '+55-31-98315-8818',
+        url: 'https://wa.me/5531983158818',
+        availableLanguage: ['Portuguese'],
+      },
+    },
+    {
+      '@type': 'WebSite',
+      '@id': new URL('/#website', site).href,
+      url: site.href,
+      name: 'TicketHubh',
+      inLanguage: 'pt-BR',
+      publisher: { '@id': org },
+      potentialAction: {
+        '@type': 'SearchAction',
+        target: {
+          '@type': 'EntryPoint',
+          urlTemplate: new URL('/eventos?busca={search_term_string}', site).href,
+        },
+        'query-input': 'required name=search_term_string',
+      },
+    },
+  ],
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />

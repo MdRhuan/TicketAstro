@@ -1,4 +1,7 @@
 ---
+import { Image } from 'astro:assets';
+import capaCalendario from '../assets/CapaCalenda.webp';
+import BaseHead from '../components/BaseHead.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import WhatsAppButton from '../components/WhatsAppButton.astro';
@@ -17,7 +20,7 @@ for (const e of ordenados) {
   const [y, m, d] = e.dataISO.split('-').map(Number);
   const dt = new Date(y, m - 1, d);
   const chave = `${y}-${String(m).padStart(2, '0')}`;
-  const label = `${MESES[m - 1]} ${y}`;
+  const label = `${MESES[m - 1]}`;
   let g = grupos.find((x) => x.chave === chave);
   if (!g) {
     g = { chave, label, itens: [] };
@@ -31,15 +34,9 @@ const catCls = (c: string) => (c === 'Festa' ? 'festa' : 'show');
 
 <html lang="pt-BR">
   <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="generator" content={Astro.generator} />
-    <title>Calendário de shows e festas — TicketHubh</title>
-    <meta
-      name="description"
-      content="Veja shows e festas por data no calendário do TicketHubh. Filtre por Festas ou Shows e garanta seu ingresso."
+    <BaseHead
+      title="Calendário de shows e festas | TicketHubh"
+      description="As festas e os shows de Belo Horizonte organizados por data no calendário do TicketHubh. Filtre por Festas ou Shows e não perca o próximo rolê da cidade."
     />
   </head>
 
@@ -48,9 +45,19 @@ const catCls = (c: string) => (c === 'Festa' ? 'festa' : 'show');
 
     <main>
       <header class="cal-hero">
+        <Image
+          class="cal-hero__img"
+          src={capaCalendario}
+          widths={[800, 1280, 1600]}
+          sizes="100vw"
+          quality={72}
+          alt="Calendário de festas e shows de Belo Horizonte"
+          loading="eager"
+          fetchpriority="high"
+        />
         <div class="cal-hero__wrap">
           <h1 class="cal-hero__titulo">Calendário</h1>
-          <p class="cal-hero__sub">Todos os shows e festas, por data.</p>
+          <p class="cal-hero__sub">Todas as festas e shows de BH, organizados por data.</p>
         </div>
       </header>
 
@@ -95,7 +102,7 @@ const catCls = (c: string) => (c === 'Festa' ? 'festa' : 'show');
 
     <style is:global>
       ::selection {
-        background: #2b5cff;
+        background: var(--marca);
         color: #fff;
       }
     </style>
@@ -104,11 +111,11 @@ const catCls = (c: string) => (c === 'Festa' ? 'festa' : 'show');
       body {
         margin: 0;
         font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-        color: #101114;
+        color: var(--texto);
         background: #fff;
       }
       *:focus-visible {
-        outline: 2px solid #2b5cff;
+        outline: 2px solid var(--marca);
         outline-offset: 3px;
         border-radius: 6px;
       }
@@ -120,20 +127,28 @@ const catCls = (c: string) => (c === 'Festa' ? 'festa' : 'show');
         align-items: flex-end;
         min-height: clamp(280px, 42vh, 460px);
         color: #fff;
-        background-color: #12141a;
-        background-image: radial-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1.4px);
-        background-size: 16px 16px;
+        background-color: var(--fundo-escuro); /* fallback enquanto a foto carrega */
         overflow: hidden;
+      }
+      .cal-hero__img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        z-index: 0;
       }
       .cal-hero::after {
         content: "";
         position: absolute;
         inset: 0;
+        z-index: 1;
         background: linear-gradient(180deg, rgba(18, 20, 26, 0.2), rgba(18, 20, 26, 0.85));
       }
       .cal-hero__wrap {
         position: relative;
-        z-index: 1;
+        z-index: 2;
         max-width: 1140px;
         margin-inline: auto;
         width: 100%;
@@ -167,7 +182,7 @@ const catCls = (c: string) => (c === 'Festa' ? 'festa' : 'show');
         font-weight: 800;
         letter-spacing: 0.08em;
         text-transform: uppercase;
-        color: #9aa0a6;
+        color: var(--texto);
       }
       .ag-lista {
         list-style: none;
@@ -184,7 +199,7 @@ const catCls = (c: string) => (c === 'Festa' ? 'festa' : 'show');
         gap: 1rem;
         padding: 0.85rem 1rem;
         background: #fff;
-        border: 1px solid #ececec;
+        border: 1px solid #b0b0ba;
         border-radius: 14px;
         text-decoration: none;
         color: inherit;
@@ -193,7 +208,7 @@ const catCls = (c: string) => (c === 'Festa' ? 'festa' : 'show');
       }
       .ag-row:hover {
         transform: translateY(-2px);
-        border-color: #dcdcdc;
+        border-color: #9a9aa4;
         box-shadow: 0 14px 28px -20px rgba(16, 17, 20, 0.35);
       }
 
@@ -214,7 +229,7 @@ const catCls = (c: string) => (c === 'Festa' ? 'festa' : 'show');
         font-size: 1.5rem;
         font-weight: 800;
         letter-spacing: -0.02em;
-        color: #101114;
+        color: var(--texto);
       }
       .ag-row__data span {
         margin-top: 0.2rem;
@@ -222,11 +237,11 @@ const catCls = (c: string) => (c === 'Festa' ? 'festa' : 'show');
         font-weight: 700;
         letter-spacing: 0.06em;
         text-transform: uppercase;
-        color: #9aa0a6;
+        color: var(--texto-muted);
       }
       /* Cor por categoria no número do dia */
       .ag-row__data--festa strong {
-        color: #2b5cff;
+        color: var(--marca);
       }
       .ag-row__data--show strong {
         color: #7a3fb0;
@@ -244,14 +259,14 @@ const catCls = (c: string) => (c === 'Festa' ? 'festa' : 'show');
         font-size: 1.08rem;
         font-weight: 700;
         letter-spacing: -0.01em;
-        color: #101114;
+        color: var(--texto);
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
       }
       .ag-row__meta {
         font-size: 0.86rem;
-        color: #5a5f66;
+        color: var(--texto-3);
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -267,7 +282,7 @@ const catCls = (c: string) => (c === 'Festa' ? 'festa' : 'show');
         padding: 0.32rem 0.6rem;
         border-radius: 7px;
         color: #fff;
-        background: #2b5cff;
+        background: var(--marca);
         box-shadow: 0 2px 8px rgba(43, 92, 255, 0.4);
       }
 
@@ -277,7 +292,7 @@ const catCls = (c: string) => (c === 'Festa' ? 'festa' : 'show');
         transition: transform 0.18s ease, color 0.18s ease;
       }
       .ag-row:hover .ag-row__seta {
-        color: #2b5cff;
+        color: var(--marca);
         transform: translateX(3px);
       }
 
