@@ -158,9 +158,7 @@ Elas acontecem na saideira.
 No dia seguinte, ninguém lembra a hora em que chegou.
 Mas todo mundo lembra quem disse "só mais uma".
 
-Sábado, a saideira é lá em cima.
-
-Seu domingo merece terminar lá em cima.`,
+Sábado, a saideira é lá em cima.`,
     lineup: [],
     ingressos: [],
     regras: [
