@@ -34,7 +34,7 @@ export interface Evento {
   nome: string;
   categoria: 'Festa' | 'Show';
   estilo: string;
-  produtora: string;
+  produtora?: string; // opcional: eventos sem produtora a exibir ficam sem este campo
   local: string;
   cidade: string;
   endereco: string;
@@ -44,17 +44,21 @@ export interface Evento {
   horaAbertura: string; // "22:00"
   classificacao: string; // "18 anos" / "16 anos (menores só com responsável)"
   exclusiva: boolean;
-  imagem: string;
+  imagem: string; // capa (card/listagem/social) — public/eventos/<slug>.(jpg|webp)
+  imagemHero?: string; // opcional: banner 16/9 do topo da página de detalhe (se vazio, usa `imagem`)
   cor: string;
   descricao: string; // 1–3 parágrafos
   lineup: Artista[]; // atrações / DJs / line-up (com foto)
   ingressos: TipoIngresso[];
   regras: string[]; // políticas: meia, portaria, proibições...
   linkCompra: string; // parceiro oficial (EXTERNO)
+  ctaCompra?: string; // opcional: rótulo do botão principal. Padrão: "Comprar ingresso".
   linkCondicoes?: string; // opcional: link específico para "condições especiais".
   //                         Se vazio, usa o WhatsApp do rodapé com mensagem pronta.
+  ctaCondicoes?: string; // opcional: rótulo do botão secundário. Padrão: "Condições especiais".
   linkGrupo?: string; // opcional: link do grupo de ofertas específico do evento.
   //                     Se vazio, usa GRUPO_OFERTAS (o grupo geral).
+  ctaGrupo?: string; // opcional: rótulo do botão do grupo. Padrão: "Grupo de ofertas".
 }
 
 // WhatsApp para o botão "Condições especiais" (mesmo número do rodapé).
@@ -115,6 +119,102 @@ export const brl = (n: number) =>
   n.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 0 });
 
 export const eventos: Evento[] = [
+  {
+    slug: 'saideira',
+    nome: 'Saideira',
+    categoria: 'Festa',
+    estilo: 'Funk',
+    // sem produtora a exibir (mesmo padrão do Rio Califórnia)
+    local: 'Night Market',
+    cidade: 'Belo Horizonte',
+    endereco: 'Rua Wilson Rocha Lima, 137 | Estoril',
+    dataISO: '2026-10-10',
+    dataLabel: '10 OUT 2026',
+    diaSemana: 'Sábado',
+    horaAbertura: '22:00',
+    classificacao: '18 anos',
+    exclusiva: true,
+    imagem: '/eventos/saideira.webp',
+    imagemHero: '/eventos/saideira-banner.webp',
+    cor: '#c02a6f',
+    descricao: `A noite já começou em algum lugar.
+Um jantar, um bar, um esquenta na casa de alguém.
+
+E aí chega aquela hora.
+Alguém olha o relógio.
+Alguém fala em ir embora.
+
+E outra pessoa responde:
+"Só mais uma."
+
+É aí que a noite muda.
+Quem ia embora fica.
+O grupo se reorganiza.
+O som sobe, a cidade brilha lá embaixo, e ninguém lembra mais quem queria ir para casa.
+
+As melhores histórias quase nunca acontecem no plano original.
+Elas acontecem na saideira.
+
+No dia seguinte, ninguém lembra a hora em que chegou.
+Mas todo mundo lembra quem disse "só mais uma".
+
+Sábado, a saideira é lá em cima.
+
+Seu domingo merece terminar lá em cima.`,
+    lineup: [],
+    ingressos: [],
+    regras: [
+      'Classificação etária: 18 anos.',
+    ],
+    linkCompra: 'https://events.vipme.com.br/2477812/539227?id_promoter=48412',
+    ctaCompra: 'Garantir Meu Nome Na Lista',
+    linkCondicoes: 'https://wa.link/84f5tn',
+    ctaCondicoes: 'Lista Para Consumo',
+  },
+  {
+    slug: 'rio-california',
+    nome: 'Rio Califórnia',
+    categoria: 'Festa',
+    estilo: 'Eletrônica',
+    // sem produtora a exibir (a pedido)
+    local: 'Night Market',
+    cidade: 'Belo Horizonte',
+    endereco: 'Rua Wilson Rocha Lima, 137 | Estoril',
+    dataISO: '2026-10-11',
+    dataLabel: '11 OUT 2026',
+    diaSemana: 'Domingo',
+    horaAbertura: '15:00',
+    classificacao: '18 anos',
+    exclusiva: true,
+    imagem: '/eventos/rio-california.webp',
+    imagemHero: '/eventos/rio-california-banner.webp',
+    cor: '#e0592b',
+    descricao: `Domingo, 15h.
+O sol ainda está alto e a cidade fica lá embaixo.
+Você chega sem pressa, com o copo na mão e os amigos por perto.
+
+A eletrônica começa baixinho, quase de fundo.
+Ninguém dança ainda. Todo mundo só se acomoda.
+
+A tarde vai passando e o som vai crescendo.
+O grave fica mais presente.
+A conversa diminui. O corpo começa a se mexer.
+
+Então chega a hora.
+O sol desce, a luz fica dourada e, sem ninguém combinar, todo mundo vira para o mesmo lado.
+
+Sunset.`,
+    lineup: [],
+    ingressos: [],
+    regras: [
+      'Classificação etária: 18 anos.',
+    ],
+    linkCompra: 'https://listario-sigma.vercel.app',
+    ctaCompra: 'Garantir Meu Nome Na Lista',
+    linkCondicoes: 'https://wa.link/clilcl',
+    ctaCondicoes: 'Comemorar Aniversário',
+    ctaGrupo: 'Grupo De Ofertas',
+  },
   {
     slug: 'festa-neon',
     nome: 'Festa Neon',

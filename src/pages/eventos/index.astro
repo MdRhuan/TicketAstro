@@ -10,6 +10,8 @@ import CookieConsent from '../../components/CookieConsent.astro';
 // Eventos de exemplo — troca pelos reais depois.
 // FOTO: public/eventos/<slug>.jpg  (sem foto → fallback autoral)
 const eventos = [
+  { slug: 'saideira', nome: 'Saideira', categoria: 'Festa', estilo: 'Funk', produtora: '', local: 'Night Market', cidade: 'Belo Horizonte', dataISO: '2026-10-10', dataLabel: '10 OUT 2026', preco: 0, exclusiva: true, imagem: '/eventos/saideira.webp', cor: '#c02a6f' },
+  { slug: 'rio-california', nome: 'Rio Califórnia', categoria: 'Festa', estilo: 'Eletrônica', produtora: '', local: 'Night Market', cidade: 'Belo Horizonte', dataISO: '2026-10-11', dataLabel: '11 OUT 2026', preco: 0, exclusiva: true, imagem: '/eventos/rio-california.webp', cor: '#e0592b' },
   { slug: 'festa-neon', nome: 'Festa Neon', categoria: 'Festa', estilo: 'Eletrônica', produtora: 'Raro', local: 'Clube da Serra', cidade: 'Belo Horizonte', dataISO: '2026-12-13', dataLabel: '13 DEZ 2026', preco: 70, exclusiva: true, imagem: '/eventos/festa-neon.jpg', cor: '#2b5cff' },
   { slug: 'sunset-club', nome: 'Sunset Club | Rooftop', categoria: 'Festa', estilo: 'Eletrônica', produtora: '2Liv', local: 'Terraço 22', cidade: 'Belo Horizonte', dataISO: '2026-11-15', dataLabel: '15 NOV 2026', preco: 60, exclusiva: false, imagem: '/eventos/sunset-club.jpg', cor: '#7a3fb0' },
   { slug: 'noite-eletronica', nome: 'Noite Eletrônica | Warehouse', categoria: 'Festa', estilo: 'Eletrônica', produtora: 'Chalé', local: 'Galpão 7', cidade: 'Belo Horizonte', dataISO: '2026-11-28', dataLabel: '28 NOV 2026', preco: 120, exclusiva: true, imagem: '/eventos/noite-eletronica.jpg', cor: '#0b7285' },
@@ -31,7 +33,7 @@ function diasFalta(iso: string): string {
   return `Faltam ${diff} dias`;
 }
 
-const produtoras = [...new Set(eventos.map((e) => e.produtora))].sort();
+const produtoras = [...new Set(eventos.map((e) => e.produtora).filter(Boolean))].sort();
 const estilos = [...new Set(eventos.map((e) => e.estilo))].sort();
 ---
 

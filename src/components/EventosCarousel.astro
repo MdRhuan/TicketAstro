@@ -3,6 +3,24 @@
 // (o botão leva para /eventos/<slug>; essas páginas ainda não existem)
 const eventos = [
   {
+    slug: 'saideira',
+    titulo: 'Saideira',
+    data: '10 OUT 2026',
+    local: 'Night Market',
+    cidade: '', // mesmo venue do Rio → mostra só "Night Market" (sem Belo Horizonte)
+    cor: '#c02a6f',
+    imagem: '/eventos/saideira-banner.webp',
+  },
+  {
+    slug: 'rio-california',
+    titulo: 'Rio Califórnia',
+    data: '11 OUT 2026',
+    local: 'Night Market',
+    cidade: '', // sem cidade no card da home (a pedido) → mostra só "Night Market"
+    cor: '#e0592b',
+    imagem: '/eventos/rio-california-banner.webp', // opcional: foto de fundo do card (senão, só a cor)
+  },
+  {
     slug: 'festa-neon',
     titulo: 'Festa Neon',
     data: '13 DEZ 2026',
@@ -63,13 +81,15 @@ const eventos = [
             data-slug={e.slug}
             data-nome={e.titulo}
             data-data={e.data}
-            data-local={`${e.local} · ${e.cidade}`}
+            data-local={e.cidade ? `${e.local} · ${e.cidade}` : e.local}
             style={`--cor:${e.cor}`}
             role="group"
             aria-roledescription="slide"
             aria-label={`${i + 1} de ${eventos.length}`}
           >
-            <span class="carr__card-tag">Evento</span>
+            {e.imagem && (
+              <img class="carr__card-img" src={e.imagem} alt="" loading={i === 0 ? 'eager' : 'lazy'} decoding="async" />
+            )}
             <div class="carr__card-titulo">{e.titulo}</div>
           </article>
         ))
@@ -154,20 +174,34 @@ const eventos = [
     color: #fff;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-end; /* título no rodapé do card */
     cursor: pointer;
     transform: translate(-50%, -50%);
     transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1),
       opacity 0.5s ease, box-shadow 0.5s ease;
     box-shadow: 0 24px 55px -22px rgba(0, 0, 0, 0.55);
     will-change: transform, opacity;
+    overflow: hidden;
   }
-  .carr__card-tag {
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    opacity: 0.75;
+  /* Foto de fundo opcional + véu escuro para o texto continuar legível */
+  .carr__card-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+  }
+  .carr__card:has(.carr__card-img)::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0) 55%);
+  }
+  .carr__card-titulo {
+    position: relative;
+    z-index: 1;
   }
   .carr__card-titulo {
     font-size: clamp(1.75rem, 3.5vw, 2.5rem);
