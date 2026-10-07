@@ -216,9 +216,11 @@ const descMultilinha = e.descricao.includes('\n');
                   <span class="cta__txt">{e.ctaCompra || 'Comprar ingresso'}</span>
                 </a>
 
-                <a class="cta cta--sec" href={linkCondicoes(e)} target="_blank" rel="noopener">
-                  <span class="cta__txt">{e.ctaCondicoes || 'Condições especiais'}</span>
-                </a>
+                {!e.semCondicoes && (
+                  <a class="cta cta--sec" href={linkCondicoes(e)} target="_blank" rel="noopener">
+                    <span class="cta__txt">{e.ctaCondicoes || 'Condições especiais'}</span>
+                  </a>
+                )}
 
                 <a class="cta cta--terc" href={linkGrupo(e)} target="_blank" rel="noopener">
                   <svg class="cta__ico" viewBox="0 0 24 24" width="20" height="20" fill="none" aria-hidden="true">

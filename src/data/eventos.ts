@@ -56,6 +56,7 @@ export interface Evento {
   linkCondicoes?: string; // opcional: link específico para "condições especiais".
   //                         Se vazio, usa o WhatsApp do rodapé com mensagem pronta.
   ctaCondicoes?: string; // opcional: rótulo do botão secundário. Padrão: "Condições especiais".
+  semCondicoes?: boolean; // opcional: true esconde o botão de condições especiais na página.
   linkGrupo?: string; // opcional: link do grupo de ofertas específico do evento.
   //                     Se vazio, usa GRUPO_OFERTAS (o grupo geral).
   ctaGrupo?: string; // opcional: rótulo do botão do grupo. Padrão: "Grupo de ofertas".
@@ -119,6 +120,44 @@ export const brl = (n: number) =>
   n.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 0 });
 
 export const eventos: Evento[] = [
+  {
+    slug: 'halloween-do-night',
+    nome: 'Halloween do Night',
+    categoria: 'Festa',
+    estilo: 'Funk',
+    // sem produtora a exibir (mesmo padrão dos outros eventos do Night Market)
+    local: 'Night Market',
+    cidade: 'Belo Horizonte',
+    endereco: 'Rua Wilson Rocha Lima, 137 | Estoril',
+    dataISO: '2026-10-10',
+    dataLabel: '10 OUT 2026',
+    diaSemana: 'Sábado',
+    horaAbertura: '23:00',
+    classificacao: '18 anos',
+    exclusiva: true,
+    imagem: '/eventos/halloween-do-night.webp',
+    imagemHero: '/eventos/halloween-do-night-banner.webp',
+    cor: '#d9531e',
+    descricao: `🎃 HALLOWEEN DO NIGHT – Apocalipse Zumbi 👻
+
+O rooftop do Night Market vira cenário de apocalipse zumbi.
+
+Venha fantasiado e dispute o Concurso de Melhor Fantasia. Quem roubar a cena leva o destaque da noite.
+
+🍸 Open Bar Premium a noite toda
+🏆 Concurso de Melhor Fantasia
+🎶 Funk • Eletrônico • MTG • Pop
+
+O Halloween de BH é aqui. 🧟`,
+    lineup: [], // sem line-up (a pedido)
+    ingressos: [],
+    regras: [
+      'Classificação etária: 18 anos.',
+    ],
+    linkCompra: 'https://app.nittio.com.br/event/halloween-do-night-open-bar-premium-E7ENGq/details?coupon=BS',
+    ctaCompra: 'Comprar Ingresso Com Desconto',
+    semCondicoes: true, // sem botão de condições especiais (a pedido)
+  },
   {
     slug: 'saideira',
     nome: 'Saideira',
