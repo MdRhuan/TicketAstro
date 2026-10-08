@@ -22,3 +22,8 @@
   --superficie: #f6f6f7; /* fundo claro de blocos */
   --borda: #e6e6e9; /* linhas / divisórias */
 }
+
+/* Bloqueia o zoom por toque duplo no mobile (o pinch-zoom continua ativo, por acessibilidade). */
+html {
+  touch-action: manipulation;
+}
