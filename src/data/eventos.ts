@@ -252,6 +252,45 @@ Sunset.`,
     ctaCondicoes: 'Comemorar Aniversário',
     ctaGrupo: 'Grupo De Ofertas',
   },
+  {
+    slug: 'no-love',
+    nome: 'NO LOVE 💔',
+    categoria: 'Festa',
+    estilo: 'Funk',
+    // sem produtora a exibir (mesmo padrão dos outros eventos do Night Market)
+    local: 'Night Market',
+    cidade: 'Belo Horizonte',
+    endereco: 'Rua Wilson Rocha Lima, 137 | Estoril',
+    dataISO: '2026-10-16',
+    dataLabel: '16 OUT 2026',
+    diaSemana: 'Sexta-feira',
+    horaAbertura: '23:00',
+    classificacao: '18 anos',
+    exclusiva: true,
+    imagem: '/eventos/no-love.webp',
+    imagemHero: '/eventos/no-love-banner.webp',
+    cor: '#b3122e',
+    descricao: `NO LOVE 💔
+
+16/10 é dia de deixar o coração em casa.
+
+O Night Market recebe uma edição especial da NO LOVE, pra quem tá solteiro, desapegado ou só a fim de curtir a noite.
+
+No comando, WS da Igrejinha com aquele repertório que não deixa ninguém parado.
+
+Chega com a galera, brinda com quem você ainda não conhece e volta pra casa com história pra contar.
+
+NO LOVE. Sem promessa, só rolê. 💔`,
+    lineup: [{ nome: 'Ws da Igrejinha', foto: '/artistas/ws-da-igrejinha.webp' }],
+    ingressos: [],
+    regras: [
+      'Classificação etária: 18 anos.',
+    ],
+    linkCompra: 'https://events.vipme.com.br/2478002/539883?id_promoter=22252',
+    ctaCompra: 'Garantir Nome Na Lista',
+    linkCondicoes: 'https://wa.link/wcqwn2',
+    ctaCondicoes: 'R$250 Em Consumo',
+  },
 ];
 
 export const getEvento = (slug: string) => eventos.find((e) => e.slug === slug);
