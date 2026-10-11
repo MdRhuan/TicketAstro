@@ -127,6 +127,8 @@
 <script>
   const KEY = 'th-cookie-consent';
   const CLARITY_ID = 'yw5noqs4ts';
+  // GA4: ID de medição (Admin → Fluxos de dados → Web).
+  const GA_ID = 'G-2WX9YNNY76';
 
   // Microsoft Clarity (heatmaps + gravação de sessão).
   // Só é ligado após consentimento "accepted" (LGPD). Idempotente:
@@ -147,9 +149,28 @@
     })(window, document, 'clarity', 'script', CLARITY_ID);
   }
 
-  // Visitante que já aceitou em uma visita anterior: liga o Clarity direto.
+  // Google Analytics 4 (gtag.js). Usa cookie → só após "accepted" (LGPD).
+  // Idempotente; fica inerte enquanto GA_ID for o placeholder.
+  function carregarGA4() {
+    if (!GA_ID || GA_ID.indexOf('XXXX') !== -1) return;
+    const w = window as any;
+    if (w.gtag) return;
+    const s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+    document.head.appendChild(s);
+    w.dataLayer = w.dataLayer || [];
+    w.gtag = function () {
+      w.dataLayer.push(arguments);
+    };
+    w.gtag('js', new Date());
+    w.gtag('config', GA_ID);
+  }
+
+  // Visitante que já aceitou numa visita anterior: liga a análise direto.
   if (localStorage.getItem(KEY) === 'accepted') {
     carregarClarity();
+    carregarGA4();
   }
 
   const el = document.querySelector<HTMLElement>('[data-cookie]');
@@ -166,8 +187,11 @@
         // espera a transição terminar
         el.addEventListener('transitionend', remover, { once: true });
         setTimeout(remover, 400); // fallback
-        // Liga o analytics apenas se a pessoa aceitou.
-        if (escolha === 'accepted') carregarClarity();
+        // Liga a análise apenas se a pessoa aceitou.
+        if (escolha === 'accepted') {
+          carregarClarity();
+          carregarGA4();
+        }
       });
     });
   }
