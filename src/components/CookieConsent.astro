@@ -126,6 +126,32 @@
 
 <script>
   const KEY = 'th-cookie-consent';
+  const CLARITY_ID = 'yw5noqs4ts';
+
+  // Microsoft Clarity (heatmaps + gravação de sessão).
+  // Só é ligado após consentimento "accepted" (LGPD). Idempotente:
+  // se já carregou nesta página, não injeta de novo.
+  function carregarClarity() {
+    if ((window as any).clarity) return;
+    (function (c: any, l: Document, a: string, r: string, i: string) {
+      c[a] =
+        c[a] ||
+        function () {
+          (c[a].q = c[a].q || []).push(arguments);
+        };
+      const t = l.createElement(r) as HTMLScriptElement;
+      t.async = true;
+      t.src = 'https://www.clarity.ms/tag/' + i;
+      const y = l.getElementsByTagName(r)[0];
+      y.parentNode!.insertBefore(t, y);
+    })(window, document, 'clarity', 'script', CLARITY_ID);
+  }
+
+  // Visitante que já aceitou em uma visita anterior: liga o Clarity direto.
+  if (localStorage.getItem(KEY) === 'accepted') {
+    carregarClarity();
+  }
+
   const el = document.querySelector<HTMLElement>('[data-cookie]');
   if (el && !localStorage.getItem(KEY)) {
     el.hidden = false;
@@ -133,13 +159,15 @@
 
     el.querySelectorAll<HTMLButtonElement>('[data-choice]').forEach((btn) => {
       btn.addEventListener('click', () => {
-        localStorage.setItem(KEY, btn.dataset.choice || 'accepted');
+        const escolha = btn.dataset.choice || 'accepted';
+        localStorage.setItem(KEY, escolha);
         el.classList.remove('is-visible');
         const remover = () => (el.hidden = true);
         // espera a transição terminar
         el.addEventListener('transitionend', remover, { once: true });
         setTimeout(remover, 400); // fallback
-        // Aqui podes disparar os scripts de analytics se a escolha for "accepted".
+        // Liga o analytics apenas se a pessoa aceitou.
+        if (escolha === 'accepted') carregarClarity();
       });
     });
   }
