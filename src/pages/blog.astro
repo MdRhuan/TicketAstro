@@ -75,41 +75,43 @@ const resto = ordenados.filter((p) => p.slug !== destaque.slug);
         </a>
 
         <!-- Lista editorial -->
-        <h2 class="sec-titulo">Últimas Notícias</h2>
-        <ul class="lista">
-          {
-            resto.map((p) => (
-              <li>
-                <a class="post" href={`/blog/${p.slug}`} style={`--cor:${p.cor}`}>
-                  <div class="post__media">
-                    <div class="post__poster" aria-hidden="true"></div>
-                    <img
-                      class="post__img"
-                      src={p.imagem}
-                      alt={`${p.titulo} — ${p.categoria}`}
-                      loading="lazy"
-                      decoding="async"
-                      width="480"
-                      height="480"
-                      onerror="this.closest('.post__media').classList.add('sem-foto')"
-                    />
-                    <span class="tag tag--cat">{p.categoria}</span>
-                  </div>
-                  <div class="post__body">
-                    <h3 class="post__titulo">{p.titulo}</h3>
-                    <p class="post__resumo">{p.resumo}</p>
-                    <p class="post__meta">
-                      {p.autor}<span class="sep" aria-hidden="true">·</span>{p.dataLabel}<span class="sep" aria-hidden="true">·</span>{p.tempoLeitura} min
-                    </p>
-                  </div>
-                  <svg class="post__seta" viewBox="0 0 24 24" width="20" height="20" fill="none" aria-hidden="true">
-                    <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                  </svg>
-                </a>
-              </li>
-            ))
-          }
-        </ul>
+        {resto.length > 0 && (
+          <Fragment>
+            <h2 class="sec-titulo">Últimas Notícias</h2>
+            <ul class="lista">
+              {resto.map((p) => (
+                <li>
+                  <a class="post" href={`/blog/${p.slug}`} style={`--cor:${p.cor}`}>
+                    <div class="post__media">
+                      <div class="post__poster" aria-hidden="true"></div>
+                      <img
+                        class="post__img"
+                        src={p.imagem}
+                        alt={`${p.titulo} — ${p.categoria}`}
+                        loading="lazy"
+                        decoding="async"
+                        width="480"
+                        height="480"
+                        onerror="this.closest('.post__media').classList.add('sem-foto')"
+                      />
+                      <span class="tag tag--cat">{p.categoria}</span>
+                    </div>
+                    <div class="post__body">
+                      <h3 class="post__titulo">{p.titulo}</h3>
+                      <p class="post__resumo">{p.resumo}</p>
+                      <p class="post__meta">
+                        {p.autor}<span class="sep" aria-hidden="true">·</span>{p.dataLabel}<span class="sep" aria-hidden="true">·</span>{p.tempoLeitura} min
+                      </p>
+                    </div>
+                    <svg class="post__seta" viewBox="0 0 24 24" width="20" height="20" fill="none" aria-hidden="true">
+                      <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </Fragment>
+        )}
       </div>
     </main>
 

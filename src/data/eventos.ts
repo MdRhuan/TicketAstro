@@ -121,94 +121,6 @@ export const brl = (n: number) =>
 
 export const eventos: Evento[] = [
   {
-    slug: 'halloween-do-night',
-    nome: 'Halloween do Night',
-    categoria: 'Festa',
-    estilo: 'Funk',
-    // sem produtora a exibir (mesmo padrão dos outros eventos do Night Market)
-    local: 'Night Market',
-    cidade: 'Belo Horizonte',
-    endereco: 'Rua Wilson Rocha Lima, 137 | Estoril',
-    dataISO: '2026-10-10',
-    dataLabel: '10 OUT 2026',
-    diaSemana: 'Sábado',
-    horaAbertura: '23:00',
-    classificacao: '18 anos',
-    exclusiva: true,
-    imagem: '/eventos/halloween-do-night.webp',
-    imagemHero: '/eventos/halloween-do-night-banner.webp',
-    cor: '#d9531e',
-    descricao: `🎃 HALLOWEEN DO NIGHT – Apocalipse Zumbi 👻
-
-O rooftop do Night Market vira cenário de apocalipse zumbi.
-
-Venha fantasiado e dispute o Concurso de Melhor Fantasia. Quem roubar a cena leva o destaque da noite.
-
-🍸 Open Bar Premium a noite toda
-🏆 Concurso de Melhor Fantasia
-🎶 Funk • Eletrônico • MTG • Pop
-
-O Halloween de BH é aqui. 🧟`,
-    lineup: [], // sem line-up (a pedido)
-    ingressos: [],
-    regras: [
-      'Classificação etária: 18 anos.',
-    ],
-    linkCompra: 'https://app.nittio.com.br/event/halloween-do-night-open-bar-premium-E7ENGq/details?coupon=BS',
-    ctaCompra: 'Comprar Ingresso Com Desconto',
-    semCondicoes: true, // sem botão de condições especiais (a pedido)
-  },
-  {
-    slug: 'saideira',
-    nome: 'Saideira',
-    categoria: 'Festa',
-    estilo: 'Funk',
-    // sem produtora a exibir (mesmo padrão do Rio Califórnia)
-    local: 'Night Market',
-    cidade: 'Belo Horizonte',
-    endereco: 'Rua Wilson Rocha Lima, 137 | Estoril',
-    dataISO: '2026-10-10',
-    dataLabel: '10 OUT 2026',
-    diaSemana: 'Sábado',
-    horaAbertura: '22:00',
-    classificacao: '18 anos',
-    exclusiva: true,
-    imagem: '/eventos/saideira.webp',
-    imagemHero: '/eventos/saideira-banner.webp',
-    cor: '#c02a6f',
-    descricao: `A noite já começou em algum lugar.
-Um jantar, um bar, um esquenta na casa de alguém.
-
-E aí chega aquela hora.
-Alguém olha o relógio.
-Alguém fala em ir embora.
-
-E outra pessoa responde:
-"Só mais uma."
-
-É aí que a noite muda.
-Quem ia embora fica.
-O grupo se reorganiza.
-O som sobe, a cidade brilha lá embaixo, e ninguém lembra mais quem queria ir para casa.
-
-As melhores histórias quase nunca acontecem no plano original.
-Elas acontecem na saideira.
-
-No dia seguinte, ninguém lembra a hora em que chegou.
-Mas todo mundo lembra quem disse "só mais uma".
-
-Sábado, a saideira é lá em cima.`,
-    lineup: [],
-    ingressos: [],
-    regras: [
-      'Classificação etária: 18 anos.',
-    ],
-    linkCompra: 'https://events.vipme.com.br/2477812/539227?id_promoter=48412',
-    ctaCompra: 'Garantir Meu Nome Na Lista',
-    linkCondicoes: 'https://wa.link/84f5tn',
-    ctaCondicoes: 'Lista Para Consumo',
-  },
-  {
     slug: 'rio-california',
     nome: 'Rio Califórnia',
     categoria: 'Festa',
@@ -217,8 +129,8 @@ Sábado, a saideira é lá em cima.`,
     local: 'Night Market',
     cidade: 'Belo Horizonte',
     endereco: 'Rua Wilson Rocha Lima, 137 | Estoril',
-    dataISO: '2026-10-11',
-    dataLabel: '11 OUT 2026',
+    dataISO: '2026-10-18',
+    dataLabel: '18 OUT 2026',
     diaSemana: 'Domingo',
     horaAbertura: '15:00',
     classificacao: '18 anos',
@@ -246,7 +158,7 @@ Sunset.`,
     regras: [
       'Classificação etária: 18 anos.',
     ],
-    linkCompra: 'https://events.vipme.com.br/2477961/539658?id_promoter=12006',
+    linkCompra: 'https://listariocalifornia.vercel.app/',
     ctaCompra: 'Garantir Meu Nome Na Lista',
     linkCondicoes: 'https://wa.link/clilcl',
     ctaCondicoes: 'Comemorar Aniversário',

@@ -2,27 +2,9 @@
 // Eventos principais em destaque (o botão leva para /eventos/<slug>).
 const eventos = [
   {
-    slug: 'halloween-do-night',
-    titulo: 'Halloween do Night',
-    data: '10 OUT 2026',
-    local: 'Night Market',
-    cidade: '', // mesmo venue dos outros → mostra só "Night Market"
-    cor: '#d9531e',
-    imagem: '/eventos/halloween-do-night-banner.webp',
-  },
-  {
-    slug: 'saideira',
-    titulo: 'Saideira',
-    data: '10 OUT 2026',
-    local: 'Night Market',
-    cidade: '', // mesmo venue do Rio → mostra só "Night Market" (sem Belo Horizonte)
-    cor: '#c02a6f',
-    imagem: '/eventos/saideira-banner.webp',
-  },
-  {
     slug: 'rio-california',
     titulo: 'Rio Califórnia',
-    data: '11 OUT 2026',
+    data: '18 OUT 2026',
     local: 'Night Market',
     cidade: '', // sem cidade no card da home (a pedido) → mostra só "Night Market"
     cor: '#e0592b',
@@ -64,10 +46,11 @@ const eventos = [
             aria-roledescription="slide"
             aria-label={`${i + 1} de ${eventos.length}`}
           >
-            {e.imagem && (
-              <img class="carr__card-img" src={e.imagem} alt="" loading={i === 0 ? 'eager' : 'lazy'} decoding="async" />
+            {e.imagem ? (
+              <img class="carr__card-img" src={e.imagem} alt={e.titulo} loading={i === 0 ? 'eager' : 'lazy'} decoding="async" />
+            ) : (
+              <div class="carr__card-titulo">{e.titulo}</div>
             )}
-            <div class="carr__card-titulo">{e.titulo}</div>
           </article>
         ))
       }
@@ -160,7 +143,7 @@ const eventos = [
     will-change: transform, opacity;
     overflow: hidden;
   }
-  /* Foto de fundo opcional + véu escuro para o texto continuar legível */
+  /* Foto de fundo opcional (a arte já traz o nome, então o título só aparece sem foto) */
   .carr__card-img {
     position: absolute;
     inset: 0;
@@ -168,13 +151,6 @@ const eventos = [
     height: 100%;
     object-fit: cover;
     z-index: 0;
-  }
-  .carr__card:has(.carr__card-img)::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0) 55%);
   }
   .carr__card-titulo {
     position: relative;
@@ -430,10 +406,11 @@ const eventos = [
       b.addEventListener('animationend', () => b.classList.remove('is-click'))
     );
 
-    // Clicar num card lateral traz-o para o centro
+    // Clicar num card lateral traz-o para o centro; no card central, abre a página do evento
     cards.forEach((card, i) =>
       card.addEventListener('click', () => {
         if (i !== ativo) irManual(i);
+        else window.location.href = `/eventos/${card.dataset.slug}`;
       })
     );
     // Clicar nas bolinhas

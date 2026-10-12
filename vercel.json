@@ -1,5 +1,9 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    { "source": "/eventos/halloween-do-night", "destination": "/eventos", "permanent": true },
+    { "source": "/eventos/saideira", "destination": "/eventos", "permanent": true }
+  ],
   "headers": [
     {
       "source": "/(.*)",

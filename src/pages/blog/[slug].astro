@@ -75,7 +75,7 @@ const jsonLd = {
               <span aria-hidden="true">›</span>
               <span>{p.categoria}</span>
             </nav>
-            <h1 class="art-hero__titulo">{p.titulo}</h1>
+            <h1 class="art-hero__titulo">{p.tituloHero ?? p.titulo}</h1>
             <p class="art-hero__meta">
               {p.autor}<span class="sep" aria-hidden="true">·</span>{p.dataLabel}<span class="sep" aria-hidden="true">·</span>{p.tempoLeitura} min de leitura
             </p>
@@ -84,7 +84,31 @@ const jsonLd = {
 
         <div class="art-body">
           <p class="art-lead">{p.resumo}</p>
-          {p.corpo.map((par) => <p class="art-p">{par}</p>)}
+          {p.corpo.map((bloco) => {
+            if (typeof bloco === 'string') return <p class="art-p">{bloco}</p>;
+            if ('h2' in bloco) return <h2 class="art-h2">{bloco.h2}</h2>;
+            return (
+              <ul class="art-ul">
+                {bloco.lista.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            );
+          })}
+
+          {p.ctaLink && (
+            <a
+              class="cta-post"
+              href={p.ctaLink}
+              target={p.ctaLink.startsWith('http') ? '_blank' : undefined}
+              rel={p.ctaLink.startsWith('http') ? 'noopener' : undefined}
+            >
+              {p.ctaTexto ?? 'Saiba mais'}
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true">
+                <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </a>
+          )}
 
           <a class="voltar" href="/blog">
             <svg viewBox="0 0 24 24" width="17" height="17" fill="none" aria-hidden="true">
@@ -223,12 +247,12 @@ const jsonLd = {
       }
       .art-hero__titulo {
         margin: 0;
-        font-size: clamp(2rem, 5vw, 3.2rem);
-        line-height: 1.05;
+        font-size: clamp(1.5rem, 3.4vw, 2.3rem);
+        line-height: 1.12;
         font-weight: 800;
-        letter-spacing: -0.035em;
+        letter-spacing: -0.03em;
         text-shadow: 0 2px 30px rgba(0, 0, 0, 0.45);
-        max-width: 20ch;
+        text-wrap: balance; /* equilibra as 2 linhas do hero e evita palavra órfã */
       }
       .art-hero__meta {
         margin: 0.9rem 0 0;
@@ -258,11 +282,36 @@ const jsonLd = {
         line-height: 1.75;
         color: #2a2f36;
       }
+      .art-h2 {
+        margin: 2.5rem 0 1rem;
+        font-size: clamp(1.4rem, 3.4vw, 1.8rem);
+        line-height: 1.2;
+        font-weight: 800;
+        letter-spacing: -0.025em;
+        color: var(--texto);
+      }
+      .art-h2:first-child {
+        margin-top: 0;
+      }
+      .art-ul {
+        margin: 0 0 1.5rem;
+        padding-left: 1.3rem;
+      }
+      .art-ul li {
+        font-size: 1.12rem;
+        line-height: 1.7;
+        color: #2a2f36;
+        margin-bottom: 0.55rem;
+      }
+      .art-ul li::marker {
+        color: var(--marca);
+      }
       .voltar {
-        display: inline-flex;
+        display: flex; /* própria linha, abaixo da CTA */
+        width: fit-content; /* área clicável só no conteúdo, não na linha toda */
         align-items: center;
         gap: 0.45rem;
-        margin: 1.5rem 0 0;
+        margin: 2rem 0 0;
         font-weight: 700;
         color: var(--marca);
         text-decoration: none;
@@ -272,6 +321,32 @@ const jsonLd = {
       }
       .voltar:hover svg {
         transform: translateX(-3px);
+      }
+
+      /* CTA no fim do post (leva à página do evento / lista) */
+      .cta-post {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin: 0.5rem 0 1.25rem;
+        padding: 0.9rem 1.5rem;
+        background: var(--marca);
+        color: #fff;
+        font-size: 1.05rem;
+        font-weight: 700;
+        text-decoration: none;
+        border-radius: 12px;
+        transition: transform 0.18s ease, box-shadow 0.18s ease;
+      }
+      .cta-post:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 14px 30px -14px color-mix(in srgb, var(--marca) 70%, #000);
+      }
+      .cta-post svg {
+        transition: transform 0.2s ease;
+      }
+      .cta-post:hover svg {
+        transform: translateX(3px);
       }
 
       /* Continue lendo */
@@ -365,6 +440,8 @@ const jsonLd = {
 
       @media (prefers-reduced-motion: reduce) {
         .voltar svg,
+        .cta-post,
+        .cta-post svg,
         .mini__titulo {
           transition: none;
         }
