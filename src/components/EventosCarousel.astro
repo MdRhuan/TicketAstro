@@ -2,6 +2,20 @@
 // Eventos principais em destaque (o botão leva para /eventos/<slug>).
 const eventos = [
   {
+    // Banner de merch (não é evento): link externo para a loja + CTA próprio.
+    slug: 'ermos',
+    titulo: 'Ermos · Nova Coleção',
+    data: '',
+    local: '10% de desconto no link exclusivo',
+    cidade: '',
+    cor: '#ffffff', // banner é branco → card branco para o 'contain' encostar sem moldura
+    imagem: '/banner-ermos.webp',
+    contain: true, // banner paisagem: mostra inteiro, sem cortar as pontas
+    href: 'https://v1nj3d-ru.myshopify.com/discount/ERMOS-00878',
+    cta: 'Garanta já',
+    ga: 'clique_ermos',
+  },
+  {
     slug: 'rio-california',
     titulo: 'Rio Califórnia',
     data: '18 OUT 2026',
@@ -34,13 +48,16 @@ const eventos = [
       {
         eventos.map((e, i) => (
           <article
-            class="carr__card"
+            class={`carr__card${e.contain ? ' carr__card--contain' : ''}`}
             data-card
             data-index={i}
             data-slug={e.slug}
             data-nome={e.titulo}
             data-data={e.data}
             data-local={e.cidade ? `${e.local} · ${e.cidade}` : e.local}
+            data-href={e.href}
+            data-cta={e.cta}
+            data-ga={e.ga}
             style={`--cor:${e.cor}`}
             role="group"
             aria-roledescription="slide"
@@ -62,7 +79,7 @@ const eventos = [
   </div>
 
   <!-- Bolinhas (por cima da data) -->
-  <div class="carr__dots" data-dots role="tablist" aria-label="Escolher evento">
+  <div class="carr__dots" data-dots role="group" aria-label="Escolher evento">
     {
       eventos.map((_, i) => (
         <button
@@ -103,7 +120,7 @@ const eventos = [
     line-height: 1.2;
     font-weight: 800;
     letter-spacing: -0.02em;
-    color: #ff6a2b;
+    color: #c2410c;
   }
 
   .carr__linha {
@@ -151,6 +168,10 @@ const eventos = [
     height: 100%;
     object-fit: cover;
     z-index: 0;
+  }
+  /* Banner paisagem (merch): mostra a arte inteira, sem cortar as pontas */
+  .carr__card--contain .carr__card-img {
+    object-fit: contain;
   }
   .carr__card-titulo {
     position: relative;
@@ -249,7 +270,7 @@ const eventos = [
     font-size: 0.85rem;
     font-weight: 700;
     letter-spacing: 0.06em;
-    color: #888;
+    color: var(--texto-3);
   }
   .carr__info-local {
     margin: 0;
@@ -278,16 +299,24 @@ const eventos = [
     margin-top: -1.25rem; /* puxa bolinhas + info para cima, perto do card */
   }
   .carr__dot {
-    width: 0.4rem;
-    height: 0.4rem;
+    width: 24px;
+    height: 24px;
     padding: 0;
     border: none;
+    background: transparent;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+  }
+  .carr__dot::before {
+    content: "";
+    width: 0.4rem;
+    height: 0.4rem;
     border-radius: 50%;
     background: #cfcfcf;
-    cursor: pointer;
     transition: background 0.25s ease, transform 0.25s ease;
   }
-  .carr__dot[aria-current="true"] {
+  .carr__dot[aria-current="true"]::before {
     background: var(--marca);
     transform: scale(1.35);
   }
@@ -354,7 +383,23 @@ const eventos = [
       infoNome.textContent = card.dataset.nome || '';
       infoData.textContent = card.dataset.data || '';
       infoLocal.textContent = card.dataset.local || '';
-      infoLink.href = `/eventos/${card.dataset.slug}`;
+      // Esconde linhas vazias (ex.: banner de merch não tem data)
+      infoData.hidden = !card.dataset.data;
+      infoLocal.hidden = !card.dataset.local;
+
+      // Link externo (data-href) ou página do evento (/eventos/<slug>)
+      const href = card.dataset.href || `/eventos/${card.dataset.slug}`;
+      infoLink.href = href;
+      infoLink.textContent = card.dataset.cta || 'Ver evento';
+      if (card.dataset.href) {
+        infoLink.target = '_blank';
+        infoLink.rel = 'noopener';
+      } else {
+        infoLink.removeAttribute('target');
+        infoLink.removeAttribute('rel');
+      }
+      if (card.dataset.ga) infoLink.dataset.ga = card.dataset.ga;
+      else delete infoLink.dataset.ga;
     };
 
     // Loop infinito (do último volta ao primeiro e vice-versa)
@@ -371,7 +416,7 @@ const eventos = [
     };
 
     // ---- Autoplay (passa sozinho) ----
-    const INTERVALO = 5000; // ms entre eventos
+    const INTERVALO = 7000; // ms entre eventos
     const reduzir = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let timer: number | undefined;
 
@@ -409,12 +454,25 @@ const eventos = [
     // Clicar num card lateral traz-o para o centro; no card central, abre a página do evento
     cards.forEach((card, i) =>
       card.addEventListener('click', () => {
-        if (i !== ativo) irManual(i);
-        else window.location.href = `/eventos/${card.dataset.slug}`;
+        if (i !== ativo) {
+          irManual(i);
+        } else if (card.dataset.href) {
+          window.open(card.dataset.href, '_blank', 'noopener');
+        } else {
+          window.location.href = `/eventos/${card.dataset.slug}`;
+        }
       })
     );
     // Clicar nas bolinhas
     dots.forEach((d, i) => d.addEventListener('click', () => irManual(i)));
+
+    // Clique no CTA de saída (ex.: loja Ermos) → evento nomeado no GA4.
+    // gtag só existe após o consentimento; sem ele, não faz nada.
+    infoLink.addEventListener('click', () => {
+      const ga = infoLink.dataset.ga;
+      const gtag = (window as any).gtag;
+      if (ga && typeof gtag === 'function') gtag('event', ga, { evento: 'ermos' });
+    });
 
     // Pausa ao interagir; retoma ao sair
     root.addEventListener('mouseenter', parar);
