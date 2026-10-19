@@ -121,6 +121,48 @@ export const brl = (n: number) =>
 
 export const eventos: Evento[] = [
   {
+    slug: 'medween',
+    nome: 'MEDWEEN',
+    categoria: 'Festa',
+    estilo: 'Funk',
+    // sem produtora a exibir
+    local: 'Night Market',
+    cidade: 'Belo Horizonte',
+    endereco: 'Rua Wilson Rocha Lima, 137 | Estoril',
+    dataISO: '2026-10-23',
+    dataLabel: '23 OUT 2026',
+    diaSemana: 'Sexta-feira',
+    horaAbertura: '23:00',
+    classificacao: '18 anos',
+    exclusiva: true,
+    imagem: '/eventos/medween.webp',
+    imagemHero: '/eventos/medween-banner.webp',
+    cor: '#a81d1d',
+    descricao: `MEDWEEN - O HALLOWEEN QUE VAI DAR PLANTÃO NA SUA MEMÓRIA!🧟‍♂️🔥
+
+🚨 ATENÇÃO, FUTUROS MÉDICOS: o surto coletivo mais aguardado do semestre tem data e lugar pra acontecer!
+
+Pode esquecer a anamnese, suspender os atendimentos e preparar o psicológico, porque a MEDWEEN VAI SER ABSURDA!
+
+📍 O destino é o Night Market. O diagnóstico? Vontade de viver uma noite INSANA! Com muito FUNK, ELETRÔNICO e MTG, a pista vai pegar fogo e o único caso grave vai ser querer que essa noite não acabe.
+
+E já fica o aviso: não adianta deixar pra decidir em cima da hora e depois chorar vendo os stories dos outros!
+
+🩸 MEDWEEN: o único plantão em que ninguém quer receber alta e todo mundo quer voltar pra mais uma dose!
+
+🚨 Se você ficar de fora, o arrependimento vai ser o seu próximo diagnóstico.`,
+    lineup: [{ nome: 'DJ Scar', foto: '/artistas/dj-scar.webp' }],
+    ingressos: [],
+    regras: [
+      'Classificação etária: 18 anos.',
+    ],
+    linkCompra: 'https://events.vipme.com.br/2478325/541699?id_promoter=22252',
+    ctaCompra: 'Garantir Nome Na Lista',
+    linkCondicoes: 'https://wa.link/0qjks6',
+    ctaCondicoes: 'R$250 Em Consumo',
+    ctaGrupo: 'Grupo De Ofertas',
+  },
+  {
     slug: 'rio-california',
     nome: 'Rio Califórnia',
     categoria: 'Festa',
