@@ -59,7 +59,7 @@ export interface Evento {
   semCondicoes?: boolean; // opcional: true esconde o botão de condições especiais na página.
   linkGrupo?: string; // opcional: link do grupo de ofertas específico do evento.
   //                     Se vazio, usa GRUPO_OFERTAS (o grupo geral).
-  ctaGrupo?: string; // opcional: rótulo do botão do grupo. Padrão: "Grupo de ofertas".
+  ctaGrupo?: string; // opcional: rótulo do botão do grupo. Padrão: "Grupo De Descontos".
 }
 
 // WhatsApp para o botão "Condições especiais" (mesmo número do rodapé).
@@ -185,7 +185,7 @@ Quer ficar ainda mais perto da ação? Tenha acesso aos bastidores da pista, pro
     ctaCompra: 'Garantir Desconto',
     linkCondicoes: 'https://wa.link/lyjocu',
     ctaCondicoes: 'Condições Especiais',
-    ctaGrupo: 'Grupo De Ofertas',
+    ctaGrupo: 'Grupo De Descontos',
   },
   {
     slug: 'saideira',
@@ -238,7 +238,7 @@ Dúvidas: O couvert e os ingressos podem ser cobrados na portaria, com valores s
     ctaCompra: 'Garantir Nome Na Lista',
     linkCondicoes: 'https://wa.link/37eo38',
     ctaCondicoes: 'R$250 Em Consumo',
-    ctaGrupo: 'Grupo De Ofertas',
+    ctaGrupo: 'Grupo De Descontos',
   },
   {
     slug: 'medween',
@@ -280,7 +280,7 @@ E já fica o aviso: não adianta deixar pra decidir em cima da hora e depois cho
     ctaCompra: 'Garantir Nome Na Lista',
     linkCondicoes: 'https://wa.link/0qjks6',
     ctaCondicoes: 'R$250 Em Consumo',
-    ctaGrupo: 'Grupo De Ofertas',
+    ctaGrupo: 'Grupo De Descontos',
   },
   {
     slug: 'rio-california',
@@ -324,7 +324,7 @@ Sunset.`,
     ctaCompra: 'Garantir Meu Nome Na Lista',
     linkCondicoes: 'https://wa.link/clilcl',
     ctaCondicoes: 'Comemorar Aniversário',
-    ctaGrupo: 'Grupo De Ofertas',
+    ctaGrupo: 'Grupo De Descontos',
   },
 ];
 
