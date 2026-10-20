@@ -121,6 +121,126 @@ export const brl = (n: number) =>
 
 export const eventos: Evento[] = [
   {
+    slug: 'versus-f2f',
+    nome: 'VERSUS | F2F',
+    categoria: 'Festa',
+    estilo: 'Eletrônica',
+    produtora: 'Baila',
+    local: 'Secret Kitchen',
+    cidade: 'Belo Horizonte',
+    endereco: 'Rua da Bahia, 54 | Centro',
+    dataISO: '2026-10-23',
+    dataLabel: '23 OUT 2026',
+    diaSemana: 'Sexta-feira',
+    horaAbertura: '21:00',
+    classificacao: '18 anos',
+    exclusiva: true,
+    imagem: '/eventos/versus-f2f.webp',
+    imagemHero: '/eventos/versus-f2f-banner.webp',
+    cor: '#f23a6e',
+    descricao: `VERSUS F2F | BELO HORIZONTE
+
+UMA PISTA. DUAS FREQUÊNCIAS. ZERO MESMICE
+
+BH, chegou a hora de mudar a forma de viver a noite.
+
+No dia 23 de outubro, a VERSUS F2F chega para transformar o Secret Kitchen em um verdadeiro ponto de colisão entre música, tecnologia e atitude. Esquece tudo o que você conhece sobre uma festa tradicional: aqui, o som toma conta, o visual te envolve e a pista dita o ritmo até o último minuto.
+
+Dois DJs frente a frente, uma disputa de energia e uma mistura de estilos que não deixa espaço para ficar parado. Tudo isso em uma experiência audiovisual imersiva, criada para quem não sai de casa para viver mais do mesmo.
+
+Não é só uma festa. É um confronto de frequências. E você faz parte dele.
+
+O QUE TE ESPERA?
+
+- Face to Face ao vivo: dois DJs frente a frente, dividindo a cabine e elevando a energia da pista.
+- Open Format sem limites: Funk, House, Techno, Hip Hop e muito mais, em uma sequência feita para surpreender.
+- Imersão visual 360°: uma atmosfera audiovisual que transforma a pista em parte do espetáculo.
+- Energia do início ao fim: música, movimento e uma experiência pensada para quem vive a noite de verdade.
+
+F2F + OPEN FORMAT: DOIS DJs. UMA SÓ PISTA.
+
+Imagine dois DJs frente a frente, trocando energia, criatividade e sonoridades em tempo real. No formato Face to Face, a cabine vira o centro de tudo: sem aquela dinâmica previsível, sem depender de uma sequência tradicional de apresentações.
+
+O resultado? Uma experiência contínua, cheia de viradas, misturas inesperadas e momentos que só acontecem quando a música encontra a energia certa.
+
+House, Funk, Techno, Hip Hop e Open Format se encontram para quebrar as regras e fazer a pista falar mais alto.
+
+Você não vem só para assistir. Você vem para sentir.
+
+ESCOLHA COMO VIVER A VERSUS
+
+PISTA
+
+O centro da experiência. Acesso ao ambiente principal, imersão visual 360°, bares de rápido atendimento, praça de alimentação e visão privilegiada da cabine F2F. Para quem quer estar no meio da energia e viver cada segundo de perto.
+
+BACKSTAGE F2F
+
+Quer ficar ainda mais perto da ação? Tenha acesso aos bastidores da pista, proximidade máxima dos artistas, bar e caixa exclusivos e uma área de descanso. Com lotação reduzida para garantir mais conforto e circulação.`,
+    lineup: [],
+    ingressos: [],
+    regras: [
+      'Classificação etária: 18 anos.',
+    ],
+    linkCompra: 'https://www.sympla.com.br/evento/versus--f2f/3603184?d=SamuelDuarte',
+    ctaCompra: 'Garantir Desconto',
+    linkCondicoes: 'https://wa.link/lyjocu',
+    ctaCondicoes: 'Condições Especiais',
+    ctaGrupo: 'Grupo De Ofertas',
+  },
+  {
+    slug: 'saideira',
+    nome: 'Saideira',
+    categoria: 'Festa',
+    estilo: 'Funk',
+    produtora: 'Night Market',
+    local: 'Night Market',
+    cidade: 'Belo Horizonte',
+    endereco: 'Rua Wilson Rocha Lima, 137 | Estoril',
+    dataISO: '2026-10-24',
+    dataLabel: '24 OUT 2026',
+    diaSemana: 'Sábado',
+    horaAbertura: '22:00',
+    classificacao: '18 anos',
+    exclusiva: true,
+    imagem: '/eventos/saideira.webp',
+    imagemHero: '/eventos/saideira-banner.webp',
+    cor: '#e63950',
+    descricao: `SAIDEIRA
+
+O plano era sair cedo. Mas a noite tinha outros planos.
+
+A semana merece um final à altura, e a Saideira é o lugar certo pra isso. Uma noite de música boa, energia lá no alto e aquela vibe que faz você perder a noção do tempo. No som, um Open Format que mistura Funk, MTG, Eletrônico e os hits que todo mundo canta e dança. Chama a galera, prepara o look e vem curtir uma das vistas mais incríveis de BH.
+
+E não é só sobre música. É sobre viver a noite do seu jeito, com drinks autorais, cardápio exclusivo, atendimento diferenciado e espaços com mesas e bistrôs pra curtir cada momento. Tudo pensado pra transformar uma saída qualquer em uma noite que rende histórias.
+
+Na dúvida entre ir embora ou ficar mais um pouco? Você já sabe a resposta.
+
+Sua semana termina na Saideira.
+
+A cada 5 amigos que forem com você, você ganha R$ 50 em consumação para aproveitar na noite!
+
+Exemplo:
+
+5 amigos = R$ 50 em consumação
+10 amigos = R$ 100 em consumação
+15 amigos = R$ 150 em consumação
+20 amigos = R$ 200 em consumação
+
+Quanto mais amigos você levar, mais consumação você garante!
+
+Dúvidas: O couvert e os ingressos podem ser cobrados na portaria, com valores sujeitos a alterações.`,
+    lineup: [],
+    ingressos: [],
+    regras: [
+      'Classificação etária: 18 anos.',
+    ],
+    linkCompra: 'https://events.vipme.com.br/2478544/543162?id_promoter=19717',
+    ctaCompra: 'Garantir Nome Na Lista',
+    linkCondicoes: 'https://wa.link/37eo38',
+    ctaCondicoes: 'R$250 Em Consumo',
+    ctaGrupo: 'Grupo De Ofertas',
+  },
+  {
     slug: 'medween',
     nome: 'MEDWEEN',
     categoria: 'Festa',
