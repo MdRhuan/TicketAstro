@@ -6,6 +6,7 @@ import Footer from '../../components/Footer.astro';
 import WhatsAppButton from '../../components/WhatsAppButton.astro';
 import CookieConsent from '../../components/CookieConsent.astro';
 import { produtorasPublicadas, eventosDaProdutora, type Produtora } from '../../data/produtoras';
+import { iniciais } from '../../data/eventos';
 
 // Só gera página para produtora publicada (trava anti-conteúdo-fino em produtoras.ts).
 // Com a lista de publicadas vazia, nenhuma página de produtora é gerada ainda.
@@ -124,6 +125,19 @@ const jsonLd = {
           <span aria-hidden="true">›</span>
           <span>{p.nome}</span>
         </nav>
+        <div class={`prod__media${p.foto ? '' : ' sem-foto'}`} style={`--cor:${p.cor ?? '#14151b'}`}>
+          {p.foto && (
+            <img
+              class="prod__logo"
+              src={p.foto}
+              alt={`Logo da ${p.nome}`}
+              loading="eager"
+              decoding="async"
+              onerror="this.closest('.prod__media').classList.add('sem-foto')"
+            />
+          )}
+          <span class="prod__ini" aria-hidden="true">{iniciais(p.nome)}</span>
+        </div>
         <h1 class="prod__titulo">{p.nome}</h1>
         {p.estilo && <p class="prod__estilo">{p.estilo} · {p.cidade}</p>}
       </header>
@@ -213,6 +227,34 @@ const jsonLd = {
         text-transform: uppercase;
         letter-spacing: 0.06em;
         color: var(--marca);
+      }
+      /* Bloco de logo da produtora (foto). Fallback: iniciais sobre a cor de marca. */
+      .prod__media {
+        aspect-ratio: 16 / 7;
+        margin: 0.4rem 0 1.5rem;
+        border-radius: 16px;
+        overflow: hidden;
+        background: var(--cor, #14151b);
+        display: grid;
+        place-items: center;
+      }
+      .prod__logo {
+        max-width: 60%;
+        max-height: 68%;
+        object-fit: contain;
+      }
+      .prod__media.sem-foto .prod__logo {
+        display: none;
+      }
+      .prod__ini {
+        display: none;
+        font-size: clamp(2rem, 8vw, 3rem);
+        font-weight: 800;
+        letter-spacing: 0.02em;
+        color: #fff;
+      }
+      .prod__media.sem-foto .prod__ini {
+        display: block;
       }
       .prod__perfil {
         margin-top: 1.75rem;

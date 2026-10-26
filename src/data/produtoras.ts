@@ -27,6 +27,8 @@ export interface Produtora {
   instagram?: string; // URL do Instagram oficial — PREENCHER (obrigatório p/ publicar)
   sympla?: string; // URL do perfil na Sympla (se houver)
   site?: string; // site oficial (se houver)
+  cor?: string; // cor de marca: fundo do bloco de logo e do fallback (escolha de UI, não dado oficial)
+  foto?: string; // logo em public/produtoras/<slug>.webp (sem arquivo → iniciais na cor)
   nota?: string; // observação interna (não vai ao ar), ex.: exceção de escopo
   publicar: boolean; // trava manual: só true quando o perfil estiver completo
 }
@@ -100,6 +102,8 @@ export const produtoras: Produtora[] = [
     bairros: ['Jardim Canadá'],
     instagram: 'https://www.instagram.com/club_415/',
     sympla: 'https://www.sympla.com.br/produtor/club415',
+    cor: '#101217',
+    foto: '/produtoras/club-415.webp',
     nota: 'Exceção de escopo: fica em Nova Lima, não em BH. Só publicar após ajustar o posicionamento do site de "só BH" para "BH e região".',
     publicar: true, // PROTÓTIPO: única produtora com perfil completo verificado. Rever antes de produção (ver nota Nova Lima).
   },

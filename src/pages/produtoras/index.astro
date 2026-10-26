@@ -5,6 +5,7 @@ import Footer from '../../components/Footer.astro';
 import WhatsAppButton from '../../components/WhatsAppButton.astro';
 import CookieConsent from '../../components/CookieConsent.astro';
 import { produtorasPublicadas } from '../../data/produtoras';
+import { iniciais } from '../../data/eventos';
 
 // Enquanto não houver produtora publicada (perfil completo + @ real), o hub fica
 // no ar mas com noindex — não se quer indexar uma coleção vazia (conteúdo fino).
@@ -54,6 +55,19 @@ const itemList = temProdutoras
             {produtorasPublicadas.map((p) => (
               <li>
                 <a class="prod-card" href={`/produtoras/${p.slug}/`}>
+                  <div class={`prod-card__media${p.foto ? '' : ' sem-foto'}`} style={`--cor:${p.cor ?? '#14151b'}`}>
+                    {p.foto && (
+                      <img
+                        class="prod-card__logo"
+                        src={p.foto}
+                        alt={`Logo da ${p.nome}`}
+                        loading="lazy"
+                        decoding="async"
+                        onerror="this.closest('.prod-card__media').classList.add('sem-foto')"
+                      />
+                    )}
+                    <span class="prod-card__ini" aria-hidden="true">{iniciais(p.nome)}</span>
+                  </div>
                   <span class="prod-card__nome">{p.nome}</span>
                   {p.estilo && <span class="prod-card__estilo">{p.estilo}</span>}
                   <span class="prod-card__resumo">{p.resumo}</span>
@@ -121,6 +135,32 @@ const itemList = temProdutoras
     .prod-card:hover {
       transform: translateY(-4px);
       box-shadow: 0 16px 30px -18px rgba(16, 17, 20, 0.35);
+    }
+    .prod-card__media {
+      aspect-ratio: 16 / 9;
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--cor, #14151b);
+      display: grid;
+      place-items: center;
+      margin-bottom: 0.3rem;
+    }
+    .prod-card__logo {
+      max-width: 64%;
+      max-height: 64%;
+      object-fit: contain;
+    }
+    .prod-card__media.sem-foto .prod-card__logo {
+      display: none;
+    }
+    .prod-card__ini {
+      display: none;
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #fff;
+    }
+    .prod-card__media.sem-foto .prod-card__ini {
+      display: block;
     }
     .prod-card__nome {
       font-size: 1.2rem;
