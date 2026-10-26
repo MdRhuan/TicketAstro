@@ -1,4 +1,5 @@
 ---
+import { eventoPassado } from '../data/eventos';
 // Eventos reais em destaque na home.
 // FOTO: coloca o ficheiro em  public/eventos/<slug>.jpg  (campo `imagem`).
 //       Enquanto não existir, o card mostra um fallback autoral.
@@ -64,6 +65,10 @@ function diasFalta(iso: string): string {
   if (diff === 1) return 'Falta 1 dia';
   return `Faltam ${diff} dias`;
 }
+
+// Só mostra na home os eventos que ainda vão acontecer. Passados saem daqui
+// (continuam no ar na própria página, como acervo).
+const futuros = eventos.filter((e) => !eventoPassado(e));
 ---
 
 <section class="ev-sec" aria-labelledby="ev-sec-titulo">
@@ -78,11 +83,11 @@ function diasFalta(iso: string): string {
   </div>
 
   {
-    eventos.length === 0 ? (
+    futuros.length === 0 ? (
       <p class="ev-vazio">Ainda não há eventos publicados. Volta em breve.</p>
     ) : (
       <ul class="ev-grade">
-        {eventos.map((e) => (
+        {futuros.map((e) => (
           <li>
             <a class="ev" href={`/eventos/${e.slug}`}>
               <div class="ev__foto" style={`--cor:${e.cor}`}>

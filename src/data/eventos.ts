@@ -329,3 +329,32 @@ Sunset.`,
 ];
 
 export const getEvento = (slug: string) => eventos.find((e) => e.slug === slug);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// EVENTO PASSADO vs FUTURO
+//
+// "Passado" é decidido no BUILD (o site é estático). Para um evento recém-vencido
+// virar "passado" sozinho, é preciso REGERAR o site. Na Vercel: um Deploy Hook
+// agendado (cron diário) resolve sem trabalho manual. A página do evento também
+// tem um reforço no browser (esconde o botão de compra se a data já passou),
+// cobrindo o intervalo entre o vencimento e o próximo build.
+// ─────────────────────────────────────────────────────────────────────────────
+export function eventoPassado(e: Pick<Evento, 'dataISO'>): boolean {
+  const hoje = new Date();
+  hoje.setHours(0, 0, 0, 0);
+  return new Date(e.dataISO + 'T00:00:00').getTime() < hoje.getTime();
+}
+
+// Só os eventos que ainda vão acontecer (para as listagens "próximos").
+export const eventosFuturos = eventos.filter((e) => !eventoPassado(e));
+// Só os eventos que já aconteceram (mantidos no ar como acervo indexável).
+export const eventosPassados = eventos.filter((e) => eventoPassado(e));
+
+// Próximas festas, ordenadas por data — usado para recircular quem cai numa
+// página de evento que já passou.
+export function proximosEventos(excluirSlug?: string, limite = 3): Evento[] {
+  return eventosFuturos
+    .filter((e) => e.slug !== excluirSlug)
+    .sort((a, b) => a.dataISO.localeCompare(b.dataISO))
+    .slice(0, limite);
+}

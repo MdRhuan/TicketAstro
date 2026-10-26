@@ -6,13 +6,16 @@ import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import WhatsAppButton from '../components/WhatsAppButton.astro';
 import CookieConsent from '../components/CookieConsent.astro';
-import { eventos } from '../data/eventos';
+import { eventos, eventoPassado } from '../data/eventos';
 
 const MESES = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
 const WD = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
 
-// Ordena por data e agrupa por mês
-const ordenados = [...eventos].sort((a, b) => a.dataISO.localeCompare(b.dataISO));
+// Só eventos futuros, ordenados por data e agrupados por mês (evento passado
+// sai do calendário, mas continua no ar na própria página como acervo).
+const ordenados = eventos
+  .filter((e) => !eventoPassado(e))
+  .sort((a, b) => a.dataISO.localeCompare(b.dataISO));
 
 type Item = (typeof eventos)[number] & { dia: number; wd: string };
 const grupos: { chave: string; label: string; itens: Item[] }[] = [];

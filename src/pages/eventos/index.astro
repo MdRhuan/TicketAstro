@@ -27,8 +27,16 @@ function diasFalta(iso: string): string {
   return `Faltam ${diff} dias`;
 }
 
-const produtoras = [...new Set(eventos.map((e) => e.produtora).filter(Boolean))].sort();
-const estilos = [...new Set(eventos.map((e) => e.estilo))].sort();
+// Separa futuros (grid principal, filtrável) de passados (acervo, no fim da página).
+const passou = (iso: string) => new Date(iso + 'T00:00:00').getTime() < hoje.getTime();
+const futuros = eventos.filter((e) => !passou(e.dataISO));
+const passados = eventos
+  .filter((e) => passou(e.dataISO))
+  .sort((a, b) => b.dataISO.localeCompare(a.dataISO));
+
+// Os filtros refletem só os eventos que ainda vão acontecer.
+const produtoras = [...new Set(futuros.map((e) => e.produtora).filter(Boolean))].sort();
+const estilos = [...new Set(futuros.map((e) => e.estilo))].sort();
 ---
 
 <html lang="pt-BR">
@@ -102,7 +110,7 @@ const estilos = [...new Set(eventos.map((e) => e.estilo))].sort();
 
           <ul class="ev-grade" data-grade>
             {
-              eventos.map((e) => (
+              futuros.map((e) => (
                 <li
                   data-card
                   data-produtora={e.produtora}
@@ -154,6 +162,51 @@ const estilos = [...new Set(eventos.map((e) => e.estilo))].sort();
           </p>
         </div>
       </section>
+
+      {passados.length > 0 && (
+        <section class="passados" aria-labelledby="passados-titulo">
+          <div class="passados__wrap">
+            <h2 class="passados__titulo" id="passados-titulo">Já aconteceram</h2>
+            <ul class="ev-grade">
+              {passados.map((e) => (
+                <li>
+                  <a class="ev ev--passado" href={`/eventos/${e.slug}`}>
+                    <div class="ev__foto" style={`--cor:${e.cor}`}>
+                      <div class="ev__poster" aria-hidden="true">
+                        <span class="ev__poster-cat">{e.categoria}</span>
+                      </div>
+                      <img
+                        class="ev__img"
+                        src={e.imagem}
+                        alt={`${e.nome} — ${e.estilo} em ${e.local}, ${e.cidade}`}
+                        loading="lazy"
+                        decoding="async"
+                        width="600"
+                        height="750"
+                        onerror="this.closest('.ev__foto').classList.add('sem-foto')"
+                      />
+                      <span class="ev__tag ev__tag--fim">Já aconteceu</span>
+                    </div>
+                    <div class="ev__corpo">
+                      <h3 class="ev__nome">{e.nome}</h3>
+                      <p class="ev__local">
+                        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" aria-hidden="true">
+                          <path d="M12 21s-6.5-5.3-6.5-10A6.5 6.5 0 0 1 18.5 11c0 4.7-6.5 10-6.5 10z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+                          <circle cx="12" cy="11" r="2.3" stroke="currentColor" stroke-width="1.6" />
+                        </svg>
+                        <span>{e.local} · {e.cidade}</span>
+                      </p>
+                      <div class="ev__rodape">
+                        <span class="ev__data">{e.dataLabel}</span>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
     </main>
 
     <Footer />
@@ -481,6 +534,34 @@ const estilos = [...new Set(eventos.map((e) => e.estilo))].sort();
         text-align: center;
         color: var(--texto-3);
         font-size: 1.05rem;
+      }
+
+      /* ---- Seção "Já aconteceram" (acervo) ---- */
+      .passados {
+        border-top: 1px solid #ececed;
+        background: #fafafb;
+      }
+      .passados__wrap {
+        max-width: 1140px;
+        margin-inline: auto;
+        padding: 2.5rem 1.5rem 4.5rem;
+      }
+      .passados__titulo {
+        margin: 0 0 1.5rem;
+        font-size: 1.25rem;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        color: var(--texto-2);
+      }
+      /* Card de evento passado: visual levemente apagado para sinalizar "encerrado" */
+      .ev--passado .ev__img {
+        filter: grayscale(0.35) brightness(0.96);
+      }
+      .ev__tag--fim {
+        left: 0.8rem;
+        background: #4b4b53;
+        color: #fff;
+        box-shadow: 0 2px 8px rgba(16, 17, 20, 0.22);
       }
 
       @media (prefers-reduced-motion: reduce) {

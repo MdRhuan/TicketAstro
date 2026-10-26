@@ -11,6 +11,8 @@ import CookieConsent from '../../components/CookieConsent.astro';
 import {
   eventos,
   diasFalta,
+  eventoPassado,
+  proximosEventos,
   menorPrecoAVenda,
   mapaQuery,
   iniciais,
@@ -32,10 +34,15 @@ interface Props {
 const { evento: e } = Astro.props;
 
 const menor = menorPrecoAVenda(e);
+// Evento já aconteceu? (decidido no build; reforçado no browser mais abaixo)
+const passado = eventoPassado(e);
+// Próximas festas para recircular quem cai numa página de evento já encerrado.
+const proximos = passado ? proximosEventos(e.slug, 3) : [];
 // Mostra os botões de compra quando há ingresso à venda OU quando há um link
 // oficial de compra real (nem todo evento tem os lotes/preços cadastrados aqui;
 // alguns vendem só pelo link do parceiro). '#' = placeholder, não conta.
-const temVenda = menor !== null || (!!e.linkCompra && e.linkCompra !== '#');
+// Evento passado NUNCA mostra compra (link morto é pior que nada).
+const temVenda = !passado && (menor !== null || (!!e.linkCompra && e.linkCompra !== '#'));
 const diasLabel = diasFalta(e.dataISO);
 const q = mapaQuery(e);
 
@@ -246,6 +253,21 @@ const descMultilinha = e.descricao.includes('\n');
                   </li>
                 </ul>
               </>
+            ) : passado ? (
+              <>
+                <div class="card__head">
+                  <span class="card__label">Evento encerrado</span>
+                </div>
+                <p class="card__passado">
+                  Este evento já aconteceu. Veja as próximas festas de BH logo abaixo.
+                </p>
+                <a class="cta cta--terc" href={linkGrupo(e)} target="_blank" rel="noopener" data-ga="clique_grupo" data-ga-evento={e.slug}>
+                  <svg class="cta__ico" viewBox="0 0 24 24" width="20" height="20" fill="none" aria-hidden="true">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M3.50002 12C3.50002 7.30558 7.3056 3.5 12 3.5C16.6944 3.5 20.5 7.30558 20.5 12C20.5 16.6944 16.6944 20.5 12 20.5C10.3278 20.5 8.77127 20.0182 7.45798 19.1861C7.21357 19.0313 6.91408 18.9899 6.63684 19.0726L3.75769 19.9319L4.84173 17.3953C4.96986 17.0955 4.94379 16.7521 4.77187 16.4751C3.9657 15.176 3.50002 13.6439 3.50002 12ZM12 1.5C6.20103 1.5 1.50002 6.20101 1.50002 12C1.50002 13.8381 1.97316 15.5683 2.80465 17.0727L1.08047 21.107C0.928048 21.4637 0.99561 21.8763 1.25382 22.1657C1.51203 22.4552 1.91432 22.5692 2.28599 22.4582L6.78541 21.1155C8.32245 21.9965 10.1037 22.5 12 22.5C17.799 22.5 22.5 17.799 22.5 12C22.5 6.20101 17.799 1.5 12 1.5ZM14.2925 14.1824L12.9783 15.1081C12.3628 14.7575 11.6823 14.2681 10.9997 13.5855C10.2901 12.8759 9.76402 12.1433 9.37612 11.4713L10.2113 10.7624C10.5697 10.4582 10.6678 9.94533 10.447 9.53028L9.38284 7.53028C9.23954 7.26097 8.98116 7.0718 8.68115 7.01654C8.38113 6.96129 8.07231 7.046 7.84247 7.24659L7.52696 7.52195C6.76823 8.18414 6.3195 9.2723 6.69141 10.3741C7.07698 11.5163 7.89983 13.314 9.58552 14.9997C11.3991 16.8133 13.2413 17.5275 14.3186 17.8049C15.1866 18.0283 16.008 17.7288 16.5868 17.2572L17.1783 16.7752C17.4313 16.5691 17.5678 16.2524 17.544 15.9269C17.5201 15.6014 17.3389 15.308 17.0585 15.1409L15.3802 14.1409C15.0412 13.939 14.6152 13.9552 14.2925 14.1824Z" fill="currentColor"/>
+                  </svg>
+                  <span class="cta__txt">{e.ctaGrupo || 'Grupo De Descontos'}</span>
+                </a>
+              </>
             ) : (
               <div class="card__head">
                 <span class="card__label">Ingressos</span>
@@ -255,6 +277,33 @@ const descMultilinha = e.descricao.includes('\n');
           </div>
         </aside>
       </div>
+
+      {passado && proximos.length > 0 && (
+        <section class="recirc" aria-labelledby="recirc-titulo">
+          <h2 class="recirc__titulo" id="recirc-titulo">Próximas festas em Belo Horizonte</h2>
+          <ul class="recirc__grade">
+            {proximos.map((p) => (
+              <li>
+                <a class="recirc__card" href={`/eventos/${p.slug}`} style={`--cor:${p.cor}`}>
+                  <div class="recirc__foto">
+                    <img
+                      src={p.imagem}
+                      alt={`${p.nome} — ${p.local}, ${p.cidade}`}
+                      loading="lazy"
+                      decoding="async"
+                      width="600"
+                      height="750"
+                      onerror="this.style.display='none'"
+                    />
+                  </div>
+                  <span class="recirc__nome">{p.nome}</span>
+                  <span class="recirc__meta">{p.dataLabel} · {p.local}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
     </main>
 
     <!-- Barra fixa (mobile) -->
@@ -605,6 +654,78 @@ const descMultilinha = e.descricao.includes('\n');
         font-weight: 700;
         color: #b5462f;
       }
+      .card__passado {
+        margin: 0 0 0.25rem;
+        font-size: 0.95rem;
+        line-height: 1.5;
+        color: var(--texto-2);
+      }
+
+      /* ---------- RECIRCULAÇÃO (evento passado) ---------- */
+      .recirc {
+        max-width: 1140px;
+        margin-inline: auto;
+        padding: 0 1.5rem 4.5rem;
+      }
+      .recirc__titulo {
+        margin: 0 0 1.5rem;
+        font-size: 1.3rem;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        color: var(--texto);
+      }
+      .recirc__grade {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1.25rem;
+      }
+      @media (max-width: 760px) {
+        .recirc__grade {
+          grid-template-columns: 1fr;
+        }
+      }
+      .recirc__card {
+        display: flex;
+        flex-direction: column;
+        text-decoration: none;
+        color: inherit;
+        background: #fff;
+        border: 1px solid #e6e6ea;
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow: 0 1px 2px rgba(16, 17, 20, 0.06);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+      .recirc__card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 16px 30px -18px rgba(16, 17, 20, 0.35);
+      }
+      .recirc__foto {
+        aspect-ratio: 16 / 10;
+        overflow: hidden;
+        background: var(--cor, var(--marca));
+      }
+      .recirc__foto img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+      .recirc__nome {
+        margin: 0.85rem 1rem 0;
+        font-size: 1.05rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        color: var(--texto);
+      }
+      .recirc__meta {
+        margin: 0.25rem 1rem 1rem;
+        font-size: 0.85rem;
+        color: var(--texto-3);
+      }
 
       /* CTA — efeito de preenchimento azul no hover/active */
       .cta {
@@ -819,6 +940,23 @@ const descMultilinha = e.descricao.includes('\n');
             gtag('event', a.dataset.ga, { evento: a.dataset.gaEvento || '' });
           });
         });
+      })();
+
+      // 4) Reforço: se o evento JÁ passou quando a página é vista (e o build
+      //    ainda não foi refeito), remove os botões de compra e a barra fixa —
+      //    link morto é pior que nada. O conteúdo e o schema continuam no ar.
+      (() => {
+        const tag = document.querySelector<HTMLElement>('.tag--dias');
+        const iso = tag?.dataset.date;
+        if (!iso) return;
+        const hoje = new Date();
+        hoje.setHours(0, 0, 0, 0);
+        const d = new Date(iso + 'T00:00:00');
+        if (d.getTime() >= hoje.getTime()) return; // ainda não passou
+        document.querySelector('[data-barra]')?.remove();
+        document
+          .querySelectorAll('.cta[data-ga="clique_comprar"], .cta[data-ga="clique_condicoes"]')
+          .forEach((el) => el.remove());
       })();
     </script>
   </body>

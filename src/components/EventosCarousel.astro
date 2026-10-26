@@ -1,5 +1,8 @@
 ---
+import { eventoPassado } from '../data/eventos';
 // Eventos principais em destaque (o botão leva para /eventos/<slug>).
+// `dataISO` é usado só para esconder do carrossel o evento que já passou
+// (o banner de merch não tem data e fica sempre visível).
 const eventos = [
   {
     // Banner de merch (não é evento): link externo para a loja + CTA próprio.
@@ -19,6 +22,7 @@ const eventos = [
     slug: 'versus-f2f',
     titulo: 'VERSUS | F2F',
     data: '23 OUT 2026',
+    dataISO: '2026-10-23',
     local: 'Secret Kitchen',
     cidade: '', // sem cidade no card da home → mostra só "Secret Kitchen"
     cor: '#f23a6e',
@@ -28,6 +32,7 @@ const eventos = [
     slug: 'saideira',
     titulo: 'Saideira',
     data: '24 OUT 2026',
+    dataISO: '2026-10-24',
     local: 'Night Market',
     cidade: '', // sem cidade no card da home → mostra só "Night Market"
     cor: '#e63950',
@@ -37,6 +42,7 @@ const eventos = [
     slug: 'medween',
     titulo: 'MEDWEEN',
     data: '23 OUT 2026',
+    dataISO: '2026-10-23',
     local: 'Night Market',
     cidade: '', // sem cidade no card da home → mostra só "Night Market"
     cor: '#a81d1d',
@@ -46,12 +52,19 @@ const eventos = [
     slug: 'rio-california',
     titulo: 'Rio Califórnia',
     data: '25 OUT 2026',
+    dataISO: '2026-10-25',
     local: 'Night Market',
     cidade: '', // sem cidade no card da home (a pedido) → mostra só "Night Market"
     cor: '#e0592b',
     imagem: '/eventos/rio-california-banner.webp', // opcional: foto de fundo do card (senão, só a cor)
   },
 ];
+
+// Esconde do carrossel os eventos já vencidos (mantém os sem data, como o merch).
+const visiveis = eventos.filter((e) => {
+  const iso = (e as { dataISO?: string }).dataISO;
+  return !iso || !eventoPassado({ dataISO: iso });
+});
 ---
 
 <section class="carr" data-carrossel aria-roledescription="carrossel" aria-label="Eventos principais">
@@ -64,7 +77,7 @@ const eventos = [
 
     <div class="carr__stage" data-stage>
       {
-        eventos.map((e, i) => (
+        visiveis.map((e, i) => (
           <article
             class={`carr__card${e.contain ? ' carr__card--contain' : ''}`}
             data-card
@@ -79,7 +92,7 @@ const eventos = [
             style={`--cor:${e.cor}`}
             role="group"
             aria-roledescription="slide"
-            aria-label={`${i + 1} de ${eventos.length}`}
+            aria-label={`${i + 1} de ${visiveis.length}`}
           >
             {e.imagem ? (
               <img class="carr__card-img" src={e.imagem} alt={e.titulo} loading={i === 0 ? 'eager' : 'lazy'} decoding="async" />
@@ -99,7 +112,7 @@ const eventos = [
   <!-- Bolinhas (por cima da data) -->
   <div class="carr__dots" data-dots role="group" aria-label="Escolher evento">
     {
-      eventos.map((_, i) => (
+      visiveis.map((_, i) => (
         <button
           class="carr__dot"
           data-dot
