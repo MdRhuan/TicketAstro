@@ -1,0 +1,148 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import WhatsAppButton from '../../components/WhatsAppButton.astro';
+import CookieConsent from '../../components/CookieConsent.astro';
+import { produtorasPublicadas } from '../../data/produtoras';
+
+// Enquanto não houver produtora publicada (perfil completo + @ real), o hub fica
+// no ar mas com noindex — não se quer indexar uma coleção vazia (conteúdo fino).
+const temProdutoras = produtorasPublicadas.length > 0;
+const site = Astro.site!;
+
+const itemList = temProdutoras
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'ItemList',
+      name: 'Produtoras de festa em Belo Horizonte',
+      itemListElement: produtorasPublicadas.map((p, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        url: new URL(`/produtoras/${p.slug}/`, site).href,
+        name: p.nome,
+      })),
+    }
+  : null;
+---
+
+<html lang="pt-BR">
+  <head>
+    <BaseHead
+      title="Produtoras de festa em Belo Horizonte | TicketHubh"
+      description="As produtoras de festa de Belo Horizonte reunidas: quem são, onde atuam e as próximas festas de cada uma, com link oficial de ingresso."
+      noindex={!temProdutoras}
+    />
+    {itemList && <script type="application/ld+json" set:html={JSON.stringify(itemList)} />}
+  </head>
+
+  <body>
+    <Nav />
+
+    <main class="prod-hub">
+      <header class="prod-hub__head">
+        <h1 class="prod-hub__titulo">Produtoras de festa em Belo Horizonte</h1>
+        <p class="prod-hub__sub">
+          Quem move a noite de BH: o perfil de cada produtora e as próximas festas,
+          com link direto para o canal oficial de compra.
+        </p>
+      </header>
+
+      {
+        temProdutoras ? (
+          <ul class="prod-hub__grade">
+            {produtorasPublicadas.map((p) => (
+              <li>
+                <a class="prod-card" href={`/produtoras/${p.slug}/`}>
+                  <span class="prod-card__nome">{p.nome}</span>
+                  {p.estilo && <span class="prod-card__estilo">{p.estilo}</span>}
+                  <span class="prod-card__resumo">{p.resumo}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p class="prod-hub__vazio">
+            Em breve: estamos montando os perfis das produtoras parceiras de BH.
+          </p>
+        )
+      }
+    </main>
+
+    <Footer />
+    <WhatsAppButton />
+    <CookieConsent />
+  </body>
+
+  <style>
+    .prod-hub {
+      max-width: 1140px;
+      margin-inline: auto;
+      padding: 2.5rem 1.5rem 4.5rem;
+    }
+    .prod-hub__head {
+      max-width: 720px;
+      margin-bottom: 2rem;
+    }
+    .prod-hub__titulo {
+      margin: 0 0 0.75rem;
+      font-size: clamp(1.6rem, 4vw, 2.1rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--texto);
+    }
+    .prod-hub__sub {
+      margin: 0;
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: var(--texto-2);
+    }
+    .prod-hub__grade {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.25rem;
+    }
+    .prod-card {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      height: 100%;
+      padding: 1.25rem 1.3rem;
+      text-decoration: none;
+      background: #fff;
+      border: 1px solid var(--borda);
+      border-radius: 14px;
+      box-shadow: 0 1px 2px rgba(16, 17, 20, 0.06);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .prod-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 30px -18px rgba(16, 17, 20, 0.35);
+    }
+    .prod-card__nome {
+      font-size: 1.2rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--texto);
+    }
+    .prod-card__estilo {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--marca);
+    }
+    .prod-card__resumo {
+      font-size: 0.92rem;
+      line-height: 1.5;
+      color: var(--texto-3);
+    }
+    .prod-hub__vazio {
+      font-size: 1rem;
+      color: var(--texto-3);
+    }
+  </style>
+</html>
