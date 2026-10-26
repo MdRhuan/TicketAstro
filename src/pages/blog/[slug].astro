@@ -28,14 +28,35 @@ const outros = posts
 
 const titulo = `${p.titulo} | Blog TicketHubh`;
 
+const site = Astro.site!;
+
+// Conta as palavras do artigo (resumo + corpo: parágrafos, subtítulos e listas).
+// Alimenta o wordCount do schema sem inventar número.
+function contaPalavras(post: Post): number {
+  const textos: string[] = [post.resumo];
+  for (const b of post.corpo) {
+    if (typeof b === 'string') textos.push(b);
+    else if ('h2' in b) textos.push(b.h2);
+    else textos.push(b.lista.join(' '));
+  }
+  return textos.join(' ').trim().split(/\s+/).filter(Boolean).length;
+}
+
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'BlogPosting',
   headline: p.titulo,
-  datePublished: p.dataISO,
-  author: { '@type': 'Organization', name: p.autor },
-  image: [new URL(imagemLocal(p.imagem), Astro.site).href],
   description: p.resumo,
+  image: [new URL(imagemLocal(p.imagem), site).href],
+  datePublished: p.dataISO,
+  // Sem campo de data de modificação no post; igual à publicação (nunca editado).
+  dateModified: p.dataISO,
+  author: { '@type': 'Organization', name: p.autor },
+  publisher: { '@id': new URL('/#organization', site).href },
+  mainEntityOfPage: new URL(`/blog/${p.slug}/`, site).href,
+  articleSection: p.categoria,
+  wordCount: contaPalavras(p),
+  inLanguage: 'pt-BR',
 };
 ---
 

@@ -26,6 +26,9 @@ const site = Astro.site!;
 
 const trilha: Crumb[] = [{ name: 'Início', path: '/' }, ...items];
 
+// Barra final para as URLs casarem com o canonical do site (evita divergência).
+const comBarra = (p: string) => (p.endsWith('/') ? p : `${p}/`);
+
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
@@ -33,7 +36,7 @@ const jsonLd = {
     '@type': 'ListItem',
     position: i + 1,
     name: c.name,
-    item: new URL(c.path, site).href,
+    item: new URL(comBarra(c.path), site).href,
   })),
 };
 ---
