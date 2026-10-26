@@ -125,21 +125,25 @@ const jsonLd = {
           <span aria-hidden="true">›</span>
           <span>{p.nome}</span>
         </nav>
-        <div class={`prod__media${p.foto ? '' : ' sem-foto'}`} style={`--cor:${p.cor ?? '#14151b'}`}>
-          {p.foto && (
-            <img
-              class="prod__logo"
-              src={p.foto}
-              alt={`Logo da ${p.nome}`}
-              loading="eager"
-              decoding="async"
-              onerror="this.closest('.prod__media').classList.add('sem-foto')"
-            />
-          )}
-          <span class="prod__ini" aria-hidden="true">{iniciais(p.nome)}</span>
+        <div class="prod__id">
+          <div class={`prod__avatar${p.foto ? '' : ' sem-foto'}`} style={`--cor:${p.cor ?? '#14151b'}`}>
+            {p.foto && (
+              <img
+                class="prod__foto"
+                src={p.foto}
+                alt={`Foto de perfil da ${p.nome}`}
+                loading="eager"
+                decoding="async"
+                onerror="this.closest('.prod__avatar').classList.add('sem-foto')"
+              />
+            )}
+            <span class="prod__ini" aria-hidden="true">{iniciais(p.nome)}</span>
+          </div>
+          <div class="prod__id-txt">
+            <h1 class="prod__titulo">{p.nome}</h1>
+            {p.estilo && <p class="prod__estilo">{p.estilo} · {p.cidade}</p>}
+          </div>
         </div>
-        <h1 class="prod__titulo">{p.nome}</h1>
-        {p.estilo && <p class="prod__estilo">{p.estilo} · {p.cidade}</p>}
       </header>
 
       <section class="prod__perfil" aria-label="Sobre a produtora">
@@ -231,32 +235,42 @@ const jsonLd = {
         letter-spacing: 0.06em;
         color: var(--marca);
       }
-      /* Bloco de logo da produtora (foto). Fallback: iniciais sobre a cor de marca. */
-      .prod__media {
-        aspect-ratio: 16 / 7;
-        margin: 0.4rem 0 1.5rem;
-        border-radius: 16px;
+      /* Cabeçalho de identidade: avatar redondo (foto de perfil) ao lado do nome. */
+      .prod__id {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-top: 0.4rem;
+      }
+      .prod__id-txt {
+        min-width: 0;
+      }
+      .prod__avatar {
+        flex: none;
+        width: 88px;
+        height: 88px;
+        border-radius: 50%;
         overflow: hidden;
         background: var(--cor, #14151b);
         display: grid;
         place-items: center;
       }
-      .prod__logo {
-        max-width: 60%;
-        max-height: 68%;
-        object-fit: contain;
+      .prod__foto {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
       }
-      .prod__media.sem-foto .prod__logo {
+      .prod__avatar.sem-foto .prod__foto {
         display: none;
       }
       .prod__ini {
         display: none;
-        font-size: clamp(2rem, 8vw, 3rem);
+        font-size: 1.9rem;
         font-weight: 800;
         letter-spacing: 0.02em;
         color: #fff;
       }
-      .prod__media.sem-foto .prod__ini {
+      .prod__avatar.sem-foto .prod__ini {
         display: block;
       }
       .prod__perfil {
