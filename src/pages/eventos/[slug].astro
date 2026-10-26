@@ -46,6 +46,8 @@ const proximos = passado ? proximosEventos(e.slug, 3) : [];
 const temVenda = !passado && (menor !== null || (!!e.linkCompra && e.linkCompra !== '#'));
 const diasLabel = diasFalta(e.dataISO);
 const q = mapaQuery(e);
+// Imagem de maior destaque (LCP) do topo: preload + fetchpriority no <head>/<img>.
+const heroImg = e.imagemHero || e.imagem;
 
 // JSON-LD (schema.org/Event) — reforça SEO e leitura por IA.
 // Mantém as ofertas nos dados estruturados mesmo sem listar os tipos na UI.
@@ -103,6 +105,7 @@ const descMultilinha = e.descricao.includes('\n');
 <html lang="pt-BR">
   <head>
     <BaseHead title={titulo} description={desc} image={e.imagem} />
+    <link rel="preload" as="image" href={heroImg} fetchpriority="high" />
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     <Breadcrumbs
       items={[
@@ -124,10 +127,11 @@ const descMultilinha = e.descricao.includes('\n');
           </div>
           <img
             class="hero__img"
-            src={e.imagemHero || e.imagem}
+            src={heroImg}
             alt={`${e.nome} — ${e.estilo} em ${e.local}, ${e.cidade}`}
             width="1600"
             height="900"
+            fetchpriority="high"
             onerror="this.closest('.hero__media').classList.add('sem-foto')"
           />
           <div class="hero__scrim"></div>

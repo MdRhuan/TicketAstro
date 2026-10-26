@@ -95,7 +95,7 @@ const visiveis = eventos.filter((e) => {
             aria-label={`${i + 1} de ${visiveis.length}`}
           >
             {e.imagem ? (
-              <img class="carr__card-img" src={e.imagem} alt={e.titulo} loading={i === 0 ? 'eager' : 'lazy'} decoding="async" />
+              <img class="carr__card-img" src={e.imagem} alt={e.titulo} loading={i === 0 ? 'eager' : 'lazy'} fetchpriority={i === 0 ? 'high' : 'auto'} decoding="async" />
             ) : (
               <div class="carr__card-titulo">{e.titulo}</div>
             )}

@@ -16,6 +16,9 @@ const LASTMOD = new Date().toISOString();
 // https://astro.build/config
 export default defineConfig({
   site: SITE,
+  // Inlina o CSS no <head> em vez de servir <link> render-blocking. Troca 2
+  // requisicoes bloqueantes por alguns KiB de HTML (melhora o first paint/LCP).
+  build: { inlineStylesheets: 'always' },
   integrations: [
     sitemap({
       serialize(item) {
