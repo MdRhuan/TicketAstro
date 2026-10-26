@@ -38,19 +38,19 @@ const whatsappLink = 'https://wa.me/5531983158818';
 
       <nav class="ft__cols" aria-label="Rodapé">
         <div class="ft__col">
-          <h3>Navegar</h3>
+          <h2>Navegar</h2>
           <ul>
             {navegar.map((l) => <li><a href={l.href}>{l.texto}</a></li>)}
           </ul>
         </div>
         <div class="ft__col">
-          <h3>Legal</h3>
+          <h2>Legal</h2>
           <ul>
             {legal.map((l) => <li><a href={l.href}>{l.texto}</a></li>)}
           </ul>
         </div>
         <div class="ft__col ft__col--aten">
-          <h3>Atendimento</h3>
+          <h2>Atendimento</h2>
           <a class="ft__aten-txt" href="/contato">Contato</a>
           <a class="ft__wpp" href={whatsappLink} target="_blank" rel="noopener">
             WhatsApp : {whatsappNumero}
@@ -159,7 +159,7 @@ const whatsappLink = 'https://wa.me/5531983158818';
   .ft__col--aten {
     flex: 1 1 180px;
   }
-  .ft__col h3 {
+  .ft__col h2 {
     margin: 0 0 0.9rem;
     font-size: 0.78rem;
     font-weight: 700;
@@ -221,7 +221,7 @@ const whatsappLink = 'https://wa.me/5531983158818';
     padding-top: 1.5rem;
     border-top: 1px solid var(--borda);
     font-size: 0.85rem;
-    color: #9a9aa3;
+    color: var(--texto-3);
   }
 
   *:focus-visible {

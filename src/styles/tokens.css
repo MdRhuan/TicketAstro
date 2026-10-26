@@ -15,7 +15,7 @@
   --texto: #101114; /* títulos / texto forte */
   --texto-2: #3a3f46; /* corpo */
   --texto-3: #5a5f66; /* secundário */
-  --texto-muted: #9aa0a6; /* placeholder / ícones suaves */
+  --texto-muted: #676d74; /* texto apagado acessível (>=4.5:1 em fundos claros) e ícones suaves */
 
   /* Superfícies e bordas */
   --fundo-escuro: #12141a; /* heros e fundos escuros */
