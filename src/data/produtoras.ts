@@ -101,7 +101,7 @@ export const produtoras: Produtora[] = [
     instagram: 'https://www.instagram.com/club_415/',
     sympla: 'https://www.sympla.com.br/produtor/club415',
     nota: 'Exceção de escopo: fica em Nova Lima, não em BH. Só publicar após ajustar o posicionamento do site de "só BH" para "BH e região".',
-    publicar: false,
+    publicar: true, // PROTÓTIPO: única produtora com perfil completo verificado. Rever antes de produção (ver nota Nova Lima).
   },
 ];
 
