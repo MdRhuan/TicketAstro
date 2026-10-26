@@ -37,6 +37,24 @@ const passados = eventos
 // Os filtros refletem só os eventos que ainda vão acontecer.
 const produtoras = [...new Set(futuros.map((e) => e.produtora).filter(Boolean))].sort();
 const estilos = [...new Set(futuros.map((e) => e.estilo))].sort();
+
+// JSON-LD ItemList — ensina ao Google/IA que esta página é uma coleção curada de
+// eventos, não uma página solta. Lista só os que ainda vão acontecer.
+const site = Astro.site!;
+// Lista todos os eventos que a página exibe (futuros no grid + passados no acervo),
+// futuros primeiro. Reflete o conteúdo real da página, não só os próximos.
+const eventosListados = [...futuros, ...passados];
+const eventosItemList = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Festas e shows em Belo Horizonte',
+  itemListElement: eventosListados.map((e, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    url: new URL(`/eventos/${e.slug}/`, site).href, // barra final: casa com o canonical
+    name: e.nome,
+  })),
+};
 ---
 
 <html lang="pt-BR">
@@ -45,6 +63,9 @@ const estilos = [...new Set(futuros.map((e) => e.estilo))].sort();
       title="Ingressos para as festas e shows de BH | TicketHubh"
       description="Encontre ingressos para as festas e os shows de Belo Horizonte. Filtre por casa de show e estilo de música e vá direto ao canal oficial de compra."
     />
+    {eventosListados.length > 0 && (
+      <script type="application/ld+json" set:html={JSON.stringify(eventosItemList)} />
+    )}
   </head>
   <body>
     <Nav />

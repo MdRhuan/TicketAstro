@@ -33,6 +33,21 @@ for (const e of ordenados) {
 }
 
 const catCls = (c: string) => (c === 'Festa' ? 'festa' : 'show');
+
+// JSON-LD ItemList — coleção curada de eventos por data (ajuda Google/IA a ler o
+// calendário como uma lista, não páginas soltas).
+const site = Astro.site!;
+const calendarioItemList = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Calendário de festas e shows em Belo Horizonte',
+  itemListElement: ordenados.map((e, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    url: new URL(`/eventos/${e.slug}/`, site).href, // barra final: casa com o canonical
+    name: e.nome,
+  })),
+};
 ---
 
 <html lang="pt-BR">
@@ -41,6 +56,9 @@ const catCls = (c: string) => (c === 'Festa' ? 'festa' : 'show');
       title="Calendário de shows e festas | TicketHubh"
       description="As festas e os shows de Belo Horizonte organizados por data no calendário do TicketHubh. Filtre por Festas ou Shows e não perca o próximo rolê da cidade."
     />
+    {ordenados.length > 0 && (
+      <script type="application/ld+json" set:html={JSON.stringify(calendarioItemList)} />
+    )}
   </head>
 
   <body>

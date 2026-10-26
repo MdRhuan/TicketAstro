@@ -42,6 +42,7 @@ export interface Evento {
   dataLabel: string; // "13 DEZ 2026"
   diaSemana: string; // "Sábado"
   horaAbertura: string; // "22:00"
+  horaFim?: string; // opcional: horário de término ("05:00"). Só isto habilita o endDate no schema — sem horário real, não declara (nunca inventa).
   classificacao: string; // "18 anos" / "16 anos (menores só com responsável)"
   exclusiva: boolean;
   imagem: string; // capa (card/listagem/social) — public/eventos/<slug>.(jpg|webp)
@@ -95,6 +96,18 @@ export function diasFalta(iso: string): string {
   if (diff === 0) return 'É hoje';
   if (diff === 1) return 'Falta 1 dia';
   return `Faltam ${diff} dias`;
+}
+
+// endDate do schema (schema.org/Event): só quando há horário real de término
+// cadastrado (`horaFim`). Nunca inventa. Se o término é de madrugada (hora menor
+// que a de abertura), conta como o dia seguinte.
+export function fimEvento(e: Pick<Evento, 'dataISO' | 'horaAbertura' | 'horaFim'>): string | null {
+  if (!e.horaFim) return null;
+  const viraDia = e.horaFim < e.horaAbertura; // "05:00" < "22:00"
+  const base = new Date(e.dataISO + 'T00:00:00');
+  if (viraDia) base.setDate(base.getDate() + 1);
+  const dataFim = base.toISOString().slice(0, 10);
+  return `${dataFim}T${e.horaFim}:00-03:00`;
 }
 
 // Menor preço à venda (para o "a partir de" e o CTA)

@@ -13,6 +13,7 @@ import {
   diasFalta,
   eventoPassado,
   proximosEventos,
+  fimEvento,
   menorPrecoAVenda,
   mapaQuery,
   iniciais,
@@ -62,17 +63,28 @@ const ofertas = e.ingressos
     availability: 'https://schema.org/InStock',
     url: e.linkCompra,
   }));
+const fim = fimEvento(e);
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Event',
   name: e.nome,
   startDate: `${e.dataISO}T${e.horaAbertura}:00-03:00`,
+  // Só declara endDate quando há horário real de término cadastrado — nunca inventa.
+  ...(fim ? { endDate: fim } : {}),
   eventStatus: 'https://schema.org/EventScheduled',
   eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
   location: {
     '@type': 'Place',
     name: e.local,
-    address: `${e.endereco}, ${e.cidade}`,
+    // Endereço estruturado (PostalAddress) em vez de texto solto — melhora rich result e leitura por IA.
+    // addressRegion: 'MG' vale para BH e toda a Grande BH; CEP fica fora (não cadastrado, não inventado).
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: e.endereco.replace(/\s*\|\s*/g, ', '),
+      addressLocality: e.cidade,
+      addressRegion: 'MG',
+      addressCountry: 'BR',
+    },
   },
   image: [new URL(imagemLocal(e.imagem), Astro.site).href],
   description: e.descricao,
