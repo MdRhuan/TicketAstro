@@ -1,5 +1,5 @@
 ---
-import { eventoPassado } from '../data/eventos';
+import { eventoPassado, proximoDomingo } from '../data/eventos';
 // Eventos principais em destaque (o botão leva para /eventos/<slug>).
 // `dataISO` é usado só para esconder do carrossel o evento que já passou
 // (o banner de merch não tem data e fica sempre visível).
@@ -51,8 +51,8 @@ const eventos = [
   {
     slug: 'rio-california',
     titulo: 'Rio Califórnia',
-    data: '25 OUT 2026',
-    dataISO: '2026-10-25',
+    data: proximoDomingo.dataLabel, // recorrente: próximo domingo (calculado no build)
+    dataISO: proximoDomingo.dataISO,
     local: 'Night Market',
     cidade: '', // sem cidade no card da home (a pedido) → mostra só "Night Market"
     cor: '#e0592b',

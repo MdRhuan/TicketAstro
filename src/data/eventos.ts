@@ -132,6 +132,44 @@ export const iniciais = (nome: string) =>
 export const brl = (n: number) =>
   n.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 0 });
 
+// ─────────────────────────────────────────────────────────────────────────────
+// EVENTO SEMANAL (recorrente) — próxima ocorrência de um dia da semana.
+//
+// A Rio Califórnia é uma série sunset que acontece TODO DOMINGO. Em vez de fixar
+// a data (que vence e some da home), calcula-se no BUILD o próximo domingo >=
+// hoje. Com um rebuild agendado a data anda sozinha; sem ele, recalcula a cada
+// deploy. ATENÇÃO: pressupõe que a festa acontece todo domingo — se a série
+// pausar (feriado, etc.), ajuste o evento manualmente, o site não tem como saber.
+// ─────────────────────────────────────────────────────────────────────────────
+const MESES_PT = ['JAN', 'FEV', 'MAR', 'ABR', 'MAI', 'JUN', 'JUL', 'AGO', 'SET', 'OUT', 'NOV', 'DEZ'];
+const DIAS_PT = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
+
+export interface OcorrenciaSemanal {
+  dataISO: string; // "2026-11-01"
+  dataLabel: string; // "01 NOV 2026"
+  diaSemana: string; // "Domingo"
+}
+
+// `dia`: 0 = domingo … 6 = sábado. Devolve a próxima ocorrência desse dia (se hoje
+// já for o dia, devolve hoje). Usa a hora local do build, igual ao resto do arquivo.
+export function proximaOcorrenciaSemanal(dia: number): OcorrenciaSemanal {
+  const hoje = new Date();
+  hoje.setHours(0, 0, 0, 0);
+  const delta = (dia - hoje.getDay() + 7) % 7;
+  const d = new Date(hoje);
+  d.setDate(hoje.getDate() + delta);
+  const dd = String(d.getDate()).padStart(2, '0');
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  return {
+    dataISO: `${d.getFullYear()}-${mm}-${dd}`,
+    dataLabel: `${dd} ${MESES_PT[d.getMonth()]} ${d.getFullYear()}`,
+    diaSemana: DIAS_PT[d.getDay()],
+  };
+}
+
+// Próximo domingo (a partir de hoje) — Rio Califórnia, série sunset de domingo.
+export const proximoDomingo = proximaOcorrenciaSemanal(0);
+
 export const eventos: Evento[] = [
   {
     slug: 'versus-f2f',
@@ -304,9 +342,9 @@ E já fica o aviso: não adianta deixar pra decidir em cima da hora e depois cho
     local: 'Night Market',
     cidade: 'Belo Horizonte',
     endereco: 'Rua Wilson Rocha Lima, 137 | Estoril',
-    dataISO: '2026-10-25',
-    dataLabel: '25 OUT 2026',
-    diaSemana: 'Domingo',
+    dataISO: proximoDomingo.dataISO,
+    dataLabel: proximoDomingo.dataLabel,
+    diaSemana: proximoDomingo.diaSemana,
     horaAbertura: '15:00',
     classificacao: '18 anos',
     exclusiva: true,

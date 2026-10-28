@@ -6,6 +6,7 @@ import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
 import WhatsAppButton from '../../components/WhatsAppButton.astro';
 import CookieConsent from '../../components/CookieConsent.astro';
+import { proximoDomingo } from '../../data/eventos';
 
 // Eventos de exemplo — troca pelos reais depois.
 // FOTO: public/eventos/<slug>.jpg  (sem foto → fallback autoral)
@@ -13,7 +14,7 @@ const eventos = [
   { slug: 'versus-f2f', nome: 'VERSUS | F2F', categoria: 'Festa', estilo: 'Eletrônica', produtora: 'Baila', local: 'Secret Kitchen', cidade: 'Belo Horizonte', dataISO: '2026-10-23', dataLabel: '23 OUT 2026', preco: 0, exclusiva: true, imagem: '/eventos/versus-f2f.webp', cor: '#f23a6e' },
   { slug: 'saideira', nome: 'Saideira', categoria: 'Festa', estilo: 'Funk', produtora: 'Night Market', local: 'Night Market', cidade: 'Belo Horizonte', dataISO: '2026-10-30', dataLabel: '30 OUT 2026', preco: 0, exclusiva: true, imagem: '/eventos/saideira.webp', cor: '#e63950' },
   { slug: 'medween', nome: 'MEDWEEN', categoria: 'Festa', estilo: 'Funk', produtora: '', local: 'Night Market', cidade: 'Belo Horizonte', dataISO: '2026-10-23', dataLabel: '23 OUT 2026', preco: 0, exclusiva: true, imagem: '/eventos/medween.webp', cor: '#a81d1d' },
-  { slug: 'rio-california', nome: 'Rio Califórnia', categoria: 'Festa', estilo: 'Eletrônica', produtora: '', local: 'Night Market', cidade: 'Belo Horizonte', dataISO: '2026-10-25', dataLabel: '25 OUT 2026', preco: 0, exclusiva: true, imagem: '/eventos/rio-california.webp', cor: '#e0592b' },
+  { slug: 'rio-california', nome: 'Rio Califórnia', categoria: 'Festa', estilo: 'Eletrônica', produtora: '', local: 'Night Market', cidade: 'Belo Horizonte', dataISO: proximoDomingo.dataISO, dataLabel: proximoDomingo.dataLabel, preco: 0, exclusiva: true, imagem: '/eventos/rio-california.webp', cor: '#e0592b' },
 ];
 
 const hoje = new Date();
