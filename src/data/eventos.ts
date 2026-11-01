@@ -371,7 +371,7 @@ Sunset.`,
     regras: [
       'Classificação etária: 18 anos.',
     ],
-    linkCompra: 'https://listariocalifornia.vercel.app/',
+    linkCompra: 'https://events.vipme.com.br/2478970/545336?id_promoter=12006',
     ctaCompra: 'Garantir Meu Nome Na Lista',
     linkCondicoes: 'https://wa.link/clilcl',
     ctaCondicoes: 'Comemorar Aniversário',
