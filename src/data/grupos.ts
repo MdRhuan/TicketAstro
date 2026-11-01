@@ -32,14 +32,31 @@ export interface Grupo {
 }
 
 export const grupos: Grupo[] = [
-  // ── Grupo real já usado no site (o mesmo do botão "Grupo de ofertas"). ──
+  // ── Grupo geral de ofertas de ingressos de BH (aparece no topo). ──
   {
-    nome: 'Grupo geral de ofertas',
-    descricao: 'Novas festas, shows e condições exclusivas de BH | direto no seu WhatsApp.',
-    link: GRUPO_OFERTAS,
+    nome: 'Ofertas de Ingressos | BH',
+    descricao: 'As ofertas e promoções das festas de BH, reunidas em um só lugar. A gente posta ingressos com desconto, listas, datas, horários, atrações e avisos de cada festa. Antes de comprar o seu, confere aqui.',
+    link: GRUPO_OFERTAS, // mesmo grupo dos botões "Descontos" do site (fonte única em eventos.ts)
     tipo: 'ofertas',
-    // foto: '/grupos/geral.jpg',
-    destaque: true,
+    foto: '/grupos/FotoGrupoTicketHubh.webp',
+  },
+
+  // ── Rio Califórnia — grupo da festa (lista + avisos). ──
+  {
+    nome: 'Lista VIP Rio Califórnia 🌤️',
+    descricao: 'Aqui você coloca seu nome na lista e entra com desconto. Também postamos as informações de cada festa: data, horário, atrações e avisos importantes.',
+    link: 'https://chat.whatsapp.com/BapREPkLhZnKnFvsZi3OiC',
+    tipo: 'festa',
+    foto: '/grupos/FotoGrupoRC.webp',
+  },
+
+  // ── Offs BH — grupo da festa (lista + avisos). ──
+  {
+    nome: 'Lista Offs - BH #2',
+    descricao: 'Seu desconto na entrada começa aqui. Mande seu nome quando a lista abrir e acompanhe as novidades de cada edição: line-up, horários, avisos de última hora e tudo o que rola antes da festa.',
+    link: 'https://chat.whatsapp.com/FfeQQmR6XMvDNlH15IPsPs',
+    tipo: 'festa',
+    foto: '/grupos/FotoGrupoOffs.webp',
   },
 
   // ── MODELO — copie, cole acima desta linha e troque os campos. ──

@@ -67,7 +67,7 @@ export const posts: Post[] = [
     ctaLink: '/eventos/rio-california',
   },
   {
-    slug: 'comemorar-aniversario-balada-bh',
+    slug: 'comemorar-aniversario-em-bh',
     titulo: 'Comemore seu aniversário: entrada grátis e até R$ 500 em consumação', // "R$ 500" usa espaço inseparável (U+00A0) para não quebrar entre linhas
     resumo:
       'Junte a galera e comemore seu aniversário em BH: entrada grátis, até R$ 500 em consumação e desconto para os convidados.',
