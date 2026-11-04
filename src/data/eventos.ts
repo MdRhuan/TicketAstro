@@ -247,9 +247,9 @@ Quer ficar ainda mais perto da ação? Tenha acesso aos bastidores da pista, pro
     local: 'Night Market',
     cidade: 'Belo Horizonte',
     endereco: 'Rua Wilson Rocha Lima, 137 | Estoril',
-    dataISO: '2026-10-30',
-    dataLabel: '30 OUT 2026',
-    diaSemana: 'Sexta-feira',
+    dataISO: '2026-11-07',
+    dataLabel: '07 NOV 2026',
+    diaSemana: 'Sábado',
     horaAbertura: '22:00',
     classificacao: '18 anos',
     exclusiva: true,
@@ -260,13 +260,13 @@ Quer ficar ainda mais perto da ação? Tenha acesso aos bastidores da pista, pro
 
 O plano era sair cedo. Mas a noite tinha outros planos.
 
-A semana merece um final à altura, e a Saideira é o lugar certo pra isso. Uma noite de música boa, energia lá no alto e aquela vibe que faz você perder a noção do tempo. No som, um Open Format que mistura Funk, MTG, Eletrônico e os hits que todo mundo canta e dança. Chama a galera, prepara o look e vem curtir uma das vistas mais incríveis de BH.
+Sábado pede uma noite à altura, e a Saideira é o lugar certo pra isso. Uma noite de música boa, energia lá no alto e aquela vibe que faz você perder a noção do tempo. No som, um Open Format que mistura Funk, MTG, Eletrônico e os hits que todo mundo canta e dança. Chama a galera, prepara o look e vem curtir uma das vistas mais incríveis de BH.
 
 E não é só sobre música. É sobre viver a noite do seu jeito, com drinks autorais, cardápio exclusivo, atendimento diferenciado e espaços com mesas e bistrôs pra curtir cada momento. Tudo pensado pra transformar uma saída qualquer em uma noite que rende histórias.
 
 Na dúvida entre ir embora ou ficar mais um pouco? Você já sabe a resposta.
 
-Sua semana termina na Saideira.
+Sábado à noite tem um nome: Saideira.
 
 A cada 5 amigos que forem com você, você ganha R$ 50 em consumação para aproveitar na noite!
 
@@ -285,7 +285,7 @@ Dúvidas: O couvert e os ingressos podem ser cobrados na portaria, com valores s
     regras: [
       'Classificação etária: 18 anos.',
     ],
-    linkCompra: 'https://events.vipme.com.br/2478785/544504?id_promoter=48412',
+    linkCompra: 'https://events.vipme.com.br/list/546561-bs',
     ctaCompra: 'Garantir Nome Na Lista',
     linkCondicoes: 'https://wa.link/37eo38',
     ctaCondicoes: 'R$250 Em Consumo',
