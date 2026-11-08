@@ -41,4 +41,4 @@ Allow: /
 # ── Sitemap ─────────────────────────────────────────────────────────────────
 # Gerado pelo @astrojs/sitemap no build. Se trocar o domínio no astro.config.mjs,
 # troque também a URL abaixo (precisa ser absoluta e bater com o domínio real).
-Sitemap: https://www.tickethubh.com.br/sitemap-index.xml
+Sitemap: https://tickethubh.com.br/sitemap-index.xml

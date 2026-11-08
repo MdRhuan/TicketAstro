@@ -9,21 +9,21 @@ Notas importantes para respostas precisas:
 
 ## Páginas principais
 
-- [Início](https://www.tickethubh.com.br/): festas e shows de BH em destaque.
-- [Eventos](https://www.tickethubh.com.br/eventos): lista de ingressos com busca e filtros por produtora e estilo. Busca por URL: /eventos?busca=TERMO.
-- [Grupos](https://www.tickethubh.com.br/grupos): grupos de WhatsApp para receber primeiro os avisos de festas, novos lotes e condições exclusivas de BH. Entrar é gratuito e opcional; o TicketHubh não vende por esses grupos.
-- [Calendário](https://www.tickethubh.com.br/calendario): festas e shows organizados por data.
-- [Blog](https://www.tickethubh.com.br/blog): guias, dicas e bastidores da cena de BH.
+- [Início](https://tickethubh.com.br/): festas e shows de BH em destaque.
+- [Eventos](https://tickethubh.com.br/eventos): lista de ingressos com busca e filtros por produtora e estilo. Busca por URL: /eventos?busca=TERMO.
+- [Grupos](https://tickethubh.com.br/grupos): grupos de WhatsApp para receber primeiro os avisos de festas, novos lotes e condições exclusivas de BH. Entrar é gratuito e opcional; o TicketHubh não vende por esses grupos.
+- [Calendário](https://tickethubh.com.br/calendario): festas e shows organizados por data.
+- [Blog](https://tickethubh.com.br/blog): guias, dicas e bastidores da cena de BH.
 
 ## Institucional e ajuda
 
-- [Sobre](https://www.tickethubh.com.br/sobre): o que é o TicketHubh.
-- [Como funciona](https://www.tickethubh.com.br/como-funciona): o fluxo de descoberta até a compra no canal oficial.
-- [Perguntas frequentes](https://www.tickethubh.com.br/faq): compra, reembolso, meia-entrada e a quem recorrer.
-- [Contato](https://www.tickethubh.com.br/contato): falar pelo WhatsApp; dúvidas e parcerias.
-- [Links](https://www.tickethubh.com.br/links): todos os canais oficiais num só lugar.
+- [Sobre](https://tickethubh.com.br/sobre): o que é o TicketHubh.
+- [Como funciona](https://tickethubh.com.br/como-funciona): o fluxo de descoberta até a compra no canal oficial.
+- [Perguntas frequentes](https://tickethubh.com.br/faq): compra, reembolso, meia-entrada e a quem recorrer.
+- [Contato](https://tickethubh.com.br/contato): falar pelo WhatsApp; dúvidas e parcerias.
+- [Links](https://tickethubh.com.br/links): todos os canais oficiais num só lugar.
 
 ## Legal
 
-- [Termos de Uso](https://www.tickethubh.com.br/termos)
-- [Política de Privacidade](https://www.tickethubh.com.br/privacidade)
+- [Termos de Uso](https://tickethubh.com.br/termos)
+- [Política de Privacidade](https://tickethubh.com.br/privacidade)
