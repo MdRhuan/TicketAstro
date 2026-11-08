@@ -71,6 +71,10 @@ export const WHATSAPP = '5531983158818';
 // Vale para todos os eventos por padrão.
 export const GRUPO_OFERTAS = 'https://chat.whatsapp.com/EGrwvkC1N8WJyfp9Rsb8LM';
 
+// Link do WhatsApp da oferta de aniversário (entrada grátis + consumação, varia por evento).
+// INTERINO: wa.link/aaoyj1 (mesmo do blog). Trocar aqui quando chegar o link específico.
+export const WHATSAPP_ANIVERSARIO = 'https://wa.link/aaoyj1';
+
 export function linkCondicoes(e: Evento): string {
   if (e.linkCondicoes) return e.linkCondicoes;
   const msg = `Olá! Quero saber as condições especiais para o evento "${e.nome}" (${e.dataLabel}).`;
@@ -81,9 +85,13 @@ export function linkGrupo(e: Evento): string {
   return e.linkGrupo || GRUPO_OFERTAS;
 }
 
-// Query pronta para o embed/link do Google Maps
+// Query pronta para o embed/link do Google Maps.
+// Só endereço + cidade geocodifica de forma mais determinística do que incluir
+// o nome do local (que o Maps tenta casar com um negócio e pode fixar o pino
+// errado). O "|" do endereço (separador de bairro) vira vírgula pro Maps ler.
 export function mapaQuery(e: Evento): string {
-  return encodeURIComponent(`${e.local}, ${e.endereco}, ${e.cidade}`);
+  const endereco = e.endereco.replace(/\s*\|\s*/g, ', ');
+  return encodeURIComponent(`${endereco}, ${e.cidade}`);
 }
 
 // Contagem de dias no build (o script no browser recalcula para "hoje")
@@ -338,7 +346,7 @@ E já fica o aviso: não adianta deixar pra decidir em cima da hora e depois cho
     nome: 'Rio Califórnia',
     categoria: 'Festa',
     estilo: 'Eletrônica',
-    // sem produtora a exibir (a pedido)
+    produtora: 'Rio Califórnia', // casa com a produtora Rio Califórnia p/ ela listar esta festa; não é exibido na página do evento
     local: 'Night Market',
     cidade: 'Belo Horizonte',
     endereco: 'Rua Wilson Rocha Lima, 137 | Estoril',
@@ -375,6 +383,48 @@ Sunset.`,
     ctaCompra: 'Garantir Meu Nome Na Lista',
     linkCondicoes: 'https://wa.link/clilcl',
     ctaCondicoes: 'Comemorar Aniversário',
+    ctaGrupo: 'Grupo De Descontos',
+  },
+  {
+    slug: 'reveillon-do-night-2027',
+    nome: 'Réveillon do Night 2027',
+    categoria: 'Festa',
+    estilo: 'Eletrônica',
+    produtora: 'Night Market',
+    local: 'Night Market',
+    cidade: 'Belo Horizonte',
+    endereco: 'Rua Wilson Rocha Lima, 137 | Estoril',
+    dataISO: '2026-12-31',
+    dataLabel: '31 DEZ 2026',
+    diaSemana: 'Quinta-feira',
+    horaAbertura: '22:00',
+    classificacao: '18 anos',
+    exclusiva: true,
+    imagem: '/eventos/reveillon-do-night-2027.webp',
+    imagemHero: '/eventos/reveillon-do-night-2027-banner.webp',
+    cor: '#c9a227',
+    descricao: `✨ RÉVEILLON DO NIGHT 2027 | FULL OPEN BAR & OPEN FOOD PREMIUM 🥂
+
+Já pensou começar 2027 nas alturas, com uma vista absurda de BH, muita música, open bar e open food premium? 👀
+
+O Réveillon do Night está de volta para mais uma edição e promete uma virada simplesmente inesquecível!
+
+A 1.070 metros de altitude, você vai curtir uma experiência completa, com 3 espaços simultâneos, grandes atrações, gastronomia premium e bebidas liberadas para brindar cada segundo da noite.
+
+É a combinação perfeita de música, gente bonita, experiências incríveis e aquela energia que só uma virada de ano pode proporcionar!
+
+🥂 Uma vista de tirar o fôlego. Uma festa em grande estilo. E 2027 começando do jeito que merece!
+
+Não deixe para a última hora: garanta seu ingresso e venha viver uma das viradas mais especiais de BH! 🔥`,
+    lineup: [],
+    ingressos: [],
+    regras: [
+      'Classificação etária: 18 anos.',
+    ],
+    linkCompra: 'https://app.nittio.com.br/event/reveillon-do-night-2027-XIYJqb/details?coupon=BS',
+    ctaCompra: 'Garantir Desconto',
+    linkCondicoes: 'https://wa.link/ed8wvn',
+    ctaCondicoes: 'Condições Especiais',
     ctaGrupo: 'Grupo De Descontos',
   },
 ];

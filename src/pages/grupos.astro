@@ -72,7 +72,7 @@ import { grupos } from '../data/grupos';
                     />
                   )}
 
-                  {g.destaque && <span class="grp__badge">Principal</span>}
+                  {g.tag && <span class="grp__badge">{g.tag}</span>}
                 </div>
 
                 <div class="grp__corpo">
@@ -95,11 +95,6 @@ import { grupos } from '../data/grupos';
             ))
           }
         </div>
-
-        <p class="grp-nota">
-          Os grupos são abertos e divulgam festas e shows de BH. Você pode sair
-          quando quiser pelas opções do próprio grupo no WhatsApp.
-        </p>
       </div>
     </main>
 
@@ -308,9 +303,9 @@ import { grupos } from '../data/grupos';
         justify-content: center;
         gap: 0.45rem;
         padding: 0.6rem 1rem;
-        border: 1px solid var(--marca);
+        border: 1px solid #075e54;
         border-radius: 12px;
-        background: var(--marca);
+        background: #075e54; /* verde WhatsApp escuro: mesmo do botão "Descontos", acessível com texto branco (>=4.5:1) */
         color: #fff;
         font-weight: 700;
         font-size: 0.95rem;
@@ -319,8 +314,8 @@ import { grupos } from '../data/grupos';
           transform 0.16s ease;
       }
       .grp__btn:hover {
-        background: var(--marca-hover);
-        border-color: var(--marca-hover);
+        background: #0a6e62;
+        border-color: #0a6e62;
       }
       .grp__btn:active {
         transform: translateY(1px);
@@ -334,13 +329,6 @@ import { grupos } from '../data/grupos';
         background: var(--marca);
         color: #fff;
         box-shadow: 0 2px 8px rgba(43, 92, 255, 0.4);
-      }
-
-      .grp-nota {
-        margin: 2.5rem 0 0;
-        font-size: 0.88rem;
-        color: var(--texto-3);
-        max-width: 68ch;
       }
 
       @media (prefers-reduced-motion: reduce) {

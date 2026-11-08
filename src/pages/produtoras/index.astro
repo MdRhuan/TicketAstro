@@ -1,4 +1,10 @@
 ---
+import { Image } from 'astro:assets';
+// Capa do banner. Não existe uma capa dedicada de Produtoras ainda — reaproveita a
+// de festas (multidão numa festa de BH, combina com "quem move a noite"). Para uma
+// foto própria: adicione src/assets/CapaProdutoras.webp e troque o import abaixo
+// + o alt da <Image>.
+import capaProdutoras from '../../assets/CapaFestas.webp';
 import BaseHead from '../../components/BaseHead.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
@@ -40,15 +46,28 @@ const itemList = temProdutoras
   <body>
     <Nav />
 
-    <main class="prod-hub">
-      <header class="prod-hub__head">
-        <h1 class="prod-hub__titulo">Produtoras de festa em Belo Horizonte</h1>
-        <p class="prod-hub__sub">
-          Quem move a noite de BH: o perfil de cada produtora e as próximas festas,
-          com link direto para o canal oficial de compra.
-        </p>
+    <main>
+      <header class="prod-hero">
+        <Image
+          class="prod-hero__img"
+          src={capaProdutoras}
+          widths={[800, 1280, 1920, 2400]}
+          sizes="100vw"
+          quality={72}
+          alt="Multidão lotando uma festa à noite, de frente para um palco iluminado em Belo Horizonte"
+          loading="eager"
+          fetchpriority="high"
+        />
+        <div class="prod-hero__wrap">
+          <h1 class="prod-hero__titulo">Produtoras de festa em Belo Horizonte</h1>
+          <p class="prod-hero__sub">
+            Quem move a noite de BH: o perfil de cada produtora e as próximas festas,
+            com link direto para o canal oficial de compra.
+          </p>
+        </div>
       </header>
 
+      <div class="prod-hub">
       {
         temProdutoras ? (
           <ul class="prod-hub__grade">
@@ -69,8 +88,7 @@ const itemList = temProdutoras
                     <span class="prod-card__ini" aria-hidden="true">{iniciais(p.nome)}</span>
                   </div>
                   <span class="prod-card__nome">{p.nome}</span>
-                  {p.estilo && <span class="prod-card__estilo">{p.estilo}</span>}
-                  <span class="prod-card__resumo">{p.resumo}</span>
+                  <span class="prod-card__resumo">{p.cartao ?? p.resumo}</span>
                 </a>
               </li>
             ))}
@@ -81,6 +99,7 @@ const itemList = temProdutoras
           </p>
         )
       }
+      </div>
     </main>
 
     <Footer />
@@ -88,31 +107,78 @@ const itemList = temProdutoras
     <CookieConsent />
   </body>
 
+  <style is:global>
+    ::selection {
+      background: var(--marca);
+      color: #fff;
+    }
+  </style>
+
   <style>
     body {
+      margin: 0;
       font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      color: var(--texto);
+      background: #fff;
     }
+    *:focus-visible {
+      outline: 2px solid var(--marca);
+      outline-offset: 3px;
+      border-radius: 8px;
+    }
+
+    /* ---- Hero (mesmo padrão de blog/calendário/eventos/grupos) ---- */
+    .prod-hero {
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      min-height: clamp(280px, 42vh, 460px);
+      color: #fff;
+      background-color: var(--fundo-escuro); /* fallback enquanto a foto carrega */
+      overflow: hidden;
+    }
+    .prod-hero__img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 70%;
+      z-index: 0;
+    }
+    .prod-hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: linear-gradient(180deg, rgba(18, 20, 26, 0.2), rgba(18, 20, 26, 0.85));
+    }
+    .prod-hero__wrap {
+      position: relative;
+      z-index: 2;
+      max-width: 1140px;
+      margin-inline: auto;
+      width: 100%;
+      padding: 2.5rem 1.5rem 2.75rem;
+    }
+    .prod-hero__titulo {
+      margin: 0;
+      font-size: clamp(2.2rem, 5.5vw, 3.6rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+    .prod-hero__sub {
+      margin: 0.5rem 0 0;
+      font-size: 1.1rem;
+      max-width: 52ch;
+      color: rgba(255, 255, 255, 0.92);
+    }
+
+    /* ---- Conteúdo ---- */
     .prod-hub {
       max-width: 1140px;
       margin-inline: auto;
-      padding: 2.5rem 1.5rem 4.5rem;
-    }
-    .prod-hub__head {
-      max-width: 720px;
-      margin-bottom: 2rem;
-    }
-    .prod-hub__titulo {
-      margin: 0 0 0.75rem;
-      font-size: clamp(1.6rem, 4vw, 2.1rem);
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      color: var(--texto);
-    }
-    .prod-hub__sub {
-      margin: 0;
-      font-size: 1.05rem;
-      line-height: 1.6;
-      color: var(--texto-2);
+      padding: 3rem 1.5rem 4.5rem;
     }
     .prod-hub__grade {
       list-style: none;
@@ -120,36 +186,53 @@ const itemList = temProdutoras
       padding: 0;
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 1.25rem;
+      gap: 2rem 1.75rem;
+    }
+    /* O <li> estica à altura da linha (grid) e, como flex, estica o card dentro
+       dele. É isto que iguala a altura dos cards SEM `height: 100%` no card —
+       altura em % dentro de grid de linha automática criava referência circular
+       no Chromium, que subdimensionava a linha e fazia o card vazar por baixo,
+       invadindo (~15px) o card de baixo. */
+    .prod-hub__grade > li {
+      display: flex;
     }
     .prod-card {
+      flex: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
-      gap: 0.4rem;
-      height: 100%;
-      padding: 1.75rem 1.3rem;
+      gap: 0.35rem;
+      padding: 1.35rem 1.1rem;
       text-decoration: none;
       background: #fff;
-      border: 1px solid var(--borda);
-      border-radius: 14px;
-      box-shadow: 0 1px 2px rgba(16, 17, 20, 0.06);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      /* Contorno forte (mesmo padrão dos cards de Grupos): card branco sobre
+         página branca precisa de borda nítida pra cada um se separar do vizinho.
+         A borda faz esse trabalho; sem sombra de repouso difusa, que borrava o
+         limite e fazia um card parecer sobrepor o outro. */
+      border: 2px solid var(--texto);
+      border-radius: 16px;
+      transition: transform 0.16s ease, box-shadow 0.18s ease;
     }
-    .prod-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 16px 30px -18px rgba(16, 17, 20, 0.35);
+    .prod-card:hover,
+    .prod-card:focus-visible {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 32px -20px rgba(16, 17, 20, 0.4);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .prod-card {
+        transition: none;
+      }
     }
     .prod-card__avatar {
-      width: 92px;
-      height: 92px;
+      width: 74px;
+      height: 74px;
       border-radius: 50%;
       overflow: hidden;
       background: var(--cor, #14151b);
       display: grid;
       place-items: center;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.35rem;
     }
     .prod-card__foto {
       width: 100%;
@@ -161,7 +244,7 @@ const itemList = temProdutoras
     }
     .prod-card__ini {
       display: none;
-      font-size: 1.7rem;
+      font-size: 1.4rem;
       font-weight: 800;
       color: #fff;
     }
@@ -169,20 +252,13 @@ const itemList = temProdutoras
       display: block;
     }
     .prod-card__nome {
-      font-size: 1.2rem;
+      font-size: 1.08rem;
       font-weight: 800;
       letter-spacing: -0.02em;
       color: var(--texto);
     }
-    .prod-card__estilo {
-      font-size: 0.78rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--marca);
-    }
     .prod-card__resumo {
-      font-size: 0.92rem;
+      font-size: 0.88rem;
       line-height: 1.5;
       color: var(--texto-3);
     }

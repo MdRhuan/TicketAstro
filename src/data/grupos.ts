@@ -11,9 +11,11 @@
 //   abrir o grupo → Dados do grupo → Convite por link → Copiar link.)
 //   NÃO invente o código: um link errado leva a pessoa a "grupo inválido".
 //
-//   tipo:  'ofertas' → descontos/avisos gerais  (aparecem no topo)
-//          'festa'   → grupo de uma festa específica (aparecem na seção de baixo)
-//   destaque: true   → marca o card como "Principal" (badge na foto); use só no principal.
+//   tipo:  metadado ('ofertas' | 'festa'). Hoje a página mostra todos os grupos
+//          num grid único; o campo fica para reativar a divisão em seções depois.
+//   tag:   texto curto do selo sobre a foto (ex.: 'Principal', 'Rio Califórnia',
+//          'Night Market'). Sem tag → sem selo.
+//   destaque: true   → dá ênfase ao card (borda + selo preenchido). Use no principal.
 //
 //   FOTO:  coloque o arquivo em  public/grupos/<arquivo>.jpg  e aponte o campo
 //          `foto` para ele (ex.: '/grupos/geral.jpg'). Sem foto → o card mostra
@@ -26,9 +28,10 @@ export interface Grupo {
   nome: string;
   descricao: string; // 1 linha curta: o que a pessoa ganha ao entrar
   link: string; // convite real: https://chat.whatsapp.com/...
-  tipo: 'ofertas' | 'festa';
+  tipo: 'ofertas' | 'festa'; // metadado; não usado no layout atual (grid único)
   foto?: string; // public/grupos/<arquivo>.jpg  (sem foto → fallback autoral)
-  destaque?: boolean;
+  tag?: string; // texto do selo sobre a foto (ex.: 'Principal', 'Rio Califórnia')
+  destaque?: boolean; // ênfase: borda + selo preenchido; use no principal
 }
 
 export const grupos: Grupo[] = [
@@ -39,6 +42,8 @@ export const grupos: Grupo[] = [
     link: GRUPO_OFERTAS, // mesmo grupo dos botões "Descontos" do site (fonte única em eventos.ts)
     tipo: 'ofertas',
     foto: '/grupos/FotoGrupoTicketHubh.webp',
+    tag: 'Principal',
+    destaque: true,
   },
 
   // ── Rio Califórnia — grupo da festa (lista + avisos). ──
@@ -48,6 +53,7 @@ export const grupos: Grupo[] = [
     link: 'https://chat.whatsapp.com/BapREPkLhZnKnFvsZi3OiC',
     tipo: 'festa',
     foto: '/grupos/FotoGrupoRC.webp',
+    tag: 'Rio Califórnia',
   },
 
   // ── Offs BH — grupo da festa (lista + avisos). ──
@@ -57,6 +63,7 @@ export const grupos: Grupo[] = [
     link: 'https://chat.whatsapp.com/FfeQQmR6XMvDNlH15IPsPs',
     tipo: 'festa',
     foto: '/grupos/FotoGrupoOffs.webp',
+    tag: 'Night Market',
   },
 
   // ── MODELO — copie, cole acima desta linha e troque os campos. ──

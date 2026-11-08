@@ -94,7 +94,7 @@ const jsonLd = {
   ...(ofertas.length ? { offers: ofertas } : {}),
 };
 
-const titulo = `${e.nome} | ${e.cidade} | TicketHubh`;
+const titulo = `${e.nome} Ingressos | ${e.cidade} | TicketHubh`;
 // Colapsa quebras de linha da descrição (que podem ser multi-parágrafo) numa linha só.
 const resumo = e.descricao.replace(/\s+/g, ' ').trim();
 const desc = `${e.dataLabel} · ${e.local}, ${e.cidade}. ${resumo.slice(0, 120)}`;
@@ -1019,27 +1019,46 @@ const descMultilinha = e.descricao.includes('\n');
           .forEach((el) => el.remove());
       })();
 
-      // 5) Fachada do mapa: injeta o iframe do Google Maps só no clique. Evita
-      //    ~500 KiB de JS de terceiros no load (melhora o LCP do mobile). Sem JS,
-      //    o link "Ver no Google Maps" logo abaixo continua funcionando.
+      // 5) Fachada do mapa: injeta o iframe do Google Maps quando ele entra na
+      //    viewport (IntersectionObserver). Mantém o load leve — nada de ~500 KiB
+      //    de terceiros até o mapa chegar perto da tela — mas sem exigir clique.
+      //    O clique segue valendo como atalho; sem JS, o link "Ver no Google
+      //    Maps" logo abaixo continua sendo o fallback.
       (() => {
         const btn = document.querySelector<HTMLButtonElement>('.mapa__facade');
         if (!btn) return;
-        btn.addEventListener(
-          'click',
-          () => {
-            const src = btn.dataset.mapa;
-            if (!src) return;
-            const frame = document.createElement('iframe');
-            frame.className = 'mapa__frame';
-            frame.title = btn.dataset.mapaTitulo || 'Mapa';
-            frame.loading = 'lazy';
-            frame.referrerPolicy = 'no-referrer-when-downgrade';
-            frame.src = src;
-            btn.replaceWith(frame);
-          },
-          { once: true },
-        );
+
+        let feito = false;
+        const injeta = () => {
+          if (feito) return;
+          const src = btn.dataset.mapa;
+          if (!src) return;
+          feito = true;
+          const frame = document.createElement('iframe');
+          frame.className = 'mapa__frame';
+          frame.title = btn.dataset.mapaTitulo || 'Mapa';
+          frame.loading = 'lazy';
+          frame.referrerPolicy = 'no-referrer-when-downgrade';
+          frame.src = src;
+          btn.replaceWith(frame);
+        };
+
+        btn.addEventListener('click', injeta);
+
+        if ('IntersectionObserver' in window) {
+          const io = new IntersectionObserver(
+            (entries, obs) => {
+              if (entries.some((en) => en.isIntersecting)) {
+                obs.disconnect();
+                injeta();
+              }
+            },
+            { rootMargin: '200px' },
+          );
+          io.observe(btn);
+        } else {
+          injeta();
+        }
       })();
     </script>
   </body>

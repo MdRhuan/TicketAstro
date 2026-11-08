@@ -6,7 +6,8 @@ import Footer from '../../components/Footer.astro';
 import WhatsAppButton from '../../components/WhatsAppButton.astro';
 import CookieConsent from '../../components/CookieConsent.astro';
 import { produtorasPublicadas, eventosDaProdutora, type Produtora } from '../../data/produtoras';
-import { iniciais } from '../../data/eventos';
+import { iniciais, GRUPO_OFERTAS, WHATSAPP_ANIVERSARIO } from '../../data/eventos';
+import { getPost } from '../../data/posts';
 
 // Só gera página para produtora publicada (trava anti-conteúdo-fino em produtoras.ts).
 // Com a lista de publicadas vazia, nenhuma página de produtora é gerada ainda.
@@ -27,7 +28,9 @@ const site = Astro.site!;
 const eventos = eventosDaProdutora(p.nome);
 
 const cidadeCurta = p.cidade === 'Belo Horizonte' ? 'BH' : p.cidade;
-const titulo = `${p.nome}: próximas festas em ${cidadeCurta} | TicketHubh`;
+const titulo = p.tituloSeo
+  ? `${p.tituloSeo} | TicketHubh`
+  : `${p.tituloExibicao ?? p.nome}: ingressos, agenda e informações | TicketHubh`;
 
 // Lista "a, b e c" em linguagem natural.
 function listar(xs: string[]): string {
@@ -43,9 +46,31 @@ const bairrosFrase =
 // Canais oficiais verificáveis (sameAs do schema e links do perfil).
 const canais = [
   p.instagram ? { rotulo: 'Instagram', url: p.instagram } : null,
+  p.whatsapp ? { rotulo: 'WhatsApp', url: p.whatsapp } : null,
   p.sympla ? { rotulo: 'Sympla', url: p.sympla } : null,
   p.site ? { rotulo: 'Site oficial', url: p.site } : null,
 ].filter((c): c is { rotulo: string; url: string } => c !== null);
+
+// Bloco de links VISÍVEL na página: Instagram da produtora + nosso grupo de desconto + site da produtora.
+// Separado do `canais` acima (que só alimenta o sameAs do schema): o grupo é NOSSO, não entra no sameAs da produtora.
+const linksVisiveis = [
+  p.instagram ? { rotulo: 'Instagram', url: p.instagram, externo: true } : null,
+  { rotulo: 'Grupo de descontos no WhatsApp', url: p.linkGrupo ?? GRUPO_OFERTAS, externo: false },
+  p.site ? { rotulo: 'Site oficial', url: p.site, externo: true } : null,
+].filter((c): c is { rotulo: string; url: string; externo: boolean } => c !== null);
+
+// Artigo do blog que fala desta produtora (link interno; só quando houver match real).
+const postRelacionado = p.postRelacionado ? getPost(p.postRelacionado) : undefined;
+
+// FAQ de aniversário, igual em toda produtora (gerada no template, não duplicada no data).
+// Link: usa o `linkAniversario` específico da produtora quando houver; senão, cai no
+// global interino WHATSAPP_ANIVERSARIO (wa.link/aaoyj1).
+const faqAniversario = {
+  pergunta: `Como comemorar aniversário nos eventos da ${p.nome}?`,
+  resposta: `No seu aniversário, você e a sua galera podem ganhar off e consumação nas festas da ${p.nome}. Chame a gente no WhatsApp com a data do seu aniversário e a gente mostra o que vale em cada festa e como garantir:`,
+  link: { href: p.linkAniversario ?? WHATSAPP_ANIVERSARIO, texto: 'Comemorar meu aniversário no WhatsApp' },
+};
+const faqCompleto = [...(p.faq ?? []), faqAniversario];
 
 // areaServed: cidade + bairros reais (sinal geográfico, nunca inventado).
 const areaServed = [
@@ -140,7 +165,7 @@ const jsonLd = {
             <span class="prod__ini" aria-hidden="true">{iniciais(p.nome)}</span>
           </div>
           <div class="prod__id-txt">
-            <h1 class="prod__titulo">{p.nome}</h1>
+            <h1 class="prod__titulo">{p.tituloExibicao ?? `${p.nome}: festas em ${cidadeCurta}`}</h1>
             {p.estilo && <p class="prod__estilo">{p.estilo} · {p.cidade}</p>}
           </div>
         </div>
@@ -151,18 +176,39 @@ const jsonLd = {
         {bairrosFrase && <p class="prod__p">{bairrosFrase}</p>}
 
         {
-          canais.length > 0 && (
+          linksVisiveis.length > 0 && !p.ocultarCanais && (
             <p class="prod__canais">
-              <span>Canais oficiais:</span>
-              {canais.map((c) => (
-                <a href={c.url} target="_blank" rel="noopener nofollow">
+              <span>Links:</span>
+              {linksVisiveis.map((c) => (
+                <a href={c.url} target="_blank" rel={c.externo ? 'noopener nofollow' : 'noopener'}>
                   {c.rotulo}
                 </a>
               ))}
             </p>
           )
         }
+
+        {
+          postRelacionado && (
+            <p class="prod__blog">
+              No blog: <a href={`/blog/${postRelacionado.slug}/`}>{postRelacionado.titulo}</a>
+            </p>
+          )
+        }
       </section>
+
+      {
+        p.locais && p.locais.length > 0 && (
+          <section class="prod__locais" aria-labelledby="prod-locais-titulo">
+            <h2 class="prod__h2" id="prod-locais-titulo">Onde acontecem as festas</h2>
+            <ul class="prod__locais-lista">
+              {p.locais.map((l) => (
+                <li>{l}</li>
+              ))}
+            </ul>
+          </section>
+        )
+      }
 
       <section class="prod__eventos" aria-labelledby="prod-eventos-titulo">
         <h2 class="prod__h2" id="prod-eventos-titulo">Próximas festas da {p.nome}</h2>
@@ -193,6 +239,56 @@ const jsonLd = {
           )
         }
       </section>
+
+      {
+        faqCompleto.length > 0 && (
+          <section class="prod__faq" aria-labelledby="prod-faq-titulo">
+            <h2 class="prod__h2" id="prod-faq-titulo">Perguntas frequentes sobre a {p.nome}</h2>
+            <div class="prod__faq-lista">
+              {faqCompleto.map((item) => (
+                <details class="prod__faq-item">
+                  <summary class="prod__faq-q">
+                    <span>{item.pergunta}</span>
+                    <svg class="prod__faq-ico" viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true">
+                      <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                  </summary>
+                  <div class="prod__faq-a">
+                    {item.resposta}
+                    {item.link && (
+                      <a class="prod__faq-link" href={item.link.href} target="_blank" rel="noopener">
+                        {item.link.texto}
+                      </a>
+                    )}
+                  </div>
+                </details>
+              ))}
+            </div>
+            <p class="prod__faq-geral">
+              Dúvidas gerais (ingresso, pagamento, segurança)? Veja o <a href="/faq">FAQ do TicketHubh</a>.
+            </p>
+          </section>
+        )
+      }
+
+      {
+        p.imagens && p.imagens.length > 0 && (
+          <section class="prod__imgs" aria-labelledby="prod-imgs-titulo">
+            <h2 class="prod__h2" id="prod-imgs-titulo">Imagens</h2>
+            <div class="prod__imgs-grade">
+              {p.imagens.map((img) =>
+                img.src && img.src.startsWith('/') ? (
+                  <img class="prod__img" src={img.src} alt={img.alt} loading="lazy" decoding="async" />
+                ) : (
+                  <div class="prod__img-slot">
+                    <span class="prod__img-tag">[A PREENCHER]</span>
+                  </div>
+                )
+              )}
+            </div>
+          </section>
+        )
+      }
     </main>
 
     <Footer />
@@ -299,6 +395,15 @@ const jsonLd = {
       .prod__canais a:hover {
         text-decoration: underline;
       }
+      .prod__blog {
+        margin: 1rem 0 0;
+        font-size: 0.95rem;
+        color: var(--texto-3);
+      }
+      .prod__blog a {
+        color: var(--marca);
+        font-weight: 600;
+      }
       .prod__eventos {
         margin-top: 3rem;
       }
@@ -361,6 +466,108 @@ const jsonLd = {
       .prod__vazio {
         font-size: 1rem;
         color: var(--texto-3);
+      }
+
+      /* Locais */
+      .prod__locais {
+        margin-top: 2.5rem;
+      }
+      .prod__locais-lista {
+        margin: 0;
+        padding-left: 1.2rem;
+        font-size: 1.05rem;
+        line-height: 1.7;
+        color: var(--texto-2);
+      }
+
+      /* FAQ (sem marcação FAQPage — HTML semântico apenas) */
+      .prod__faq {
+        margin-top: 3rem;
+      }
+      .prod__faq-lista {
+        margin: 0;
+      }
+      .prod__faq-item {
+        border-bottom: 1px solid var(--borda);
+      }
+      /* Pergunta = gatilho clicável do accordion (<summary>). Remove o marcador
+         nativo e alinha o chevron à direita ("ali do lado"). */
+      .prod__faq-q {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 1rem 0;
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: var(--texto);
+        cursor: pointer;
+        list-style: none;
+      }
+      .prod__faq-q::-webkit-details-marker {
+        display: none;
+      }
+      .prod__faq-ico {
+        flex: none;
+        color: var(--texto-3);
+        transition: transform 0.2s ease;
+      }
+      .prod__faq-item[open] .prod__faq-ico {
+        transform: rotate(180deg);
+      }
+      .prod__faq-a {
+        margin: 0 0 1rem;
+        line-height: 1.6;
+        color: var(--texto-2);
+      }
+      .prod__faq-link {
+        display: inline-block;
+        margin-top: 0.5rem;
+        color: var(--marca);
+        font-weight: 600;
+      }
+      .prod__faq-geral {
+        margin-top: 1.25rem;
+        font-size: 0.95rem;
+        color: var(--texto-3);
+      }
+      .prod__faq-geral a {
+        color: var(--marca);
+        font-weight: 600;
+      }
+
+      /* Imagens (espaços reservados até você subir os arquivos) */
+      .prod__imgs {
+        margin-top: 3rem;
+      }
+      .prod__imgs-grade {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+      }
+      .prod__img {
+        width: 100%;
+        border-radius: 12px;
+        display: block;
+      }
+      .prod__img-slot {
+        aspect-ratio: 16 / 9;
+        display: grid;
+        place-items: center;
+        border: 2px dashed var(--borda);
+        border-radius: 12px;
+        background: #fafafa;
+        color: var(--texto-3);
+      }
+      .prod__img-tag {
+        font-size: 0.85rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+      }
+      @media (max-width: 540px) {
+        .prod__imgs-grade {
+          grid-template-columns: 1fr;
+        }
       }
     </style>
   </body>
