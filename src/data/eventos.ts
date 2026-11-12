@@ -49,6 +49,9 @@ export interface Evento {
   imagemHero?: string; // opcional: banner 16/9 do topo da página de detalhe (se vazio, usa `imagem`)
   cor: string;
   descricao: string; // 1–3 parágrafos
+  metaDesc?: string; // opcional: meta description de SEO (~150–160 chars). Se vazio,
+  //                    gera a partir da `descricao` (cortando na fronteira da palavra).
+  //                    Use quando a `descricao` é atmosférica e não serve de resumo p/ busca.
   lineup: Artista[]; // atrações / DJs / line-up (com foto)
   ingressos: TipoIngresso[];
   regras: string[]; // políticas: meia, portaria, proibições...
@@ -374,12 +377,14 @@ Então chega a hora.
 O sol desce, a luz fica dourada e, sem ninguém combinar, todo mundo vira para o mesmo lado.
 
 Sunset.`,
+    metaDesc:
+      'Rio Califórnia em BH: sunset de música eletrônica no Night Market, aos domingos a partir das 15h. Entre na lista e garanta seu nome com desconto. 18+.',
     lineup: [],
     ingressos: [],
     regras: [
       'Classificação etária: 18 anos.',
     ],
-    linkCompra: 'https://events.vipme.com.br/list/546869-rhuan',
+    linkCompra: 'https://listariocalifornia.vercel.app/',
     ctaCompra: 'Garantir Meu Nome Na Lista',
     linkCondicoes: 'https://wa.link/clilcl',
     ctaCondicoes: 'Comemorar Aniversário',

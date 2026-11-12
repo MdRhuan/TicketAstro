@@ -21,6 +21,7 @@ import {
   linkGrupo,
   type Evento,
 } from '../../data/eventos';
+import { produtorasPublicadas } from '../../data/produtoras';
 
 export function getStaticPaths() {
   return eventos.map((evento) => ({
@@ -49,6 +50,17 @@ const q = mapaQuery(e);
 // Imagem de maior destaque (LCP) do topo: preload + fetchpriority no <head>/<img>.
 const heroImg = e.imagemHero || e.imagem;
 
+// Produtora publicada que casa com este evento (pelo nome) → vira link "Produção".
+// Só linka quando a página existe (publicar:true), nunca para um 404.
+const produtoraPub = e.produtora
+  ? produtorasPublicadas.find((p) => p.nome === e.produtora)
+  : undefined;
+// Regras que não são só a repetição da classificação (evita duplicar a idade na UI).
+const idadeRegra = e.classificacao.match(/\d+/)?.[0];
+const regrasExtras = e.regras.filter(
+  (r) => !(idadeRegra && /classifica/i.test(r) && r.includes(idadeRegra)),
+);
+
 // JSON-LD (schema.org/Event) — reforça SEO e leitura por IA.
 // Mantém as ofertas nos dados estruturados mesmo sem listar os tipos na UI.
 const ofertas = e.ingressos
@@ -66,15 +78,28 @@ const ofertas = e.ingressos
     url: e.linkCompra,
   }));
 const fim = fimEvento(e);
+// Faixa etária do schema (typicalAgeRange): extrai o número da `classificacao`
+// ("18 anos" → "18-"). Sem número cadastrado, não declara (nunca inventa).
+const idade = e.classificacao.match(/\d+/)?.[0];
+// Imagens do schema: banner 16/9 primeiro (proporção que o Google prefere) e a
+// capa 1/1 em seguida — dá ao Google mais de uma proporção para escolher.
+const imagensSchema = [
+  ...(e.imagemHero ? [new URL(imagemLocal(e.imagemHero), Astro.site).href] : []),
+  new URL(imagemLocal(e.imagem), Astro.site).href,
+];
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Event',
   name: e.nome,
+  // URL própria (canônica, com barra final) — recomendada pelo Google p/ Event.
+  url: new URL(`/eventos/${e.slug}/`, Astro.site).href,
   startDate: `${e.dataISO}T${e.horaAbertura}:00-03:00`,
   // Só declara endDate quando há horário real de término cadastrado — nunca inventa.
   ...(fim ? { endDate: fim } : {}),
   eventStatus: 'https://schema.org/EventScheduled',
   eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+  // Faixa etária típica (ex.: "18-") — só quando há classificação numérica.
+  ...(idade ? { typicalAgeRange: `${idade}-` } : {}),
   location: {
     '@type': 'Place',
     name: e.local,
@@ -88,23 +113,31 @@ const jsonLd = {
       addressCountry: 'BR',
     },
   },
-  image: [new URL(imagemLocal(e.imagem), Astro.site).href],
+  image: imagensSchema,
   description: e.descricao,
+  // Produtora como organizer (só quando cadastrada) — reforça a entidade p/ Google e IA.
+  ...(e.produtora ? { organizer: { '@type': 'Organization', name: e.produtora } } : {}),
   // Só declara ofertas quando há preços reais cadastrados — nunca inventa valor.
   ...(ofertas.length ? { offers: ofertas } : {}),
 };
 
 const titulo = `${e.nome} Ingressos | ${e.cidade} | TicketHubh`;
-// Colapsa quebras de linha da descrição (que podem ser multi-parágrafo) numa linha só.
+// Meta description: usa a `metaDesc` escrita à mão (SEO) quando existe. Sem ela,
+// monta um resumo a partir da `descricao` cortando SEMPRE numa fronteira de palavra
+// (nunca no meio), para não terminar em frase truncada na SERP e no preview social.
 const resumo = e.descricao.replace(/\s+/g, ' ').trim();
-const desc = `${e.dataLabel} · ${e.local}, ${e.cidade}. ${resumo.slice(0, 120)}`;
+const prefixo = `${e.dataLabel} · ${e.local}, ${e.cidade}. `;
+const limite = 158 - prefixo.length;
+let corpo = resumo.slice(0, limite);
+if (resumo.length > limite) corpo = `${corpo.slice(0, corpo.lastIndexOf(' ')).trimEnd()}…`;
+const desc = e.metaDesc || `${prefixo}${corpo}`;
 // Descrições com quebras de linha (multi-parágrafo) usam espaçamento mais compacto.
 const descMultilinha = e.descricao.includes('\n');
 ---
 
 <html lang="pt-BR">
   <head>
-    <BaseHead title={titulo} description={desc} image={e.imagem} />
+    <BaseHead title={titulo} description={desc} image={heroImg} />
     <link rel="preload" as="image" href={heroImg} fetchpriority="high" />
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     <Breadcrumbs
@@ -128,7 +161,7 @@ const descMultilinha = e.descricao.includes('\n');
           <img
             class="hero__img"
             src={heroImg}
-            alt={`${e.nome} — ${e.estilo} em ${e.local}, ${e.cidade}`}
+            alt={`${e.nome}, ${e.estilo} em ${e.local}, ${e.cidade}`}
             width="1600"
             height="900"
             fetchpriority="high"
@@ -234,6 +267,19 @@ const descMultilinha = e.descricao.includes('\n');
             </a>
           </section>
 
+          <section class="bloco">
+            <h2 class="bloco__titulo">Informações</h2>
+            <ul class="info">
+              <li><strong>Classificação:</strong> {e.classificacao}</li>
+              {regrasExtras.map((r) => (
+                <li>{r}</li>
+              ))}
+              {produtoraPub && (
+                <li><strong>Produção:</strong> <a href={`/produtoras/${produtoraPub.slug}`}>{produtoraPub.tituloExibicao || produtoraPub.nome}</a></li>
+              )}
+            </ul>
+          </section>
+
         </div>
 
         <!-- Coluna de compra (sticky no desktop) -->
@@ -314,7 +360,7 @@ const descMultilinha = e.descricao.includes('\n');
                   <div class="recirc__foto">
                     <img
                       src={p.imagem}
-                      alt={`${p.nome} — ${p.local}, ${p.cidade}`}
+                      alt={`${p.nome}, ${p.local}, ${p.cidade}`}
                       loading="lazy"
                       decoding="async"
                       width="600"
@@ -672,6 +718,31 @@ const descMultilinha = e.descricao.includes('\n');
       }
       .link-seta:hover svg {
         transform: translateX(3px);
+      }
+
+      /* ---------- INFORMAÇÕES ---------- */
+      .info {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        color: var(--texto-2);
+      }
+      .info strong {
+        color: var(--texto);
+        font-weight: 700;
+      }
+      .info a {
+        color: var(--marca);
+        font-weight: 600;
+        text-decoration: none;
+      }
+      .info a:hover {
+        text-decoration: underline;
       }
 
       /* ---------- COMPRA (sticky) ---------- */
