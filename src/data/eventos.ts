@@ -303,6 +303,48 @@ Dúvidas: O couvert e os ingressos podem ser cobrados na portaria, com valores s
     ctaGrupo: 'Grupo De Descontos',
   },
   {
+    slug: 'no-love-betim-atl',
+    nome: 'No Love - Betim ATL',
+    categoria: 'Festa',
+    estilo: 'Funk',
+    produtora: 'Night Market',
+    local: 'Night Market',
+    cidade: 'Belo Horizonte',
+    endereco: 'Rua Wilson Rocha Lima, 137 | Estoril',
+    dataISO: '2026-11-20',
+    dataLabel: '20 NOV 2026',
+    diaSemana: 'Sexta-feira',
+    horaAbertura: '22:00',
+    classificacao: '18 anos',
+    exclusiva: true,
+    imagem: '/eventos/no-love-betim-atl.webp',
+    imagemHero: '/eventos/no-love-betim-atl-banner.webp',
+    cor: '#b5179e',
+    descricao: `NO LOVE
+
+Quem precisa de amor quando tem pista cheia e funk estourando?
+
+A NO LOVE chega à sua 2ª edição no Night Market, dessa vez com Betim ATL no comando, trazendo aquele funk que não deixa ninguém parado!
+
+É pra cantar alto, dançar até cansar e curtir cada segundo sem pensar em mais nada. Aqui não tem espaço pra romance, só pra música boa, resenha e muita curtição!
+
+O único match da noite é com a pista. 🔥
+
+Vai ficar de LOVE ou vai colar com a gente?`,
+    metaDesc:
+      'No Love 2ª edição no Night Market, Estoril (BH): funk com Betim ATL na sexta 20/11, a partir das 22h. Festa 18+ com desconto exclusivo.',
+    lineup: [],
+    ingressos: [],
+    regras: [
+      'Classificação etária: 18 anos.',
+    ],
+    linkCompra: 'https://events.vipme.com.br/2479402/548842?id_promoter=48410',
+    ctaCompra: 'Garantir Desconto',
+    linkCondicoes: 'https://wa.link/1ep6y8',
+    ctaCondicoes: 'Condições Especiais',
+    ctaGrupo: 'Grupo De Descontos',
+  },
+  {
     slug: 'medween',
     nome: 'MEDWEEN',
     categoria: 'Festa',
