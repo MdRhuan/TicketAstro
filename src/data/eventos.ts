@@ -395,9 +395,14 @@ E já fica o aviso: não adianta deixar pra decidir em cima da hora e depois cho
     local: 'Night Market',
     cidade: 'Belo Horizonte',
     endereco: 'Rua Wilson Rocha Lima, 137 | Estoril',
-    dataISO: proximoDomingo.dataISO,
-    dataLabel: proximoDomingo.dataLabel,
-    diaSemana: proximoDomingo.diaSemana,
+    // Data FIXADA nesta edição confirmada (domingo, 22/11/2026). Antes usava
+    // proximoDomingo (recorrente), mas isso só recalcula a cada deploy; sem
+    // rebuild agendado, o build travou no domingo anterior (15/11) e a página
+    // saiu com data vencida. Para voltar ao automático de todo domingo, troque
+    // de volta para proximoDomingo.dataISO / .dataLabel / .diaSemana.
+    dataISO: '2026-11-22',
+    dataLabel: '22 NOV 2026',
+    diaSemana: 'Domingo',
     horaAbertura: '15:00',
     classificacao: '18 anos',
     exclusiva: true,

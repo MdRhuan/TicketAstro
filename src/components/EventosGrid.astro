@@ -1,5 +1,5 @@
 ---
-import { eventoPassado, proximoDomingo } from '../data/eventos';
+import { eventoPassado } from '../data/eventos';
 // Eventos reais em destaque na home.
 // FOTO: coloca o ficheiro em  public/eventos/<slug>.jpg  (campo `imagem`).
 //       Enquanto não existir, o card mostra um fallback autoral.
@@ -58,8 +58,8 @@ const eventos = [
     categoria: 'Festa',
     local: 'Night Market',
     cidade: 'Belo Horizonte, MG',
-    dataISO: proximoDomingo.dataISO, // recorrente: próximo domingo (calculado no build)
-    dataLabel: proximoDomingo.dataLabel,
+    dataISO: '2026-11-22', // fixado na edição confirmada (domingo, 22/11/2026)
+    dataLabel: '22 NOV 2026',
     exclusiva: true,
     imagem: '/eventos/rio-california.webp',
     cor: '#e0592b',
