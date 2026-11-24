@@ -222,7 +222,7 @@ const jsonLd = {
                     <span class="prod__ev-info">
                       <span class="prod__ev-nome">{e.nome}</span>
                       <span class="prod__ev-local">
-                        {e.local} · {e.cidade}
+                        {e.local ? `${e.local} · ${e.cidade}` : e.cidade}
                       </span>
                     </span>
                     <svg class="prod__ev-seta" viewBox="0 0 24 24" width="20" height="20" fill="none" aria-hidden="true">

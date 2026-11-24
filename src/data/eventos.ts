@@ -93,6 +93,7 @@ export function linkGrupo(e: Evento): string {
 // o nome do local (que o Maps tenta casar com um negócio e pode fixar o pino
 // errado). O "|" do endereço (separador de bairro) vira vírgula pro Maps ler.
 export function mapaQuery(e: Evento): string {
+  if (!e.endereco) return ''; // evento sem endereço ("a confirmar") não gera mapa
   const endereco = e.endereco.replace(/\s*\|\s*/g, ', ');
   return encodeURIComponent(`${endereco}, ${e.cidade}`);
 }
@@ -258,49 +259,44 @@ Quer ficar ainda mais perto da ação? Tenha acesso aos bastidores da pista, pro
     local: 'Night Market',
     cidade: 'Belo Horizonte',
     endereco: 'Rua Wilson Rocha Lima, 137 | Estoril',
-    dataISO: '2026-11-07',
-    dataLabel: '07 NOV 2026',
-    diaSemana: 'Sábado',
+    dataISO: '2026-11-26',
+    dataLabel: '26 NOV 2026',
+    diaSemana: 'Quinta-feira',
     horaAbertura: '22:00',
+    horaFim: '03:30', // término 03h30 (veio no schema do Nittio)
     classificacao: '18 anos',
     exclusiva: true,
-    imagem: '/eventos/saideira.webp',
-    imagemHero: '/eventos/saideira-banner.webp',
-    cor: '#e63950',
-    descricao: `SAIDEIRA
+    imagem: '/eventos/saideira.webp', // flyer "Edição Férias" (retrato, Nittio)
+    imagemHero: '/eventos/saideira-banner.webp', // banner 16/9 composto do flyer "Edição Férias"
+    cor: '#6b46e0', // roxo da edição férias
+    descricao: `SAIDEIRA · EDIÇÃO FÉRIAS
 
-O plano era sair cedo. Mas a noite tinha outros planos.
+Porque "só mais uma" é onde as melhores histórias acontecem.
 
-Sábado pede uma noite à altura, e a Saideira é o lugar certo pra isso. Uma noite de música boa, energia lá no alto e aquela vibe que faz você perder a noção do tempo. No som, um Open Format que mistura Funk, MTG, Eletrônico e os hits que todo mundo canta e dança. Chama a galera, prepara o look e vem curtir uma das vistas mais incríveis de BH.
+A Saideira volta em edição férias, no Night Market: um Open Format que passeia pelo Funk, MTG, Eletrônico e os hits que não deixam ninguém parado, com a vista mais linda de BH. Reúne a galera, sai de casa e vem curtir.
 
-E não é só sobre música. É sobre viver a noite do seu jeito, com drinks autorais, cardápio exclusivo, atendimento diferenciado e espaços com mesas e bistrôs pra curtir cada momento. Tudo pensado pra transformar uma saída qualquer em uma noite que rende histórias.
+Uma balada pensada nos detalhes: cardápio exclusivo, drinks autorais, atendimento diferenciado e área com mesas e bistrôs. Uma noite cheia de surpresas pra brindar, dançar e viver até o último minuto.
 
-Na dúvida entre ir embora ou ficar mais um pouco? Você já sabe a resposta.
-
-Sábado à noite tem um nome: Saideira.
-
-A cada 5 amigos que forem com você, você ganha R$ 50 em consumação para aproveitar na noite!
-
-Exemplo:
-
-5 amigos = R$ 50 em consumação
-10 amigos = R$ 100 em consumação
-15 amigos = R$ 150 em consumação
-20 amigos = R$ 200 em consumação
-
-Quanto mais amigos você levar, mais consumação você garante!
-
-Dúvidas: O couvert e os ingressos podem ser cobrados na portaria, com valores sujeitos a alterações.`,
+Porque toda boa semana merece uma grande Saideira.`,
     lineup: [],
     ingressos: [],
     regras: [
-      'Classificação etária: 18 anos.',
+      'Classificação etária: 18 anos. Menores não entram, mesmo acompanhados dos pais ou responsáveis.',
+      'Não é permitida a entrada com camisas de time de futebol, correntes grossas, regatas, chinelos e papetes.',
+      'Ingresso pessoal e nominal: obrigatório documento oficial com foto, junto do ingresso, para validar a titularidade.',
+      'Não são aceitos fotos ou prints de documento, apenas o original ou em aplicativo oficial.',
+      'Proibida a entrada de perfumes, sprays, líquidos, maquiagens pontiagudas, espelhos e itens similares.',
+      'O couvert e os ingressos podem ser cobrados na portaria, com valores sujeitos a alteração.',
+      'Ao entrar, você autoriza o uso de imagem, vídeo e áudio na comunicação do Night Market e seus eventos.',
     ],
-    linkCompra: 'https://events.vipme.com.br/list/546561-bs',
-    ctaCompra: 'Garantir Nome Na Lista',
-    linkCondicoes: 'https://wa.link/37eo38',
-    ctaCondicoes: 'R$250 Em Consumo',
-    ctaGrupo: 'Grupo De Descontos',
+    // Venda via VipMe, com o código de promoter da TicketHubh (id_promoter=48412). Link enviado pelo usuário.
+    linkCompra: 'https://events.vipme.com.br/2480054/552062?id_promoter=48412',
+    ctaCompra: 'Colocar Nome Na Lista',
+    linkCondicoes: 'https://wa.link/yvtoa5',
+    ctaCondicoes: 'Condições Especiais',
+    // GRUPO_NIGHT_MARKET (espelhado de produtoras.ts; não importado p/ evitar ciclo eventos↔produtoras)
+    linkGrupo: 'https://chat.whatsapp.com/FfeQQmR6XMvDNlH15IPsPs',
+    ctaGrupo: 'Grupo VIP do Night Market',
   },
   {
     slug: 'no-love-betim-atl',
@@ -343,6 +339,51 @@ Vai ficar de LOVE ou vai colar com a gente?`,
     linkCondicoes: 'https://wa.link/1ep6y8',
     ctaCondicoes: 'Condições Especiais',
     ctaGrupo: 'Grupo De Descontos',
+  },
+  {
+    slug: 'aprovados-pos-oficial',
+    nome: 'Aprovados | Pós Oficial',
+    categoria: 'Festa',
+    estilo: 'Funk',
+    produtora: 'Night Market',
+    local: 'Night Market',
+    cidade: 'Belo Horizonte',
+    endereco: 'Rua Wilson Rocha Lima, 137 | Estoril',
+    dataISO: '2026-11-27',
+    dataLabel: '27 NOV 2026',
+    diaSemana: 'Sexta-feira',
+    horaAbertura: '22:00',
+    horaFim: '05:00', // termina 05h (veio no schema do Nittio) — habilita o endDate
+    classificacao: '18 anos',
+    exclusiva: true,
+    imagem: '/eventos/aprovados-pos-oficial.webp', // capa do card (flyer vertical)
+    imagemHero: '/eventos/aprovados-pos-oficial-banner.webp', // banner 16/9 "Virada de Lote"
+    cor: '#1e6fb0',
+    descricao: `APROVADOS | PÓS ENEM OFICIAL DO NIGHT
+
+Acabaram as provas. Passou? Então vem comemorar.
+
+O Night Market é o ponto de encontro de quem encarou o ENEM e o fim de mais um ano de estudos, e agora só quer reunir a turma, relaxar e brindar o dever cumprido. Esquece as provas, deixa a preocupação pra depois e aproveita a noite com os amigos.
+
+Depois de tanta dedicação, a única tarefa que sobra é essa: aproveitar.`,
+    metaDesc:
+      'Aprovados | Pós ENEM Oficial no Night Market, Estoril (BH): festa pra comemorar o fim das provas, sexta 27/11 das 22h. 18+, com desconto exclusivo.',
+    lineup: [],
+    ingressos: [],
+    regras: [
+      'Classificação etária: 18 anos. Menores não entram, mesmo acompanhados dos pais ou responsáveis.',
+      'Não é permitida a entrada com camisas de time de futebol, correntes grossas, regatas, chinelos e papetes.',
+      'Ingresso pessoal e nominal: obrigatório documento oficial com foto, junto do ingresso, para validar a titularidade.',
+      'Não são aceitos fotos ou prints de documento, apenas o original ou em aplicativo oficial.',
+      'Proibida a entrada de perfumes, sprays, líquidos, maquiagens pontiagudas, espelhos e itens similares.',
+      'Ao entrar, você autoriza o uso de imagem, vídeo e áudio na comunicação do Night Market e seus eventos.',
+    ],
+    linkCompra: 'https://events.vipme.com.br/2480032/551683?id_promoter=48410',
+    ctaCompra: 'Colocar Nome Na Lista',
+    linkCondicoes: 'https://wa.link/asw3pd',
+    ctaCondicoes: 'Condições Especiais',
+    linkGrupo: 'https://chat.whatsapp.com/FfeQQmR6XMvDNlH15IPsPs',
+    ctaGrupo: 'Grupo VIP do Night Market',
   },
   {
     slug: 'medween',
@@ -435,7 +476,7 @@ Sunset.`,
     ctaCompra: 'Garantir Meu Nome Na Lista',
     linkCondicoes: 'https://wa.link/clilcl',
     ctaCondicoes: 'Comemorar Aniversário',
-    ctaGrupo: 'Grupo De Descontos',
+    ctaGrupo: 'Grupo VIP',
   },
   {
     slug: 'reveillon-do-night-2027',
@@ -479,6 +520,221 @@ Não deixe para a última hora: garanta seu ingresso e venha viver uma das virad
     ctaCondicoes: 'Condições Especiais',
     ctaGrupo: 'Grupo De Descontos',
   },
+  {
+    slug: 'boca-a-boca',
+    nome: 'Boca a Boca',
+    categoria: 'Festa',
+    estilo: 'Pop',
+    produtora: 'Fora da Casinha',
+    local: 'Casa Vereda',
+    cidade: 'Belo Horizonte',
+    endereco: 'Rua Maria Luiza Santiago, 25 | Belvedere',
+    dataISO: '2026-12-19',
+    dataLabel: '19 DEZ 2026',
+    diaSemana: 'Sábado',
+    horaAbertura: '22:00', // término não informado
+    classificacao: '18 anos',
+    exclusiva: true,
+    imagem: '/eventos/boca-a-boca.webp', // foto a adicionar depois; cai no poster da cor
+    cor: '#e11d48',
+    descricao:
+      'A Boca a Boca é a festa da Fora da Casinha, que chega de São Paulo para uma edição em Belo Horizonte. Acontece no sábado, 19 de dezembro de 2026, na Casa Vereda, no Belvedere, com abertura às 22h e open bar.\n\nFesta de música pop, para maiores de 18 anos.',
+    metaDesc:
+      'Boca a Boca em BH: a festa pop da Fora da Casinha chega de SP à Casa Vereda, no Belvedere, sábado 19/12/2026, a partir das 22h, com open bar. Maiores de 18.',
+    lineup: [],
+    ingressos: [],
+    regras: [],
+    // Compra com desconto via WhatsApp (link enviado pelo usuário).
+    linkCompra: 'https://wa.link/4s7djc',
+    ctaCompra: 'Garantir Desconto',
+    linkCondicoes: 'https://wa.link/64zjxx',
+    ctaCondicoes: 'Condições Especiais',
+  },
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // CARNAVAL 2027 — páginas-stub criadas para o blog poder linkar.
+  // Produtoras confirmadas pelo usuário: Raro (4 festas) e NaSala (1).
+  // SEM dados inventados: data, local, endereço, line-up, ingressos e idade ficam
+  // em branco ('' = a confirmar) até o usuário preencher ao longo do tempo.
+  // Enquanto não tiverem `dataISO`, a página existe e é linkável, mas NÃO aparece
+  // nas listagens nem na página da produtora (ver `eventosFuturos`).
+  // ───────────────────────────────────────────────────────────────────────────
+  {
+    slug: 'mixed-by-mixed',
+    nome: 'Mixed by Mixed',
+    categoria: 'Festa',
+    estilo: 'Eletrônica', // confirmado pelo usuário
+    produtora: 'Raro', // casa com a produtora publicada → link "Produção: Raro" sai automático em [slug].astro
+    local: '', // "local revelado no dia do evento" (Sympla) — Raro é itinerante
+    cidade: 'Belo Horizonte',
+    endereco: '',
+    dataISO: '2027-02-05',
+    dataLabel: '05 FEV 2027',
+    diaSemana: 'Sexta-feira',
+    horaAbertura: '23:00',
+    horaFim: '06:00',
+    classificacao: '18 anos',
+    exclusiva: true,
+    imagem: '/eventos/mixed-by-mixed.webp', // capa 4:5 composta da arte oficial do Sympla (banner sobre fundo desfocado dele mesmo, p/ não cortar o texto)
+    imagemHero: '/eventos/mixed-by-mixed-banner.webp', // banner 16/9 (arte oficial do Sympla, 1400x733)
+    cor: '#d81e34', // tema "sexta vermelha" da edição
+    descricao:
+      'A Mixed by Mixed abre o Carnaval 2027 de Belo Horizonte: a sexta-feira de Carnaval, 5 de fevereiro, com Full Open Bar das 23h às 6h da manhã. A madrugada inteira na pista.\n\nÉ uma festa do Grupo Raro, selo de BH conhecido pelas festas temáticas com atrações nacionais. O tema desta edição: sua sexta de Carnaval vai ser vermelha.\n\nPara maiores de 18 anos. O local é revelado no dia do evento e o line-up ainda vai ser anunciado.',
+    metaDesc:
+      'Mixed by Mixed BH Carnival 2027: festa do Grupo Raro com Full Open Bar, sexta 5/2 das 23h às 6h, em BH. Maiores de 18, local revelado no dia. Garanta o desconto.',
+    lineup: [],
+    ingressos: [],
+    regras: [
+      'Classificação etária: 18 anos. Menores não acessam, mesmo acompanhados ou com autorização dos responsáveis.',
+      'Ingressos pessoais e nominais.',
+      'O local é revelado no dia do evento.',
+      'Entrada só com documento original com foto e o ingresso aberto no app ou e-mail; prints ou ingressos em nome de terceiros não são aceitos.',
+      'Transferência de titularidade disponível até uma semana antes do evento.',
+      'Cancelamento: até 7 dias após a compra e até 48h antes do evento; ingressos no pix sem taxa não podem ser cancelados.',
+      'Ao comparecer, você autoriza o uso da sua imagem nas captações do evento.',
+    ],
+    // Venda e emissão pela Sympla (site oficial do evento), com o código de desconto próprio da TicketHubh (?d=THUB).
+    linkCompra: 'https://www.sympla.com.br/evento/mixed-by-mixed-bh-carnival-2027-full-open-bar/3627499?d=THUB',
+    ctaCompra: 'Garantir Desconto',
+    linkCondicoes: 'https://wa.link/bn4032',
+    ctaCondicoes: 'Condições Especiais',
+    // Grupo de descontos específico da Raro (espelha GRUPO_RARO de produtoras.ts; não importado p/ evitar ciclo eventos↔produtoras)
+    linkGrupo: 'https://chat.whatsapp.com/D3mYzSmSXga2J2pM96PdkK?s=cl&p=i&mlu=4&ilr=4&iam=2',
+    ctaGrupo: 'Grupo VIP da Raro',
+  },
+  {
+    slug: 'mineirinha',
+    nome: 'Mineirinha',
+    categoria: 'Festa',
+    estilo: 'Funk', // confirmado pela Sympla: "Todo Carnaval tem um ritmo. Em BH, é funk"
+    produtora: 'Raro', // mantido Raro (confirmado antes); a Sympla não cita produtora → gera o link "Produção: Raro"
+    local: '', // "local revelado no dia do evento" (Sympla)
+    cidade: 'Belo Horizonte',
+    endereco: '',
+    dataISO: '2027-02-07',
+    dataLabel: '07 FEV 2027',
+    diaSemana: 'Domingo',
+    horaAbertura: '22:00', // Sympla: "22h (sujeito a alterações)"
+    // horaFim omitido de propósito: fim não confirmado ("do começo ao nascer do sol") — não inventa o endDate
+    classificacao: '18 anos',
+    exclusiva: false,
+    imagem: '/eventos/mineirinha.webp', // capa 4:5 composta da arte oficial do Sympla
+    imagemHero: '/eventos/mineirinha-banner.webp', // banner 16/9 (arte oficial do Sympla)
+    cor: '#c0902a', // dourado da arte "Made in Minas"
+    descricao: `MINEIRINHA · CARNIVAL 2027
+
+A festa mais mineira do Brasil volta para o Carnaval: a Mineirinha abre as portas no domingo de folia, 7 de fevereiro de 2027, em Belo Horizonte, pra quem já é de casa e pra quem ainda vai descobrir.
+
+Todo Carnaval tem um ritmo. Em BH, é funk. No comando da pista, os DJs residentes da casa transformam a noite numa festa com sotaque, grave e muita energia. E, como todo bom mineiro, de copo cheio: Full Open Bar Premium do começo ao nascer do sol.
+
+Mais do que uma festa, a Mineirinha é um jeito de ser: orgulho de onde a gente vem, encontro e liberdade. Para maiores de 18 anos. O local é revelado no dia do evento.`,
+    metaDesc:
+      'Mineirinha Carnival 2027 em BH: a festa mais mineira, no domingo de Carnaval 7/2, com funk e Full Open Bar Premium. Maiores de 18, local revelado no dia.',
+    lineup: [],
+    ingressos: [],
+    regras: [
+      'Classificação etária: 18 anos. Menores não entram, mesmo acompanhados ou com autorização dos responsáveis.',
+      'Ingressos pessoais e nominais.',
+      'O local é revelado no dia do evento.',
+      'Entrada só com documento original com foto e o ingresso aberto no app ou e-mail; prints ou ingressos em nome de terceiros não são aceitos.',
+      'Transferência de titularidade disponível até uma semana antes do evento.',
+      'Cancelamento: até 7 dias após a compra e até 48h antes do evento; ingressos no pix sem taxa não podem ser cancelados.',
+      'Ao comparecer, você autoriza o uso da sua imagem nas captações do evento.',
+    ],
+    // Compra com desconto via WhatsApp (link enviado pelo usuário).
+    linkCompra: 'https://wa.link/94krxt',
+    ctaCompra: 'Garantir Desconto',
+    linkCondicoes: 'https://wa.link/5yccrc',
+    ctaCondicoes: 'Condições Especiais',
+    // Grupo de descontos da Raro (espelha GRUPO_RARO de produtoras.ts; não importado p/ evitar ciclo eventos↔produtoras)
+    linkGrupo: 'https://chat.whatsapp.com/D3mYzSmSXga2J2pM96PdkK?s=cl&p=i&mlu=4&ilr=4&iam=2',
+    ctaGrupo: 'Grupo VIP da Raro',
+  },
+  {
+    slug: 'esbornia',
+    nome: 'Esbórnia',
+    categoria: 'Festa',
+    estilo: '', // line-up e gênero ainda a divulgar (Sympla/RA não informam)
+    produtora: 'Raro', // na RA a produção aparece como "Festa Esbórnia"; mantido Raro (confirmado antes) → gera o link "Produção: Raro"
+    local: '', // "local a ser divulgado" (Sympla/RA)
+    cidade: 'Belo Horizonte',
+    endereco: '',
+    dataISO: '2027-02-08',
+    dataLabel: '08 FEV 2027',
+    diaSemana: 'Segunda-feira',
+    horaAbertura: '22:00', // Sympla: "22h (sujeito a alterações)"; horário oficial ainda a divulgar
+    // horaFim omitido de propósito: fim não confirmado (RA: "horários a divulgar") — não inventa o endDate
+    classificacao: '18 anos',
+    exclusiva: false,
+    imagem: '/eventos/esbornia.webp', // capa 4:5 composta da arte oficial do Sympla
+    imagemHero: '/eventos/esbornia-banner.webp', // banner 16/9 (arte oficial do Sympla)
+    cor: '#cc2a6e', // tom de Carnaval da arte
+    descricao: `ESBÓRNIA · CARNIVAL 2027
+
+A Esbórnia leva o Carnaval para Belo Horizonte na segunda-feira de folia, 8 de fevereiro de 2027. A festa que virou referência pela mistura de autenticidade, liberdade e intensidade numa só noite, entre fantasias, música e encontros inesquecíveis.
+
+A edição de Carnaval tem Full Open Bar Premium, com as melhores marcas do mercado, e os Magic Shots que são a marca registrada da casa.
+
+Para maiores de 18 anos. O local, os horários e o line-up ainda serão divulgados pela organização.`,
+    metaDesc:
+      'Esbórnia Carnival 2027 em BH: festa de Carnaval na segunda 8/2, com Full Open Bar Premium e Magic Shots. Maiores de 18, local a divulgar. Garanta o desconto.',
+    lineup: [],
+    ingressos: [],
+    regras: [
+      'Classificação etária: 18 anos. Menores não entram.',
+      'Ingressos nominais. A transferência de titularidade é permitida até uma semana antes do evento; ingressos do pré-lote não podem ser transferidos.',
+      'Todos os ingressos já saem com o valor de meia-entrada (Lei nº 12.933/2013).',
+      'Evento sujeito a mudança de horário e local.',
+      'Ao comprar, você autoriza o compartilhamento de telefone, e-mail e data de nascimento com o organizador para ações de marketing.',
+    ],
+    // Venda e emissão pela Sympla (site oficial), com o código de desconto próprio da TicketHubh (?d=THUB) — confirmado pelo usuário.
+    linkCompra: 'https://www.sympla.com.br/evento/esbornia-carnival-2027-full-open-bar/3643615?d=THUB',
+    ctaCompra: 'Garantir Desconto',
+    linkCondicoes: 'https://wa.link/hnu8z1',
+    ctaCondicoes: 'Condições Especiais',
+    // Grupo de descontos da Raro (espelha GRUPO_RARO de produtoras.ts; não importado p/ evitar ciclo eventos↔produtoras)
+    linkGrupo: 'https://chat.whatsapp.com/D3mYzSmSXga2J2pM96PdkK?s=cl&p=i&mlu=4&ilr=4&iam=2',
+    ctaGrupo: 'Grupo VIP da Raro',
+  },
+  {
+    slug: 'arca-de-noe',
+    nome: 'Arca de Noé',
+    categoria: 'Festa',
+    estilo: '', // bloco/Carnaval; gênero não informado pelas fontes
+    produtora: 'NaSala', // gera o link "Produção: NaSala"
+    local: '', // "local a divulgar" (fontes só citam "Belo Horizonte")
+    cidade: 'Belo Horizonte',
+    endereco: '',
+    dataISO: '2027-02-06',
+    dataLabel: '06 FEV 2027',
+    diaSemana: 'Sábado',
+    horaAbertura: '22:00', // confirmado pelo usuário
+    classificacao: '18 anos', // confirmado pelo usuário
+    exclusiva: false,
+    imagem: '/eventos/arca-de-noe.webp', // capa 4:5 composta da arte oficial (3RS/Wix)
+    imagemHero: '/eventos/arca-de-noe-banner.webp', // banner 16/9 composto da mesma arte
+    cor: '#2563eb', // azul/neon da arte
+    descricao: `ARCA DE NOÉ · CARNAVAL BH 2027
+
+Arca is the new bloco. A Arca de Noé leva a essência do Carnaval de rua do Rio para Belo Horizonte no sábado de Carnaval, 6 de fevereiro de 2027. Um dos projetos que entraram pro calendário nacional de festas, de volta à capital mineira.
+
+Mais do que um bloco, é uma experiência imersiva: open bar, ambientação temática, cores, brilho, fantasias e ativações interativas. Pintura neon, bandeiras e brincadeiras que colocam o público dentro da festa.
+
+Reúne a turma, capricha no visual e vem viver o Carnaval do seu jeito.`,
+    metaDesc:
+      'Arca de Noé BH 2027: o bloco que virou festa chega ao Carnaval de Belo Horizonte no sábado 6/2, a partir das 22h, com open bar, fantasias e pintura neon. 18+.',
+    lineup: [],
+    ingressos: [],
+    regras: [
+      'Classificação etária: 18 anos.',
+      'O local é divulgado pela organização.',
+    ],
+    // Compra com desconto via WhatsApp (link enviado pelo usuário). Grupo: geral GRUPO_OFERTAS (NaSala não tem grupo próprio) via fallback.
+    linkCompra: 'https://wa.link/7a0ldu',
+    ctaCompra: 'Garantir Desconto',
+    linkCondicoes: 'https://wa.link/xd2nn0',
+    ctaCondicoes: 'Condições Especiais',
+  },
 ];
 
 export const getEvento = (slug: string) => eventos.find((e) => e.slug === slug);
@@ -493,13 +749,18 @@ export const getEvento = (slug: string) => eventos.find((e) => e.slug === slug);
 // cobrindo o intervalo entre o vencimento e o próximo build.
 // ─────────────────────────────────────────────────────────────────────────────
 export function eventoPassado(e: Pick<Evento, 'dataISO'>): boolean {
+  // Evento sem data ("a confirmar") não é passado: ainda vai acontecer, só não
+  // tem data marcada. (Fica de fora das listagens por não ser "futuro" ainda.)
+  if (!e.dataISO) return false;
   const hoje = new Date();
   hoje.setHours(0, 0, 0, 0);
   return new Date(e.dataISO + 'T00:00:00').getTime() < hoje.getTime();
 }
 
-// Só os eventos que ainda vão acontecer (para as listagens "próximos").
-export const eventosFuturos = eventos.filter((e) => !eventoPassado(e));
+// Só os eventos que ainda vão acontecer E já têm data marcada (para as listagens
+// "próximos"). Evento sem data tem página própria e é linkável, mas NÃO aparece
+// nas listagens até ganhar data — entra sozinho quando a data for preenchida.
+export const eventosFuturos = eventos.filter((e) => !!e.dataISO && !eventoPassado(e));
 // Só os eventos que já aconteceram (mantidos no ar como acervo indexável).
 export const eventosPassados = eventos.filter((e) => eventoPassado(e));
 

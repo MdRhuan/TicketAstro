@@ -37,6 +37,7 @@ function contaPalavras(post: Post): number {
   for (const b of post.corpo) {
     if (typeof b === 'string') textos.push(b);
     else if ('h2' in b) textos.push(b.h2);
+    else if ('listaLinks' in b) textos.push(b.listaLinks.map((it) => it.texto).join(' '));
     else textos.push(b.lista.join(' '));
   }
   return textos.join(' ').trim().split(/\s+/).filter(Boolean).length;
@@ -108,6 +109,16 @@ const jsonLd = {
           {p.corpo.map((bloco) => {
             if (typeof bloco === 'string') return <p class="art-p">{bloco}</p>;
             if ('h2' in bloco) return <h2 class="art-h2">{bloco.h2}</h2>;
+            if ('listaLinks' in bloco)
+              return (
+                <ul class="art-ul art-ul--links">
+                  {bloco.listaLinks.map((it) => (
+                    <li>
+                      <a href={it.href}>{it.texto}</a>
+                    </li>
+                  ))}
+                </ul>
+              );
             return (
               <ul class="art-ul">
                 {bloco.lista.map((item) => (
@@ -326,6 +337,22 @@ const jsonLd = {
       }
       .art-ul li::marker {
         color: var(--marca);
+      }
+      /* Lista de links (ex.: festas linkadas para a página de cada evento) */
+      .art-ul--links a {
+        color: var(--marca);
+        font-weight: 600;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+        text-decoration-thickness: 1px;
+      }
+      .art-ul--links a:hover {
+        text-decoration: none;
+      }
+      .art-ul--links a:focus-visible {
+        outline: 2px solid var(--marca);
+        outline-offset: 2px;
+        border-radius: 3px;
       }
       .voltar {
         display: flex; /* própria linha, abaixo da CTA */

@@ -22,11 +22,11 @@ const eventos = [
     categoria: 'Festa',
     local: 'Night Market',
     cidade: 'Belo Horizonte, MG',
-    dataISO: '2026-11-07',
-    dataLabel: '07 NOV 2026',
+    dataISO: '2026-11-26',
+    dataLabel: '26 NOV 2026',
     exclusiva: true,
     imagem: '/eventos/saideira.webp',
-    cor: '#e63950',
+    cor: '#6b46e0',
   },
   {
     slug: 'no-love-betim-atl',
@@ -39,6 +39,18 @@ const eventos = [
     exclusiva: true,
     imagem: '/eventos/no-love-betim-atl.webp',
     cor: '#b5179e',
+  },
+  {
+    slug: 'aprovados-pos-oficial',
+    nome: 'Aprovados | Pós Oficial',
+    categoria: 'Festa',
+    local: 'Night Market',
+    cidade: 'Belo Horizonte, MG',
+    dataISO: '2026-11-27',
+    dataLabel: '27 NOV 2026',
+    exclusiva: true,
+    imagem: '/eventos/aprovados-pos-oficial.webp',
+    cor: '#1e6fb0',
   },
   {
     slug: 'medween',
@@ -65,6 +77,18 @@ const eventos = [
     cor: '#e0592b',
   },
   {
+    slug: 'boca-a-boca',
+    nome: 'Boca a Boca',
+    categoria: 'Festa',
+    local: 'Casa Vereda',
+    cidade: 'Belo Horizonte, MG',
+    dataISO: '2026-12-19',
+    dataLabel: '19 DEZ 2026',
+    exclusiva: true,
+    imagem: '/eventos/boca-a-boca.webp',
+    cor: '#e11d48',
+  },
+  {
     slug: 'reveillon-do-night-2027',
     nome: 'Réveillon do Night 2027',
     categoria: 'Festa',
@@ -75,6 +99,54 @@ const eventos = [
     exclusiva: true,
     imagem: '/eventos/reveillon-do-night-2027.webp',
     cor: '#c9a227',
+  },
+  {
+    slug: 'mixed-by-mixed',
+    nome: 'Mixed by Mixed',
+    categoria: 'Festa',
+    local: '', // venue a definir (Raro é itinerante)
+    cidade: 'Belo Horizonte, MG',
+    dataISO: '2027-02-05',
+    dataLabel: '05 FEV 2027',
+    exclusiva: true,
+    imagem: '/eventos/mixed-by-mixed.webp',
+    cor: '#d81e34',
+  },
+  {
+    slug: 'mineirinha',
+    nome: 'Mineirinha',
+    categoria: 'Festa',
+    local: '', // "Local a definir": revelado no dia (Carnaval 2027, Full Open Bar)
+    cidade: 'Belo Horizonte, MG',
+    dataISO: '2027-02-07',
+    dataLabel: '07 FEV 2027',
+    exclusiva: false,
+    imagem: '/eventos/mineirinha.webp',
+    cor: '#c0902a',
+  },
+  {
+    slug: 'esbornia',
+    nome: 'Esbórnia',
+    categoria: 'Festa',
+    local: '', // "local a ser divulgado"
+    cidade: 'Belo Horizonte, MG',
+    dataISO: '2027-02-08',
+    dataLabel: '08 FEV 2027',
+    exclusiva: false,
+    imagem: '/eventos/esbornia.webp',
+    cor: '#cc2a6e',
+  },
+  {
+    slug: 'arca-de-noe',
+    nome: 'Arca de Noé',
+    categoria: 'Festa',
+    local: '', // "local a divulgar"
+    cidade: 'Belo Horizonte, MG',
+    dataISO: '2027-02-06',
+    dataLabel: '06 FEV 2027',
+    exclusiva: false,
+    imagem: '/eventos/arca-de-noe.webp',
+    cor: '#2563eb',
   },
 ];
 
@@ -147,7 +219,7 @@ const futuros = eventos.filter((e) => !eventoPassado(e));
                     <path d="M12 21s-6.5-5.3-6.5-10A6.5 6.5 0 0 1 18.5 11c0 4.7-6.5 10-6.5 10z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
                     <circle cx="12" cy="11" r="2.3" stroke="currentColor" stroke-width="1.6" />
                   </svg>
-                  <span>{e.local} · {e.cidade}</span>
+                  <span>{e.local ? `${e.local} · ${e.cidade}` : 'Local a definir'}</span>
                 </p>
                 <p class="ev__data">{e.dataLabel}</p>
               </div>

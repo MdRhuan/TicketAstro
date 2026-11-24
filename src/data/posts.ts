@@ -3,12 +3,17 @@
 // FOTO: public/blog/<slug>.jpg  (sem foto → fallback autoral com a `cor`)
 //
 // CORPO: cada item do array `corpo` é um parágrafo (string), um subtítulo
-// (objeto { h2: '...' }) ou uma lista ({ lista: ['item', ...] }). O template
-// renderiza string como <p>, { h2 } como <h2> e { lista } como <ul>.
+// (objeto { h2: '...' }), uma lista ({ lista: ['item', ...] }) ou uma lista de
+// links ({ listaLinks: [{ texto, href }] }). O template renderiza string como <p>,
+// { h2 } como <h2>, { lista } como <ul> e { listaLinks } como <ul> de <a>.
 // ─────────────────────────────────────────────────────────────────────────────
 
-// Bloco do corpo do artigo: texto corrido, subtítulo de seção ou lista.
-export type BlocoCorpo = string | { h2: string } | { lista: string[] };
+// Bloco do corpo do artigo: texto corrido, subtítulo, lista ou lista de links.
+export type BlocoCorpo =
+  | string
+  | { h2: string }
+  | { lista: string[] }
+  | { listaLinks: { texto: string; href: string }[] };
 
 export interface Post {
   slug: string;
@@ -29,6 +34,51 @@ export interface Post {
 }
 
 export const posts: Post[] = [
+  {
+    slug: 'festas-carnaval-2027-bh',
+    titulo: 'Festas de Carnaval 2027 em BH: a programação confirmada', // usado na tag <title> (SEO) e no card
+    tituloHero: 'Festas de Carnaval 2027 em BH',
+    resumo:
+      'As festas de Carnaval 2027 confirmadas em Belo Horizonte: Mixed by Mixed, Mineirinha, Esbórnia e Arca de Noé. Veja a programação e garanta desconto.',
+    categoria: 'Guia',
+    autor: 'Redação TicketHubh',
+    dataISO: '2026-11-20',
+    dataLabel: '20 NOV 2026',
+    tempoLeitura: 3,
+    imagem: '/blog/carnaval-2027-bh.webp', // adicionar a imagem; sem o arquivo, cai no poster da `cor`
+    cor: '#c026d3',
+    corpo: [
+      'O Carnaval 2027 cai em fevereiro, e Belo Horizonte já tem festa confirmada. A TicketHubh reuniu aqui a programação fechada até agora: as festas, as produtoras por trás de cada uma e como garantir o seu lugar com desconto. A data e o local de cada festa ficam na página dela, preenchidos assim que forem divulgados.',
+
+      { h2: 'As festas confirmadas até agora' },
+      'Até o momento, são quatro festas confirmadas para o Carnaval 2027 em BH, de duas produtoras da cidade: a Raro, com três edições, e a NaSala, com a Arca de Noé.',
+
+      { h2: 'As três festas da Raro' },
+      'A Raro é um dos selos de festa mais conhecidos de Belo Horizonte, especializado em festas temáticas com atrações nacionais. O line-up passa por pagode, funk e música eletrônica, dependendo da edição. As festas da Raro são itinerantes: o local muda a cada data, então confirme sempre o endereço no link oficial de cada festa.',
+      'No Carnaval 2027, a Raro confirmou três festas. A data e o local de cada uma ficam na página da festa:',
+      {
+        listaLinks: [
+          { texto: 'Mixed by Mixed', href: '/eventos/mixed-by-mixed' },
+          { texto: 'Mineirinha', href: '/eventos/mineirinha' },
+          { texto: 'Esbórnia', href: '/eventos/esbornia' },
+        ],
+      },
+
+      { h2: 'Arca de Noé, da NaSala' },
+      'A Arca de Noé é a festa da NaSala para o Carnaval: o bloco que virou festa, conhecido pelo clima de fantasia. Como as festas da NaSala não têm endereço fixo, a data e o local ficam na página da festa:',
+      {
+        listaLinks: [{ texto: 'Arca de Noé', href: '/eventos/arca-de-noe' }],
+      },
+
+      { h2: 'Como garantir o seu lugar com desconto' },
+      'Na porta, você paga o valor cheio. Entrando no grupo da TicketHubh, você recebe as datas e os locais assim que saem e garante o ingresso com desconto.',
+      'É a vantagem de quem se planeja: a programação de Carnaval muda rápido, e quem está no grupo fica sabendo de cada data e de cada oferta em primeira mão.',
+
+      'Entre no grupo pelo botão abaixo para receber as datas das festas de Carnaval 2027 e garantir o seu desconto.',
+    ],
+    ctaTexto: 'Entrar no grupo e garantir desconto no Carnaval',
+    ctaLink: 'https://chat.whatsapp.com/EGrwvkC1N8WJyfp9Rsb8LM',
+  },
   {
     slug: 'rio-california-festa-sunset-bh',
     titulo: 'Rio Califórnia: a festa sunset de domingo em BH',

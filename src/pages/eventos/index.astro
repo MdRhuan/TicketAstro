@@ -11,11 +11,17 @@ import CookieConsent from '../../components/CookieConsent.astro';
 // FOTO: public/eventos/<slug>.jpg  (sem foto → fallback autoral)
 const eventos = [
   { slug: 'versus-f2f', nome: 'VERSUS | F2F', categoria: 'Festa', estilo: 'Eletrônica', produtora: 'Baila', local: 'Secret Kitchen', cidade: 'Belo Horizonte', dataISO: '2026-10-23', dataLabel: '23 OUT 2026', preco: 0, exclusiva: true, imagem: '/eventos/versus-f2f.webp', cor: '#f23a6e' },
-  { slug: 'saideira', nome: 'Saideira', categoria: 'Festa', estilo: 'Funk', produtora: 'Night Market', local: 'Night Market', cidade: 'Belo Horizonte', dataISO: '2026-11-07', dataLabel: '07 NOV 2026', preco: 0, exclusiva: true, imagem: '/eventos/saideira.webp', cor: '#e63950' },
+  { slug: 'saideira', nome: 'Saideira', categoria: 'Festa', estilo: 'Funk', produtora: 'Night Market', local: 'Night Market', cidade: 'Belo Horizonte', dataISO: '2026-11-26', dataLabel: '26 NOV 2026', preco: 0, exclusiva: true, imagem: '/eventos/saideira.webp', cor: '#6b46e0' },
   { slug: 'no-love-betim-atl', nome: 'No Love - Betim ATL', categoria: 'Festa', estilo: 'Funk', produtora: 'Night Market', local: 'Night Market', cidade: 'Belo Horizonte', dataISO: '2026-11-20', dataLabel: '20 NOV 2026', preco: 0, exclusiva: true, imagem: '/eventos/no-love-betim-atl.webp', cor: '#b5179e' },
+  { slug: 'aprovados-pos-oficial', nome: 'Aprovados | Pós Oficial', categoria: 'Festa', estilo: 'Funk', produtora: 'Night Market', local: 'Night Market', cidade: 'Belo Horizonte', dataISO: '2026-11-27', dataLabel: '27 NOV 2026', preco: 0, exclusiva: true, imagem: '/eventos/aprovados-pos-oficial.webp', cor: '#1e6fb0' },
   { slug: 'medween', nome: 'MEDWEEN', categoria: 'Festa', estilo: 'Funk', produtora: '', local: 'Night Market', cidade: 'Belo Horizonte', dataISO: '2026-10-23', dataLabel: '23 OUT 2026', preco: 0, exclusiva: true, imagem: '/eventos/medween.webp', cor: '#a81d1d' },
   { slug: 'rio-california', nome: 'Rio Califórnia', categoria: 'Festa', estilo: 'Eletrônica', produtora: '', local: 'Night Market', cidade: 'Belo Horizonte', dataISO: '2026-11-22', dataLabel: '22 NOV 2026', preco: 0, exclusiva: true, imagem: '/eventos/rio-california.webp', cor: '#e0592b' },
+  { slug: 'boca-a-boca', nome: 'Boca a Boca', categoria: 'Festa', estilo: 'Pop', produtora: 'Fora da Casinha', local: 'Casa Vereda', cidade: 'Belo Horizonte', dataISO: '2026-12-19', dataLabel: '19 DEZ 2026', preco: 0, exclusiva: true, imagem: '/eventos/boca-a-boca.webp', cor: '#e11d48' },
   { slug: 'reveillon-do-night-2027', nome: 'Réveillon do Night 2027', categoria: 'Festa', estilo: 'Eletrônica', produtora: 'Night Market', local: 'Night Market', cidade: 'Belo Horizonte', dataISO: '2026-12-31', dataLabel: '31 DEZ 2026', preco: 0, exclusiva: true, imagem: '/eventos/reveillon-do-night-2027.webp', cor: '#c9a227' },
+  { slug: 'mixed-by-mixed', nome: 'Mixed by Mixed', categoria: 'Festa', estilo: 'Eletrônica', produtora: 'Raro', local: '', cidade: 'Belo Horizonte', dataISO: '2027-02-05', dataLabel: '05 FEV 2027', preco: 0, exclusiva: true, imagem: '/eventos/mixed-by-mixed.webp', cor: '#d81e34' },
+  { slug: 'mineirinha', nome: 'Mineirinha', categoria: 'Festa', estilo: '', produtora: 'Raro', local: '', cidade: 'Belo Horizonte', dataISO: '2027-02-07', dataLabel: '07 FEV 2027', preco: 0, exclusiva: false, imagem: '/eventos/mineirinha.webp', cor: '#c0902a' },
+  { slug: 'esbornia', nome: 'Esbórnia', categoria: 'Festa', estilo: '', produtora: 'Raro', local: '', cidade: 'Belo Horizonte', dataISO: '2027-02-08', dataLabel: '08 FEV 2027', preco: 0, exclusiva: false, imagem: '/eventos/esbornia.webp', cor: '#cc2a6e' },
+  { slug: 'arca-de-noe', nome: 'Arca de Noé', categoria: 'Festa', estilo: '', produtora: 'NaSala', local: '', cidade: 'Belo Horizonte', dataISO: '2027-02-06', dataLabel: '06 FEV 2027', preco: 0, exclusiva: false, imagem: '/eventos/arca-de-noe.webp', cor: '#2563eb' },
 ];
 
 const hoje = new Date();
@@ -38,7 +44,7 @@ const passados = eventos
 
 // Os filtros refletem só os eventos que ainda vão acontecer.
 const produtoras = [...new Set(futuros.map((e) => e.produtora).filter(Boolean))].sort();
-const estilos = [...new Set(futuros.map((e) => e.estilo))].sort();
+const estilos = [...new Set(futuros.map((e) => e.estilo).filter(Boolean))].sort();
 
 // JSON-LD ItemList — ensina ao Google/IA que esta página é uma coleção curada de
 // eventos, não uma página solta. Lista só os que ainda vão acontecer.
@@ -168,7 +174,7 @@ const eventosItemList = {
                           <path d="M12 21s-6.5-5.3-6.5-10A6.5 6.5 0 0 1 18.5 11c0 4.7-6.5 10-6.5 10z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
                           <circle cx="12" cy="11" r="2.3" stroke="currentColor" stroke-width="1.6" />
                         </svg>
-                        <span>{e.local} · {e.cidade}</span>
+                        <span>{e.local ? `${e.local} · ${e.cidade}` : 'Local a definir'}</span>
                       </p>
                       <div class="ev__rodape">
                         <span class="ev__data">{e.dataLabel}</span>
@@ -217,7 +223,7 @@ const eventosItemList = {
                           <path d="M12 21s-6.5-5.3-6.5-10A6.5 6.5 0 0 1 18.5 11c0 4.7-6.5 10-6.5 10z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
                           <circle cx="12" cy="11" r="2.3" stroke="currentColor" stroke-width="1.6" />
                         </svg>
-                        <span>{e.local} · {e.cidade}</span>
+                        <span>{e.local ? `${e.local} · ${e.cidade}` : 'Local a definir'}</span>
                       </p>
                       <div class="ev__rodape">
                         <span class="ev__data">{e.dataLabel}</span>

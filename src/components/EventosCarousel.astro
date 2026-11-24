@@ -31,11 +31,11 @@ const eventos = [
   {
     slug: 'saideira',
     titulo: 'Saideira',
-    data: '07 NOV 2026',
-    dataISO: '2026-11-07',
+    data: '26 NOV 2026',
+    dataISO: '2026-11-26',
     local: 'Night Market',
     cidade: '', // sem cidade no card da home → mostra só "Night Market"
-    cor: '#e63950',
+    cor: '#6b46e0',
     imagem: '/eventos/saideira-banner.webp',
   },
   {
@@ -47,6 +47,16 @@ const eventos = [
     cidade: '', // sem cidade no card da home → mostra só "Night Market"
     cor: '#b5179e',
     imagem: '/eventos/no-love-betim-atl-banner.webp',
+  },
+  {
+    slug: 'aprovados-pos-oficial',
+    titulo: 'Aprovados | Pós Oficial',
+    data: '27 NOV 2026',
+    dataISO: '2026-11-27',
+    local: 'Night Market',
+    cidade: '', // sem cidade no card da home → mostra só "Night Market"
+    cor: '#1e6fb0',
+    imagem: '/eventos/aprovados-pos-oficial-banner.webp', // banner "Virada de Lote"
   },
   {
     slug: 'medween',
@@ -69,6 +79,16 @@ const eventos = [
     imagem: '/eventos/rio-california-banner.webp', // opcional: foto de fundo do card (senão, só a cor)
   },
   {
+    slug: 'boca-a-boca',
+    titulo: 'Boca a Boca',
+    data: '19 DEZ 2026',
+    dataISO: '2026-12-19',
+    local: 'Casa Vereda',
+    cidade: '', // sem cidade no card da home → mostra só "Casa Vereda"
+    cor: '#e11d48',
+    imagem: '', // sem banner ainda → card mostra o título sobre a cor (sem imagem quebrada)
+  },
+  {
     slug: 'reveillon-do-night-2027',
     titulo: 'Réveillon do Night 2027',
     data: '31 DEZ 2026',
@@ -77,6 +97,46 @@ const eventos = [
     cidade: '', // sem cidade no card da home → mostra só "Night Market"
     cor: '#c9a227',
     imagem: '/eventos/reveillon-do-night-2027-banner.webp',
+  },
+  {
+    slug: 'mixed-by-mixed',
+    titulo: 'Mixed by Mixed',
+    data: '05 FEV 2027',
+    dataISO: '2027-02-05',
+    local: '', // venue a definir → cai em "Local a definir"
+    cidade: '',
+    cor: '#d81e34',
+    imagem: '/eventos/mixed-by-mixed-banner.webp', // banner oficial do Sympla
+  },
+  {
+    slug: 'mineirinha',
+    titulo: 'Mineirinha',
+    data: '07 FEV 2027',
+    dataISO: '2027-02-07',
+    local: '', // venue a definir → cai em "Local a definir"
+    cidade: '',
+    cor: '#c0902a',
+    imagem: '/eventos/mineirinha-banner.webp', // banner oficial do Sympla
+  },
+  {
+    slug: 'esbornia',
+    titulo: 'Esbórnia',
+    data: '08 FEV 2027',
+    dataISO: '2027-02-08',
+    local: '', // local a divulgar → cai em "Local a definir"
+    cidade: '',
+    cor: '#cc2a6e',
+    imagem: '/eventos/esbornia-banner.webp', // banner oficial do Sympla
+  },
+  {
+    slug: 'arca-de-noe',
+    titulo: 'Arca de Noé',
+    data: '06 FEV 2027',
+    dataISO: '2027-02-06',
+    local: '', // local a divulgar → cai em "Local a definir"
+    cidade: '',
+    cor: '#2563eb',
+    imagem: '/eventos/arca-de-noe-banner.webp', // banner composto da arte
   },
 ];
 
@@ -105,7 +165,7 @@ const visiveis = eventos.filter((e) => {
             data-slug={e.slug}
             data-nome={e.titulo}
             data-data={e.data}
-            data-local={e.cidade ? `${e.local} · ${e.cidade}` : e.local}
+            data-local={e.cidade ? `${e.local} · ${e.cidade}` : (e.local || 'Local a definir')}
             data-href={e.href}
             data-cta={e.cta}
             data-ga={e.ga}
